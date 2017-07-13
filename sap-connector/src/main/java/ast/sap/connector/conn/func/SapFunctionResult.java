@@ -16,8 +16,12 @@ public class SapFunctionResult {
 	public Object getOutParameterValue(String paramKey) {
 		return jCoFunction.getExportParameterList().getValue(paramKey);
 	}
-	
-	public OutTableParam getOutTableParameter(String tableName) {
+
+	public SapStruct getStructure(String fieldName) {
+		return new SapStruct(jCoFunction.getExportParameterList().getStructure(fieldName));
+	}
+
+	public OutTableParam getOutTableParameter(String tableName) throws NonexistentTableParameterException {
 		Preconditions.checkNotNull(tableName, "El nombre del campo tabla no puede ser nulo");
 
 		try {

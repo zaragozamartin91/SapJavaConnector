@@ -8,6 +8,12 @@ import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoRuntimeException;
 import com.sap.conn.jco.JCoTable;
 
+/**
+ * Funcion ejecutable de sap.
+ * 
+ * @author martin.zaragoza
+ *
+ */
 public class SapFunction {
 	private final JCoFunction jCoFunction;
 	private final JCoDestination jCoDestination;
@@ -17,6 +23,17 @@ public class SapFunction {
 		this.jCoDestination = jCoDestination;
 	}
 
+	/**
+	 * Establece el valor de un parametro de entrada regular.
+	 * 
+	 * @param key
+	 *            - Nombre del parametro.
+	 * @param value
+	 *            - Valor del parametro.
+	 * @return this.
+	 * @throws ImportParameterSetErrorException
+	 *             Si el parametro no existe o si el valor asignado no es del tipo correcto.
+	 */
 	public SapFunction setInParameter(String key, Object value) throws ImportParameterSetErrorException {
 		Preconditions.checkNotNull(key, "La clave del parámetro no puede ser nula");
 		Preconditions.checkNotNull(value, "El valor del parámetro no puede ser nulo");
