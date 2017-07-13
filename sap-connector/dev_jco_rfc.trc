@@ -1,0 +1,75 @@
+
+**** Error file opened at 20170712 101517 Argentine Time Rel. 3.0.16 (2016-12-06) [721.800]
+Error:  >Wed Jul 12 10:15:17,737<    RfcException:
+	message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=DST ASHOST=10.10.10.10 SYSNR=20 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '10.10.10.10:3320' not reached
+TIME        Wed Jul 12 10:15:17 2017
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 10.10.10.10:3320
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20170712 114719 Argentine Time Rel. 3.0.16 (2016-12-06) [721.800]
+Error:  >Wed Jul 12 11:47:19,776<    RfcException:
+	message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=testDestination_3 ASHOST=127.0.0.1 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '127.0.0.1:3300' not reached
+TIME        Wed Jul 12 11:47:19 2017
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 127.0.0.1:3300
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20170712 115517 Argentine Time Rel. 3.0.16 (2016-12-06) [721.800]
+Error:  >Wed Jul 12 11:55:17,800<    RfcException:
+	message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=testDestination_3 ASHOST=127.0.0.1 SYSNR=00 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '127.0.0.1:3300' not reached
+TIME        Wed Jul 12 11:55:17 2017
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 127.0.0.1:3300
+SYSTEM CALL connect
+ERRNO       10061
+ERRNO TEXT  WSAECONNREFUSED: Connection refused
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+

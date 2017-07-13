@@ -1,0 +1,39 @@
+package ast.sap.connector.conn.func;
+
+import com.sap.conn.jco.JCoTable;
+
+class TableParam implements OutTableParam, InTableParam {
+	private final JCoTable jcoTable;
+
+	TableParam(JCoTable table) {
+		this.jcoTable = table;
+	}
+
+	@Override
+	public InTableParam appendRow() {
+		jcoTable.appendRow();
+		return this;
+	}
+
+	@Override
+	public InTableParam setValue(String column, Object value) {
+		jcoTable.setValue(column, value);
+		return this;
+	}
+
+	@Override
+	public OutTableParam nextRow() {
+		jcoTable.nextRow();
+		return this;
+	}
+
+	@Override
+	public Object getValue(String colName) {
+		return jcoTable.getValue(colName);
+	}
+
+	@Override
+	public int getRowCount() {
+		return jcoTable.getNumRows();
+	}
+}
