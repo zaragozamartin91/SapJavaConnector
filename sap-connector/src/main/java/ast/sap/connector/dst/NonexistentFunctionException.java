@@ -1,4 +1,4 @@
-package ast.sap.connector.conn.dst;
+package ast.sap.connector.dst;
 
 public class NonexistentFunctionException extends RuntimeException {
 	private static final long serialVersionUID = 963299260626471538L;

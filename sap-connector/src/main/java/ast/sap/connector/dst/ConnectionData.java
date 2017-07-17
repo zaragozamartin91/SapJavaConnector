@@ -1,4 +1,4 @@
-package ast.sap.connector.conn;
+package ast.sap.connector.dst;
 
 public class ConnectionData {
 	private final String sapClient;

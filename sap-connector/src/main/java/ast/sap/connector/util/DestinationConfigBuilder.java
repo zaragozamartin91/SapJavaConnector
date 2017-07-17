@@ -1,4 +1,4 @@
-package ast.sap.connector.conn.util;
+package ast.sap.connector.util;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -6,7 +6,7 @@ import java.util.Properties;
 
 import com.sap.conn.jco.ext.DestinationDataProvider;
 
-import ast.sap.connector.conn.ConnectionData;
+import ast.sap.connector.dst.ConnectionData;
 
 public class DestinationConfigBuilder {
 	private static final File CURRENT_DIR = new File("");

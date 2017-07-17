@@ -1,4 +1,4 @@
-package ast.sap.connector.conn.func;
+package ast.sap.connector.func;
 
 /**
  * Representa un parametro de tipo tabla de SALIDA (tabla resultado de una ejecucion de funcion de sap).

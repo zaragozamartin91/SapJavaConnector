@@ -1,10 +1,10 @@
-package ast.sap.connector.conn.xmi;
+package ast.sap.connector.xmi;
 
-import ast.sap.connector.conn.dst.RepositoryGetFailException;
-import ast.sap.connector.conn.dst.SapRepository;
-import ast.sap.connector.conn.func.SapFunction;
-import ast.sap.connector.conn.func.SapFunctionResult;
-import ast.sap.connector.conn.func.SapStruct;
+import ast.sap.connector.dst.RepositoryGetFailException;
+import ast.sap.connector.dst.SapRepository;
+import ast.sap.connector.func.SapFunction;
+import ast.sap.connector.func.SapFunctionResult;
+import ast.sap.connector.func.SapStruct;
 
 public enum XmiSessionManager {
 	INSTANCE;

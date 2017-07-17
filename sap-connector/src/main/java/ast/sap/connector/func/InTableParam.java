@@ -1,4 +1,4 @@
-package ast.sap.connector.conn.func;
+package ast.sap.connector.func;
 
 /**
  * Representa un parametro de tipo tabla de ENTRADA (parametro de una funcion sap a invocar).

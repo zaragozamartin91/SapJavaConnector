@@ -14,7 +14,8 @@ import org.junit.Test;
 
 import com.sap.conn.jco.ext.DestinationDataProvider;
 
-import ast.sap.connector.conn.ConnectionData;
+import ast.sap.connector.dst.ConnectionData;
+import ast.sap.connector.util.DestinationConfigBuilder;
 
 public class DestinationBuilderTest {
 	private static final File TEST_RESOURCES_DIR = new File("src/test/resources");

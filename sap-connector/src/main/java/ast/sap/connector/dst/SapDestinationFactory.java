@@ -1,4 +1,4 @@
-package ast.sap.connector.conn.dst;
+package ast.sap.connector.dst;
 
 import com.google.common.base.Preconditions;
 import com.sap.conn.jco.JCoDestinationManager;

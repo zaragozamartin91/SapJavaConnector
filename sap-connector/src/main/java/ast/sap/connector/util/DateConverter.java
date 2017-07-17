@@ -1,4 +1,4 @@
-package ast.sap.connector.conn.util;
+package ast.sap.connector.util;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

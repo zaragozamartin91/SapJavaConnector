@@ -1,4 +1,4 @@
-package ast.sap.connector.conn.func;
+package ast.sap.connector.func;
 
 public class FunctionExecuteException extends RuntimeException {
 	private static final long serialVersionUID = 6774919672109212766L;

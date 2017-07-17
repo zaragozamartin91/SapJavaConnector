@@ -1,4 +1,4 @@
-package ast.sap.connector.conn.dst;
+package ast.sap.connector.dst;
 
 public class DestinationGetFailException extends RuntimeException {
 	private static final long serialVersionUID = -4316591956662837006L;

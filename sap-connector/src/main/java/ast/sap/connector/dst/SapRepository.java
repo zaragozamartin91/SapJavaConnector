@@ -1,4 +1,4 @@
-package ast.sap.connector.conn.dst;
+package ast.sap.connector.dst;
 
 import com.sap.conn.jco.JCoDestination;
 import com.sap.conn.jco.JCoException;
@@ -6,7 +6,7 @@ import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoFunctionTemplate;
 import com.sap.conn.jco.JCoRepository;
 
-import ast.sap.connector.conn.func.SapFunction;
+import ast.sap.connector.func.SapFunction;
 
 /**
  * Representa un repositorio de funciones de sap.

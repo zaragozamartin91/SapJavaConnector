@@ -1,4 +1,4 @@
-package ast.sap.connector.conn.xmi;
+package ast.sap.connector.xmi;
 
 public class XmiLoginData {
 	private String company;

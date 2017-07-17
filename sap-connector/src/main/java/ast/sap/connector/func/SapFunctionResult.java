@@ -1,4 +1,4 @@
-package ast.sap.connector.conn.func;
+package ast.sap.connector.func;
 
 import com.google.common.base.Preconditions;
 import com.sap.conn.jco.ConversionException;

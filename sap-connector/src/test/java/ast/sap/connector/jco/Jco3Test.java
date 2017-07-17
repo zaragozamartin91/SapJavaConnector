@@ -1,4 +1,4 @@
-package ast.sap.connector;
+package ast.sap.connector.jco;
 
 import java.io.File;
 
@@ -9,8 +9,8 @@ import org.junit.Test;
 import com.sap.conn.jco.JCoDestinationManager;
 import com.sap.conn.jco.JCoException;
 
-import ast.sap.connector.conn.ConnectionData;
-import ast.sap.connector.conn.util.DestinationConfigBuilder;
+import ast.sap.connector.dst.ConnectionData;
+import ast.sap.connector.util.DestinationConfigBuilder;
 
 public class Jco3Test {
 	private static final String DESTINATION_NAME = "testDestination_3";
