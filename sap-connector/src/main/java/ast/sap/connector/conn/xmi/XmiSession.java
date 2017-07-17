@@ -1,20 +1,19 @@
 package ast.sap.connector.conn.xmi;
 
+import ast.sap.connector.conn.dst.RepositoryGetFailException;
+import ast.sap.connector.conn.dst.SapRepository;
+import ast.sap.connector.conn.func.SapStruct;
+
 public class XmiSession {
-	private final Object sessionId;
-	private final String xmiInterface;
+	private final SapRepository sapRepository;
+	private final XmiSessionData sessionData;
 
-	public XmiSession(Object sessionId, String xmiInterface) {
-		super();
-		this.sessionId = sessionId;
-		this.xmiInterface = xmiInterface;
+	public XmiSession(XmiLoginData loginData, SapRepository sapRepository) throws RepositoryGetFailException {
+		this.sapRepository = sapRepository;
+		this.sessionData = XmiSessionManager.INSTANCE.login(sapRepository, loginData);
 	}
 
-	public Object getSessionId() {
-		return sessionId;
-	}
-
-	public String getXmiInterface() {
-		return xmiInterface;
+	public SapStruct logout() {
+		return XmiSessionManager.INSTANCE.logout(sapRepository, sessionData);
 	}
 }
