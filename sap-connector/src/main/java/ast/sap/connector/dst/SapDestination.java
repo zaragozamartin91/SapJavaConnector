@@ -6,6 +6,9 @@ import com.sap.conn.jco.JCoDestination;
 import com.sap.conn.jco.JCoException;
 import com.sap.conn.jco.JCoRepository;
 
+import ast.sap.connector.dst.exception.ContextCloseException;
+import ast.sap.connector.dst.exception.RepositoryGetFailException;
+
 public class SapDestination {
 	private final JCoDestination jcoDestination;
 

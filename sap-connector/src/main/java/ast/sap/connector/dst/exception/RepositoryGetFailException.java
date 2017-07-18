@@ -1,4 +1,4 @@
-package ast.sap.connector.dst;
+package ast.sap.connector.dst.exception;
 
 public class RepositoryGetFailException extends Exception {
 	private static final long serialVersionUID = 7410291102048241774L;

@@ -1,7 +1,7 @@
 package ast.sap.connector.xmi;
 
-import ast.sap.connector.dst.RepositoryGetFailException;
 import ast.sap.connector.dst.SapRepository;
+import ast.sap.connector.dst.exception.RepositoryGetFailException;
 import ast.sap.connector.func.SapStruct;
 
 public class XmiSession {

@@ -1,4 +1,4 @@
-package ast.sap.connector.func;
+package ast.sap.connector.func.exception;
 
 public class ImportParameterSetErrorException extends RuntimeException {
 	private static final long serialVersionUID = -4436290308578463655L;

@@ -8,6 +8,10 @@ import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoRuntimeException;
 import com.sap.conn.jco.JCoTable;
 
+import ast.sap.connector.func.exception.FunctionExecuteException;
+import ast.sap.connector.func.exception.ImportParameterSetErrorException;
+import ast.sap.connector.func.exception.NonexistentTableParameterException;
+
 /**
  * Funcion ejecutable de sap.
  * 

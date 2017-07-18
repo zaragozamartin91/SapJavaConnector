@@ -6,6 +6,8 @@ import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoRuntimeException;
 import com.sap.conn.jco.JCoTable;
 
+import ast.sap.connector.func.exception.NonexistentTableParameterException;
+
 public class SapFunctionResult {
 	private final JCoFunction jCoFunction;
 

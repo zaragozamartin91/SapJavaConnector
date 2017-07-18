@@ -6,6 +6,8 @@ import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoFunctionTemplate;
 import com.sap.conn.jco.JCoRepository;
 
+import ast.sap.connector.dst.exception.FunctionGetFailException;
+import ast.sap.connector.dst.exception.NonexistentFunctionException;
 import ast.sap.connector.func.SapFunction;
 
 /**

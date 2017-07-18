@@ -4,6 +4,9 @@ import com.google.common.base.Preconditions;
 import com.sap.conn.jco.JCoDestinationManager;
 import com.sap.conn.jco.JCoException;
 
+import ast.sap.connector.dst.exception.DestinationGetFailException;
+import ast.sap.connector.dst.exception.RepositoryGetFailException;
+
 public enum SapDestinationFactory {
 	INSTANCE;
 

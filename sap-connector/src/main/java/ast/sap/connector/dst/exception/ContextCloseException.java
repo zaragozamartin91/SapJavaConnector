@@ -1,4 +1,4 @@
-package ast.sap.connector.dst;
+package ast.sap.connector.dst.exception;
 
 public class ContextCloseException extends RuntimeException {
 	private static final long serialVersionUID = -5206432038012686100L;
