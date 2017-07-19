@@ -1,6 +1,6 @@
 package ast.sap.connector.dst;
 
-public class ConnectionData {
+public final class ConnectionData {
 	private final String sapClient;
 	private final String userId;
 	private final String password;

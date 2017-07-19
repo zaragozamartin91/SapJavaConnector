@@ -18,6 +18,6 @@ public interface JobRunner {
 	 *            - Informacion del job a correr.
 	 * @return Resultado del job. Estructura {@link SapBapiret2}.
 	 */
-	SapStruct runJob(RunnerJobData jobRunData);
+	SapStruct runJob(FullJobData jobData);
 
 }

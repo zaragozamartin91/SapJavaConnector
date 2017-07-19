@@ -16,12 +16,12 @@ public class ImmediateJobRunner implements JobRunner {
 	}
 
 	@Override
-	public SapStruct runJob(RunnerJobData jobRunData) {
+	public SapStruct runJob(FullJobData jobData) {
 		SapFunction jobStartAsapFunction = sapRepository.getFunction("BAPI_XBP_JOB_START_IMMEDIATELY")
-				.setInParameter("JOBNAME", jobRunData.getJobName())
-				.setInParameter("JOBCOUNT", jobRunData.getJobId())
-				.setInParameter("EXTERNAL_USER_NAME", jobRunData.getExternalUsername())
-				.setInParameter("TARGET_SERVER", jobRunData.getTargetServer());
+				.setInParameter("JOBNAME", jobData.getJobName())
+				.setInParameter("JOBCOUNT", jobData.getJobId())
+				.setInParameter("EXTERNAL_USER_NAME", jobData.getExternalUsername())
+				.setInParameter("TARGET_SERVER", jobData.getTargetServer());
 
 		SapFunctionResult result = jobStartAsapFunction.execute();
 		return result.getStructure("RETURN");

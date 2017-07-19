@@ -16,7 +16,7 @@ public class AsapJobRunner implements JobRunner {
 	}
 
 	@Override
-	public SapStruct runJob(RunnerJobData jobData) {
+	public SapStruct runJob(FullJobData jobData) {
 		SapFunction jobStartAsapFunction = sapRepository.getFunction("BAPI_XBP_JOB_START_ASAP")
 				.setInParameter("JOBNAME", jobData.getJobName())
 				.setInParameter("JOBCOUNT", jobData.getJobId())

@@ -24,7 +24,7 @@ public class JobTracker {
 	 * @param jobData - Informacion del job a monitorear.
 	 * @return Estado del job.
 	 */
-	public JobStatus getStatus(TrackerJobData jobData) {
+	public JobStatus getStatus(BaseJobData jobData) {
 		SapFunction jobStartAsapFunction = sapRepository.getFunction("BAPI_XBP_JOB_STATUS_GET")
 				.setInParameter("JOBNAME", jobData.getJobName())
 				.setInParameter("JOBCOUNT", jobData.getJobId())
