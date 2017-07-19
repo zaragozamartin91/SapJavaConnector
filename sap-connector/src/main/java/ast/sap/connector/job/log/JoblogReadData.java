@@ -1,4 +1,6 @@
-package ast.sap.connector.job;
+package ast.sap.connector.job.log;
+
+import ast.sap.connector.job.BaseJobData;
 
 public class JoblogReadData extends BaseJobData {
 	public static enum Direction {
@@ -12,7 +14,7 @@ public class JoblogReadData extends BaseJobData {
 	}
 
 	private int lines = 0;
-	private Direction direction = Direction.BEGINNING;
+	private Direction direction = Direction.END;
 
 	public JoblogReadData(String jobName, String jobId, String externalUsername, int lines, Direction direction) {
 		super(jobName, jobId, externalUsername);
