@@ -6,13 +6,16 @@ import com.sap.conn.jco.JCoException;
 
 import ast.sap.connector.dst.exception.DestinationGetFailException;
 import ast.sap.connector.dst.exception.RepositoryGetFailException;
+import ast.sap.connector.util.DestinationConfigBuilder;
 
 public enum SapDestinationFactory {
 	INSTANCE;
 
 	/**
 	 * Construye un destino de sap (configuracion de conexion) a partir de un "nombre de destino". Debe existir un archivo llamado
-	 * "destinationName".jcoDestination en el directorio raiz del programa.
+	 * "destinationName".jcoDestination en el directorio raiz del programa.<br/>
+	 * 
+	 * Para construir un jcoDestination facilmente usar {@link DestinationConfigBuilder}.
 	 * 
 	 * @param destinationName
 	 *            - Nombre del archivo destino sap (sin extension).

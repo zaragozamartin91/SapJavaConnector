@@ -16,7 +16,7 @@ public class SapBapiret2 {
 	private final String field;
 	private final String system;
 
-	private SapBapiret2(SapStruct sapStruct) {
+	public SapBapiret2(SapStruct sapStruct) {
 		type = (String) sapStruct.getValue("TYPE");
 		id = (String) sapStruct.getValue("ID");
 		number = (int) sapStruct.getValue("NUMBER");

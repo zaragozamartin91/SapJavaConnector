@@ -54,6 +54,15 @@ public class SapFunction {
 		return this;
 	}
 
+	/**
+	 * Establece un argumento de tipo tabla a la funcion a ejecutar.
+	 * 
+	 * @param tableName
+	 *            - Nombre del argumento.
+	 * @return Plantilla para la construccion del argumento de tipo tabla.
+	 * @throws NonexistentTableParameterException
+	 *             Si no existe un campo de tipo tabla con el nombre asignado.
+	 */
 	public InTableParam setInTableParameter(String tableName) throws NonexistentTableParameterException {
 		Preconditions.checkNotNull(tableName, "El nombre del campo tabla no puede ser nulo");
 
@@ -68,7 +77,14 @@ public class SapFunction {
 		}
 	}
 
-	public SapFunctionResult execute() {
+	/**
+	 * Ejecuta la funcion contra el servidor sap.
+	 * 
+	 * @return Resultado de la ejecucion.
+	 * @throws FunctionExecuteException
+	 *             Si ocurrio un error al ejecutar la funcion.
+	 */
+	public SapFunctionResult execute() throws FunctionExecuteException {
 		try {
 			jCoFunction.execute(jCoDestination);
 			return new SapFunctionResult(jCoFunction);

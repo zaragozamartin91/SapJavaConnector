@@ -1,33 +1,60 @@
 package ast.sap.connector.xmi;
 
+import ast.sap.connector.dst.SapDestination;
 import ast.sap.connector.dst.SapRepository;
-import ast.sap.connector.dst.exception.RepositoryGetFailException;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
 import ast.sap.connector.func.SapStruct;
+import ast.sap.connector.xmi.exception.XmiLoginException;
 
 public enum XmiSessionManager {
 	INSTANCE;
 
-	public XmiSessionData login(SapRepository sapRepository, XmiLoginData xmiLoginData) throws RepositoryGetFailException {
+	/**
+	 * Inicia sesion con el subsistema XMI.
+	 * 
+	 * @see https://www.sapdatasheet.org/abap/func/bapi_xmi_logon.html
+	 * 
+	 * @param sapRepository
+	 *            - Repositorio de funciones de sap iniciado para operar con contexto mediante {@link SapDestination#openContext()}.
+	 * @param xmiLoginData
+	 *            - Datos de inicio de sesion con XMI.
+	 * @return Datos de sesion de XMI.
+	 * @throws XmiLoginException
+	 *             Si no se pudo inciar sesion con xmi.
+	 */
+	public XmiSessionData login(SapRepository sapRepository, XmiLoginData xmiLoginData) throws XmiLoginException {
 		SapFunction function = sapRepository.getFunction("BAPI_XMI_LOGON")
 				.setInParameter("EXTCOMPANY", xmiLoginData.getCompany())
 				.setInParameter("EXTPRODUCT", xmiLoginData.getProduct())
 				.setInParameter("INTERFACE", xmiLoginData.getXmiInterface())
 				.setInParameter("VERSION", xmiLoginData.getVersion());
 
-		SapFunctionResult result = function.execute();
-		Object sessionId = result.getOutParameterValue("SESSIONID");
+		try {
+			SapFunctionResult result = function.execute();
+			Object sessionId = result.getOutParameterValue("SESSIONID");
 
-		return new XmiSessionData(sessionId, xmiLoginData.getXmiInterface());
+			return new XmiSessionData(sessionId, xmiLoginData.getXmiInterface());
+		} catch (Exception e) {
+			throw new XmiLoginException("Ocurrio un error al iniciar sesion XMI", e);
+		}
 	}
 
+	/**
+	 * Cierra la sesion de XMI.
+	 * 
+	 * @see https://www.sapdatasheet.org/abap/func/bapi_xmi_logoff.html
+	 * 
+	 * @param sapRepository
+	 * @param xmiSessionData
+	 * @return
+	 */
 	public SapStruct logout(SapRepository sapRepository, XmiSessionData xmiSessionData) {
 		SapFunction function = sapRepository.getFunction("BAPI_XMI_LOGOFF")
 				.setInParameter("INTERFACE", xmiSessionData.getXmiInterface());
-		
+
 		SapFunctionResult result = function.execute();
-		
+
 		return result.getStructure("RETURN");
 	}
 }
