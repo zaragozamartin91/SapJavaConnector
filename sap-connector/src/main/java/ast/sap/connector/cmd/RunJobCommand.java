@@ -1,12 +1,18 @@
 package ast.sap.connector.cmd;
 
 import ast.sap.connector.dst.SapRepository;
-import ast.sap.connector.func.SapStruct;
+import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.job.FullJobData;
 import ast.sap.connector.job.run.AsapJobRunner;
 import ast.sap.connector.job.run.JobRunner;
 import ast.sap.connector.xmi.XmiLoginData;
 
+/**
+ * Comando de disparo de jobs (sin monitoreo).
+ * 
+ * @author martin.zaragoza
+ *
+ */
 public class RunJobCommand extends SapCommand {
 	private FullJobData jobData;
 
@@ -18,7 +24,7 @@ public class RunJobCommand extends SapCommand {
 	@Override
 	public Object perform(SapRepository sapRepository) {
 		JobRunner jobRunner = new AsapJobRunner(sapRepository);
-		SapStruct ret = jobRunner.runJob(jobData);
-		return ret.getValue("MESSAGE").toString();
+		SapBapiret2 ret = jobRunner.runJob(jobData);
+		return ret;
 	}
 }

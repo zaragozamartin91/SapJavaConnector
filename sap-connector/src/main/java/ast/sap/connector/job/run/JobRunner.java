@@ -1,7 +1,6 @@
 package ast.sap.connector.job.run;
 
 import ast.sap.connector.func.SapBapiret2;
-import ast.sap.connector.func.SapStruct;
 import ast.sap.connector.job.FullJobData;
 
 /**
@@ -22,6 +21,6 @@ public interface JobRunner {
 	 *            - Informacion del job a correr.
 	 * @return Resultado del job. Estructura {@link SapBapiret2}.
 	 */
-	SapStruct runJob(FullJobData jobData);
+	SapBapiret2 runJob(FullJobData jobData);
 
 }

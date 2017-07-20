@@ -1,8 +1,11 @@
 package ast.sap.connector.job.log;
 
 import ast.sap.connector.dst.SapRepository;
+import ast.sap.connector.func.OutTableParam;
+import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
+import ast.sap.connector.func.SapStruct;
 
 public class JoblogReader {
 	private final SapRepository sapRepository;
@@ -29,6 +32,9 @@ public class JoblogReader {
 		}
 
 		SapFunctionResult result = function.execute();
-		return new JobLog(result.getStructure("RETURN"), result.getOutTableParameter("JOB_PROTOCOL_NEW"));
+		SapStruct ret = result.getStructure("RETURN");
+		SapBapiret2 bapiRet2 = new SapBapiret2(ret);
+		OutTableParam logEntries = result.getOutTableParameter("JOB_PROTOCOL_NEW");
+		return new JobLog(bapiRet2, logEntries);
 	}
 }

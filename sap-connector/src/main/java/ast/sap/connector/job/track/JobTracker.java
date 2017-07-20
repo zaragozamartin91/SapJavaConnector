@@ -1,6 +1,7 @@
 package ast.sap.connector.job.track;
 
 import ast.sap.connector.dst.SapRepository;
+import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
 import ast.sap.connector.func.SapStruct;
@@ -37,6 +38,6 @@ public class JobTracker {
 		String status = result.getOutParameterValue("STATUS").toString();
 		SapStruct ret = result.getStructure("RETURN");
 		
-		return new JobStatus(status, ret);
+		return new JobStatus(status, new SapBapiret2(ret));
 	}
 }

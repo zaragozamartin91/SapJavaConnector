@@ -1,5 +1,13 @@
 package ast.sap.connector.func;
 
+/**
+ * Estructura de datos bastante comun en sap.
+ * 
+ * @see http://www.se80.co.uk/saptables/b/bapi/bapiret2.htm
+ * 
+ * @author martin.zaragoza
+ *
+ */
 public class SapBapiret2 {
 	private final String type;
 	private final String id;

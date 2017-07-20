@@ -1,18 +1,18 @@
 package ast.sap.connector.job.log;
 
 import ast.sap.connector.func.OutTableParam;
-import ast.sap.connector.func.SapStruct;
+import ast.sap.connector.func.SapBapiret2;
 
 public class JobLog {
-	private final SapStruct returnStruct;
+	private final SapBapiret2 returnStruct;
 	private final OutTableParam logEntries;
 
-	public JobLog(SapStruct returnStruct, OutTableParam logEntries) {
-		this.returnStruct = returnStruct;
+	public JobLog(SapBapiret2 sapBapiret2, OutTableParam logEntries) {
+		this.returnStruct = sapBapiret2;
 		this.logEntries = logEntries;
 	}
 
-	public SapStruct getReturnStruct() {
+	public SapBapiret2 getReturnStruct() {
 		return returnStruct;
 	}
 
