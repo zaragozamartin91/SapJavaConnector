@@ -1,8 +1,17 @@
 package ast.sap.connector.config;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Properties;
 
+import com.google.common.base.Optional;
+
+import ast.sap.connector.util.DestinationConfigBuilder;
+
 public class Configuration {
+	public static final Configuration INSTANCE = new Configuration();
+
 	private String clientNumber;
 	private String systemNumber;
 
@@ -17,9 +26,25 @@ public class Configuration {
 	private Configuration() {
 	}
 
-	public static Configuration loadFromPropertiesFile(Properties configProperties) {
-		/* TODO : CARGAR CONFIGURACIONES DESDE ARCHIVO DE PROPERTIES.
-		 * SI NO EXISTE UN JCODESTINATION, CREARLO */
-		return new Configuration();
+	public static Configuration newFromJcoDestination(String destinationName) throws FileNotFoundException, IOException {
+		FileInputStream destinationInputStream = null;
+		try {
+			Properties configProperties = new Properties();
+			destinationInputStream = new FileInputStream(DestinationConfigBuilder.getJcoDestinationFile(destinationName));
+			configProperties.load(destinationInputStream);
+
+			return newFromPropertiesFile(configProperties);
+		} finally {
+			if (Optional.fromNullable(destinationInputStream).isPresent()) {
+				destinationInputStream.close();
+			}
+		}
+	}
+
+	public synchronized static Configuration newFromPropertiesFile(Properties configProperties) {
+		INSTANCE.clientNumber = configProperties.getProperty("clientNumber", "500");
+		INSTANCE.systemNumber = configProperties.getProperty("systemNumber", "01");
+		
+		return INSTANCE;
 	}
 }

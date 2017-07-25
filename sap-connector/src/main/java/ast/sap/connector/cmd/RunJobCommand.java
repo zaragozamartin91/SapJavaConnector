@@ -22,7 +22,8 @@ public class RunJobCommand extends SapCommand {
 	}
 
 	@Override
-	public Object perform(SapRepository sapRepository) {
+	public Object perform() {
+		SapRepository sapRepository = repository();
 		JobRunner jobRunner = new AsapJobRunner(sapRepository);
 		SapBapiret2 ret = jobRunner.runJob(jobData);
 		return ret;

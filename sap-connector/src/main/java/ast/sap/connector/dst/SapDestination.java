@@ -1,6 +1,7 @@
 package ast.sap.connector.dst;
 
 import com.google.common.base.Preconditions;
+import com.sap.conn.jco.JCoAttributes;
 import com.sap.conn.jco.JCoContext;
 import com.sap.conn.jco.JCoDestination;
 import com.sap.conn.jco.JCoException;
@@ -46,5 +47,9 @@ public class SapDestination {
 		} catch (JCoException e) {
 			throw new RepositoryGetFailException("Error al iniciar sesion de sap u obtener el respositorio del destino " + jcoDestination, e);
 		}
+	}
+	
+	public JCoAttributes getAttributes() throws JCoException {
+		return jcoDestination.getAttributes();
 	}
 }

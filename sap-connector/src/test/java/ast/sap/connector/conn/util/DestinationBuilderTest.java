@@ -14,7 +14,7 @@ import org.junit.Test;
 
 import com.sap.conn.jco.ext.DestinationDataProvider;
 
-import ast.sap.connector.dst.ConnectionData;
+import ast.sap.connector.util.ConnectionData;
 import ast.sap.connector.util.DestinationConfigBuilder;
 
 public class DestinationBuilderTest {

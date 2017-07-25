@@ -1,12 +1,13 @@
 package ast.sap.connector.util;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Properties;
 
 import com.sap.conn.jco.ext.DestinationDataProvider;
-
-import ast.sap.connector.dst.ConnectionData;
 
 public class DestinationConfigBuilder {
 	private static final File CURRENT_DIR = new File("");
@@ -44,12 +45,18 @@ public class DestinationConfigBuilder {
 		connectProperties.setProperty(DestinationDataProvider.JCO_USER, connectionData.getUserId());
 		connectProperties.setProperty(DestinationDataProvider.JCO_PASSWD, connectionData.getPassword());
 		connectProperties.setProperty(DestinationDataProvider.JCO_LANG, connectionData.getLanguage());
+
 		return connectProperties;
 	}
 
 	private File createDestinationDataFile(String destinationName, Properties connectProperties) {
-		File destCfg = parentDir.equals(CURRENT_DIR) ? new File(destinationName + JCO_DESTINATION_FILE_EXTENSION)
+		File destCfg = parentDir.equals(CURRENT_DIR) ? getJcoDestinationFile(destinationName)
 				: new File(parentDir, destinationName + JCO_DESTINATION_FILE_EXTENSION);
+
+		if (destCfg.isDirectory()) {
+			throw new IllegalStateException("El archivo " + destCfg.getAbsolutePath() + " es un directorio!");
+		}
+
 		try {
 			FileOutputStream fos = new FileOutputStream(destCfg, false);
 			connectProperties.store(fos, "for tests only !");
@@ -58,5 +65,16 @@ public class DestinationConfigBuilder {
 			throw new RuntimeException("Unable to create the destination files", e);
 		}
 		return destCfg;
+	}
+
+	public static File getJcoDestinationFile(String destinationName) {
+		return new File(destinationName + JCO_DESTINATION_FILE_EXTENSION);
+	}
+
+	public static Properties getJcoDestinationProperties(String destinationName) throws FileNotFoundException, IOException {
+		Properties properties = new Properties();
+		FileInputStream destinationStream = new FileInputStream(getJcoDestinationFile(destinationName));
+		properties.load(destinationStream);
+		return properties;
 	}
 }

@@ -9,7 +9,7 @@ import org.junit.Test;
 import com.sap.conn.jco.JCoDestinationManager;
 import com.sap.conn.jco.JCoException;
 
-import ast.sap.connector.dst.ConnectionData;
+import ast.sap.connector.util.ConnectionData;
 import ast.sap.connector.util.DestinationConfigBuilder;
 
 public class Jco3Test {
