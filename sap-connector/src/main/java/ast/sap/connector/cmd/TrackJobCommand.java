@@ -11,7 +11,7 @@ import ast.sap.connector.xmi.XmiLoginData;
  * @author martin.zaragoza
  *
  */
-public class TrackJobCommand extends SapCommand {
+public class TrackJobCommand extends SapXmiCommand {
 	private final BaseJobData jobData;
 
 	public TrackJobCommand(SapRepository sapRepository, XmiLoginData xmiLoginData, BaseJobData jobData) {
@@ -20,10 +20,10 @@ public class TrackJobCommand extends SapCommand {
 	}
 
 	@Override
-	protected Object perform() {
+	protected JobCommandResult perform() {
 		SapRepository sapRepository = repository();
 		JobTracker jobTracker = new JobTracker(sapRepository);
-		return jobTracker.getStatus(jobData);
+		return new JobCommandResult(jobTracker.getStatus(jobData));
 	}
 
 }

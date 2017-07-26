@@ -6,23 +6,28 @@ import ast.sap.connector.xmi.XmiLoginData;
 import ast.sap.connector.xmi.XmiSession;
 
 /**
- * Comando de sap a ejecutar.
+ * Comando xmi de sap a ejecutar.
+ * Los comandos xmi realizan los siguientes pasos:
+ * > Inician sesion con XMI.
+ * > Ejecutan una accion.
+ * > Obtienen salida del comando.
+ * > Cierran sesion con XMI.
  * 
  * @author martin.zaragoza
  *
  */
-public abstract class SapCommand {
+public abstract class SapXmiCommand {
 	private final SapRepository sapRepository;
 	private final XmiLoginData xmiLoginData;
 
-	public SapCommand(SapRepository sapRepository, XmiLoginData xmiLoginData) {
+	public SapXmiCommand(SapRepository sapRepository, XmiLoginData xmiLoginData) {
 		this.sapRepository = sapRepository;
 		this.xmiLoginData = xmiLoginData;
 	}
 
-	public Object execute() throws RepositoryGetFailException {
+	public JobCommandResult execute() throws RepositoryGetFailException {
 		XmiSession xmiSession = new XmiSession(sapRepository, xmiLoginData);
-		Object output = perform();
+		JobCommandResult output = perform();
 		xmiSession.logout();
 
 		return output;
@@ -32,5 +37,5 @@ public abstract class SapCommand {
 		return sapRepository;
 	}
 
-	protected abstract Object perform();
+	protected abstract JobCommandResult perform();
 }

@@ -13,7 +13,7 @@ import ast.sap.connector.xmi.XmiLoginData;
  * @author martin.zaragoza
  *
  */
-public class RunJobCommand extends SapCommand {
+public class RunJobCommand extends SapXmiCommand {
 	private FullJobData jobData;
 
 	public RunJobCommand(SapRepository sapRepository, XmiLoginData xmiLoginData, FullJobData jobData) {
@@ -22,10 +22,10 @@ public class RunJobCommand extends SapCommand {
 	}
 
 	@Override
-	public Object perform() {
+	public JobCommandResult perform() {
 		SapRepository sapRepository = repository();
 		JobRunner jobRunner = new AsapJobRunner(sapRepository);
 		SapBapiret2 ret = jobRunner.runJob(jobData);
-		return ret;
+		return new JobCommandResult(ret);
 	}
 }

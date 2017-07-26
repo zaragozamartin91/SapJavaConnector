@@ -4,17 +4,12 @@ import java.util.Properties;
 
 import com.sap.conn.jco.JCoException;
 
-import ast.sap.connector.cmd.SapCommand;
-import ast.sap.connector.config.Configuration;
 import ast.sap.connector.dst.SapDestination;
 import ast.sap.connector.dst.SapDestinationFactory;
 import ast.sap.connector.dst.SapRepository;
-import ast.sap.connector.dst.exception.DestinationGetFailException;
-import ast.sap.connector.dst.exception.RepositoryGetFailException;
 import ast.sap.connector.func.OutTableParam;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
-import ast.sap.connector.util.ConnectionData;
 import ast.sap.connector.util.DestinationConfigBuilder;
 
 public class MainApp {
@@ -40,7 +35,7 @@ public class MainApp {
 	// SapDestination destination = SapDestinationFactory.INSTANCE.getDestination(destinationName);
 	// SapRepository sapRepository = destination.openContext();
 	//
-	// SapCommand command = CommandFactory.INSTANCE.create(inputArguments, sapRepository);
+	// SapXmiCommand command = CommandFactory.INSTANCE.create(inputArguments, sapRepository);
 	// Object output = command.execute();
 	//
 	// OutputParser.INSTANCE.parseOutput(output);

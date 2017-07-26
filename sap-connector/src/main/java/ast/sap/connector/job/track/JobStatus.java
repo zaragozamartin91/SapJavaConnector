@@ -2,6 +2,9 @@ package ast.sap.connector.job.track;
 
 import ast.sap.connector.func.SapBapiret2;
 
+/**
+ * Estado del job
+ */
 public class JobStatus {
 	private final StatusCode statusCode;
 	private final SapBapiret2 returnStruct;

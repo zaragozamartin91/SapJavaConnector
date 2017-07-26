@@ -6,7 +6,7 @@ import ast.sap.connector.job.BaseJobData;
 import ast.sap.connector.job.run.JobStopper;
 import ast.sap.connector.xmi.XmiLoginData;
 
-public class StopJobCommand extends SapCommand {
+public class StopJobCommand extends SapXmiCommand {
 	private final BaseJobData jobData;
 
 	public StopJobCommand(SapRepository sapRepository, XmiLoginData xmiLoginData, BaseJobData jobData) {
@@ -15,10 +15,10 @@ public class StopJobCommand extends SapCommand {
 	}
 
 	@Override
-	protected Object perform() {
+	protected JobCommandResult perform() {
 		SapRepository sapRepository = repository();
 		JobStopper jobStopper = new JobStopper(sapRepository);
 		SapBapiret2 ret = jobStopper.stopJob(jobData);
-		return ret;
+		return new JobCommandResult(ret);
 	}
 }

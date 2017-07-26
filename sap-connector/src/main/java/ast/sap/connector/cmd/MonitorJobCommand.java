@@ -21,7 +21,7 @@ import ast.sap.connector.xmi.XmiLoginData;
  * @author martin.zaragoza
  *
  */
-public class MonitorJobCommand extends SapCommand {
+public class MonitorJobCommand extends SapXmiCommand {
 	private final FullJobData jobData;
 
 	public MonitorJobCommand(SapRepository sapRepository, XmiLoginData xmiLoginData, FullJobData jobData) {
@@ -30,20 +30,20 @@ public class MonitorJobCommand extends SapCommand {
 	}
 
 	@Override
-	public Object perform() {
+	public JobCommandResult perform() {
 		SapRepository sapRepository = repository();
 		JobRunner jobRunner = new AsapJobRunner(sapRepository);
 		SapBapiret2 runRet = jobRunner.runJob(jobData);
 
 		if (errorArised(runRet)) {
 			System.out.println("Ocurrio un error al disparar la tarea");
-			return runRet.getMessage();
+			return new JobCommandResult(runRet);
 		} else {
 			return monitorJob(sapRepository);
 		}
 	}
 
-	private Object monitorJob(SapRepository sapRepository) {
+	private JobCommandResult monitorJob(SapRepository sapRepository) {
 		boolean jobRunning = true;
 		JobTracker jobTracker = new JobTracker(sapRepository);
 
@@ -58,7 +58,7 @@ public class MonitorJobCommand extends SapCommand {
 		JoblogReader joblogReader = new JoblogReader(sapRepository);
 		JobLog jobLog = joblogReader.readLog(new JoblogReadData(jobData.getJobName(), jobData.getJobId(), jobData.getExternalUsername()));
 
-		return jobLog;
+		return new JobCommandResult(jobLog);
 	}
 
 	private void sleep() {

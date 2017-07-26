@@ -6,7 +6,7 @@ import ast.sap.connector.job.log.JoblogReadData;
 import ast.sap.connector.job.log.JoblogReader;
 import ast.sap.connector.xmi.XmiLoginData;
 
-public class GetJobOutputCommand extends SapCommand {
+public class GetJobOutputCommand extends SapXmiCommand {
 	private BaseJobData jobData;
 
 	public GetJobOutputCommand(SapRepository sapRepository, XmiLoginData xmiLoginData, BaseJobData jobData) {
@@ -15,7 +15,7 @@ public class GetJobOutputCommand extends SapCommand {
 	}
 
 	@Override
-	protected Object perform() {
+	protected JobCommandResult perform() {
 		SapRepository sapRepository = repository();
 		JoblogReader joblogReader = new JoblogReader(sapRepository);
 		JoblogReadData joblogReadData = new JoblogReadData(jobData.getJobName(), jobData.getJobId(), jobData.getExternalUsername());
