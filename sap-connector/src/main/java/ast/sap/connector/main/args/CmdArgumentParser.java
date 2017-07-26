@@ -1,8 +1,8 @@
 package ast.sap.connector.main.args;
 
 public class CmdArgumentParser extends AbstractArgumentParser {
-    public CmdArgumentParser(String prefix, String search) {
-        super(prefix, search);
+    public CmdArgumentParser() {
+        super("-c", ".+");
     }
 
     @Override

@@ -1,13 +1,13 @@
 package ast.sap.connector.main.args;
 
-public class UsrArgumentParser extends AbstractArgumentParser {
-    public UsrArgumentParser() {
-        super("-u", ".+");
+public class PasswordArgumentParser extends AbstractArgumentParser {
+    PasswordArgumentParser() {
+        super("-p", ".+");
     }
 
     @Override
     public InputArgumentsData setArgValue(InputArgumentsData inputArgumentsData, String arg) {
-        inputArgumentsData.setUser(this.getArgValue(arg));
+        inputArgumentsData.setPassword( getArgValue(arg) );
         return inputArgumentsData;
     }
 }
