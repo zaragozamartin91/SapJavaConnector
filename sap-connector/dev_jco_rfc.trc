@@ -73,3 +73,53 @@ COUNTER     2
 	error group: 102
 	key: RFC_ERROR_COMMUNICATION
 
+
+**** Error file opened at 20170726 144318 Argentine Time Rel. 3.0.16 (2016-12-06) [721.800]
+Error:  >Wed Jul 26 14:43:18,030<    RfcException:
+	message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=testDestination_1 ASHOST=172.31.84.250 SYSNR=01 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '172.31.84.250:3301' not reached
+TIME        Wed Jul 26 14:43:18 2017
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 172.31.84.250:3301
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
+
+**** Error file opened at 20170726 144436 Argentine Time Rel. 3.0.16 (2016-12-06) [721.800]
+Error:  >Wed Jul 26 14:44:36,969<    RfcException:
+	message: Connect to SAP gateway failed
+Connection parameters: TYPE=A DEST=testDestination_1 ASHOST=172.31.84.250 SYSNR=01 PCS=1
+
+LOCATION    CPIC (TCP/IP) on local host with Unicode
+ERROR       partner '172.31.84.250:3301' not reached
+TIME        Wed Jul 26 14:44:36 2017
+RELEASE     721
+COMPONENT   NI (network interface)
+VERSION     40
+RC          -10
+MODULE      nixxi.cpp
+LINE        3283
+DETAIL      NiPConnect2: 172.31.84.250:3301
+SYSTEM CALL connect
+ERRNO       10060
+ERRNO TEXT  WSAETIMEDOUT: Connection timed out
+COUNTER     2
+
+	return code: RFC_FAILURE (1)
+	error group: 102
+	key: RFC_ERROR_COMMUNICATION
+
