@@ -4,6 +4,6 @@ import ast.sap.connector.dst.exception.RepositoryGetFailException;
 
 public interface SapCommand {
 
-	JobCommandResult execute() throws RepositoryGetFailException;
+	SapCommandResult execute() throws RepositoryGetFailException;
 
 }

@@ -19,4 +19,9 @@ public class JobLog {
 	public OutTableParam getLogEntries() {
 		return logEntries;
 	}
+
+	@Override
+	public String toString() {
+		return "JobLog [returnStruct=" + returnStruct + ", logEntries=" + logEntries + "]";
+	}
 }

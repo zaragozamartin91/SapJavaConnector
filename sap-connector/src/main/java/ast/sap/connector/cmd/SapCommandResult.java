@@ -5,8 +5,8 @@ import ast.sap.connector.job.log.JobLog;
 import ast.sap.connector.job.track.JobStatus;
 import com.google.common.base.Optional;
 
-public class JobCommandResult {
-    private static final JobCommandResult EMPTY_RESULT = new JobCommandResult();
+public class SapCommandResult {
+    private static final SapCommandResult EMPTY_RESULT = new SapCommandResult();
 
     private Optional<SapBapiret2> ret = Optional.absent();
     private Optional<JobStatus> jobStatus = Optional.absent();
@@ -24,22 +24,22 @@ public class JobCommandResult {
         return jobLog;
     }
 
-    public JobCommandResult(SapBapiret2 ret) {
+    public SapCommandResult(SapBapiret2 ret) {
         this.ret = Optional.fromNullable(ret);
     }
 
-    public JobCommandResult(JobStatus jobStatus) {
+    public SapCommandResult(JobStatus jobStatus) {
         this.jobStatus = Optional.fromNullable(jobStatus);
     }
 
-    public JobCommandResult(JobLog jobLog) {
+    public SapCommandResult(JobLog jobLog) {
         this.jobLog = Optional.fromNullable(jobLog);
     }
 
-    private JobCommandResult() {
+    private SapCommandResult() {
     }
 
-    public static JobCommandResult emptyResult() {
+    public static SapCommandResult emptyResult() {
         return EMPTY_RESULT;
     }
 

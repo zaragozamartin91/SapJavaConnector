@@ -21,4 +21,9 @@ public class JobStatus {
 	public SapBapiret2 getReturnStruct() {
 		return returnStruct;
 	}
+
+	@Override
+	public String toString() {
+		return "JobStatus [statusCode=" + statusCode + ", returnStruct=" + returnStruct + "]";
+	}
 }

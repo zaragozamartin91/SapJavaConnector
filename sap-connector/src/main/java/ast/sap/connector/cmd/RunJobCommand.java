@@ -22,10 +22,10 @@ public class RunJobCommand extends SapXmiCommand {
 	}
 
 	@Override
-	public JobCommandResult perform() {
+	public SapCommandResult perform() {
 		SapRepository sapRepository = repository();
 		JobRunner jobRunner = new AsapJobRunner(sapRepository);
 		SapBapiret2 ret = jobRunner.runJob(jobData);
-		return new JobCommandResult(ret);
+		return new SapCommandResult(ret);
 	}
 }

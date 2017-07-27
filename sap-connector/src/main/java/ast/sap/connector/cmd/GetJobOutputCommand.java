@@ -15,11 +15,11 @@ public class GetJobOutputCommand extends SapXmiCommand {
 	}
 
 	@Override
-	protected JobCommandResult perform() {
+	protected SapCommandResult perform() {
 		SapRepository sapRepository = repository();
 		JoblogReader joblogReader = new JoblogReader(sapRepository);
 		JoblogReadData joblogReadData = new JoblogReadData(jobData.getJobName(), jobData.getJobId(), jobData.getExternalUsername());
-		return new JobCommandResult(joblogReader.readLog(joblogReadData));
+		return new SapCommandResult(joblogReader.readLog(joblogReadData));
 	}
 
 }

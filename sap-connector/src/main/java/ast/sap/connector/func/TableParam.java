@@ -36,4 +36,9 @@ class TableParam implements OutTableParam, InTableParam {
 	public int getRowCount() {
 		return jcoTable.getNumRows();
 	}
+
+	@Override
+	public String toString() {
+		return "TableParam [jcoTable=" + jcoTable + "]";
+	}
 }

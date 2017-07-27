@@ -15,10 +15,10 @@ public class StopJobCommand extends SapXmiCommand {
 	}
 
 	@Override
-	protected JobCommandResult perform() {
+	protected SapCommandResult perform() {
 		SapRepository sapRepository = repository();
 		JobStopper jobStopper = new JobStopper(sapRepository);
 		SapBapiret2 ret = jobStopper.stopJob(jobData);
-		return new JobCommandResult(ret);
+		return new SapCommandResult(ret);
 	}
 }

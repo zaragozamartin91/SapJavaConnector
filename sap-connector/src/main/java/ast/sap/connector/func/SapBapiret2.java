@@ -96,4 +96,11 @@ public class SapBapiret2 {
 	public String getSystem() {
 		return system;
 	}
+
+	@Override
+	public String toString() {
+		return "SapBapiret2 [type=" + type + ", id=" + id + ", number=" + number + ", message=" + message + ", logNo=" + logNo + ", logMsgNo=" + logMsgNo
+				+ ", messagev1=" + messagev1 + ", messagev2=" + messagev2 + ", messagev3=" + messagev3 + ", messagev4=" + messagev4 + ", parameter=" + parameter
+				+ ", row=" + row + ", field=" + field + ", system=" + system + "]";
+	}
 }

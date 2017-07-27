@@ -20,10 +20,10 @@ public class TrackJobCommand extends SapXmiCommand {
 	}
 
 	@Override
-	protected JobCommandResult perform() {
+	protected SapCommandResult perform() {
 		SapRepository sapRepository = repository();
 		JobTracker jobTracker = new JobTracker(sapRepository);
-		return new JobCommandResult(jobTracker.getStatus(jobData));
+		return new SapCommandResult(jobTracker.getStatus(jobData));
 	}
 
 }

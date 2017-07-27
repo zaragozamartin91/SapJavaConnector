@@ -1,15 +1,15 @@
 package ast.sap.connector.main;
 
-import java.util.Properties;
-
-import com.sap.conn.jco.JCoException;
-
+import ast.sap.connector.cmd.HelpCommand;
+import ast.sap.connector.cmd.SapCommand;
+import ast.sap.connector.cmd.SapCommandResult;
 import ast.sap.connector.dst.SapDestination;
 import ast.sap.connector.dst.SapDestinationFactory;
 import ast.sap.connector.dst.SapRepository;
-import ast.sap.connector.func.OutTableParam;
-import ast.sap.connector.func.SapFunction;
-import ast.sap.connector.func.SapFunctionResult;
+import ast.sap.connector.dst.exception.RepositoryGetFailException;
+import ast.sap.connector.main.args.InputArgumentsData;
+import ast.sap.connector.main.args.InputArgumentsParser;
+import ast.sap.connector.util.ConnectionData;
 import ast.sap.connector.util.DestinationConfigBuilder;
 
 public class MainApp {
@@ -43,35 +43,73 @@ public class MainApp {
 	// destination.closeContext();
 	// }
 
-	public static void main(String[] args) throws JCoException {
+	// public static void main(String[] args) throws JCoException {
+	// try {
+	// String destinationName = "testDestination_1";
+	//
+	// SapDestination sapDestination = SapDestinationFactory.INSTANCE.getDestination(destinationName);
+	// System.out.println("MOSTRANDO ATRIBUTOS DE CONEXION:");
+	// sapDestination.getAttributes();
+	//
+	// System.out.println("EJECUTANDO BAPI_USER_GET_DETAIL...");
+	// Properties jcoDestinationProperties = DestinationConfigBuilder.getJcoDestinationProperties(destinationName);
+	// String username = jcoDestinationProperties.getProperty("jco.client.user");
+	// SapRepository repository = sapDestination.openContext();
+	// SapFunction function = repository.getFunction("BAPI_USER_GET_DETAIL")
+	// .setInParameter("USERNAME", username);
+	//
+	// SapFunctionResult result = function.execute();
+	// OutTableParam returnTable = result.getOutTableParameter("RETURN");
+	//
+	// for (int i = 0; i < returnTable.getRowCount(); i++) {
+	// Object message = returnTable.getValue("MESSAGE");
+	// System.out.println("Message: " + message);
+	// returnTable.nextRow();
+	// }
+	//
+	// sapDestination.closeContext();
+	// } catch (Exception e) {
+	// System.out.println("OCURRIO UN ERROR:");
+	// e.printStackTrace();
+	// }
+	// }
+
+	public static void main(String[] args) {
+		InputArgumentsData inputArgs = InputArgumentsParser.INSTANCE.parse(args);
+
+		System.out.println("DATOS DE ENTRADA:");
+		System.out.println(inputArgs);
+
+		if (inputArgs.isHelp()) {
+			new HelpCommand().execute();
+			return;
+		}
+
+		String destinationName = "mainDestination";
+		System.out.println("CONSTRUYENDO CONFIGURACION DE DESTINO SAP " + destinationName);
+		ConnectionData connectionData = new ConnectionData(
+				inputArgs.getClientNumber(),
+				inputArgs.getUser(),
+				inputArgs.getPassword(),
+				inputArgs.getLanguage(),
+				inputArgs.getHost(),
+				inputArgs.getSystemNumber());
+		new DestinationConfigBuilder().build(destinationName, connectionData);
+
+		SapDestination destination = SapDestinationFactory.INSTANCE.getDestination(destinationName);
 		try {
-			String destinationName = "testDestination_1";
-
-			SapDestination sapDestination = SapDestinationFactory.INSTANCE.getDestination(destinationName);
-			System.out.println("MOSTRANDO ATRIBUTOS DE CONEXION:");
-			sapDestination.getAttributes();
-
-			System.out.println("EJECUTANDO BAPI_USER_GET_DETAIL...");
-			Properties jcoDestinationProperties = DestinationConfigBuilder.getJcoDestinationProperties(destinationName);
-			String username = jcoDestinationProperties.getProperty("jco.client.user");
-			SapRepository repository = sapDestination.openContext();
-			SapFunction function = repository.getFunction("BAPI_USER_GET_DETAIL")
-					.setInParameter("USERNAME", username);
-
-			SapFunctionResult result = function.execute();
-			OutTableParam returnTable = result.getOutTableParameter("RETURN");
-
-			for (int i = 0; i < returnTable.getRowCount(); i++) {
-				Object message = returnTable.getValue("MESSAGE");
-				System.out.println("Message: " + message);
-				returnTable.nextRow();
-			}
-
-			sapDestination.closeContext();
-		} catch (Exception e) {
-			System.out.println("OCURRIO UN ERROR:");
+			SapRepository sapRepository = destination.openContext();
+			SapCommand command = CommandFactory.INSTANCE.getCommand(inputArgs, sapRepository);
+			SapCommandResult commandResult = command.execute();
+			System.out.println("RESULTADO DEL COMANDO: " + commandResult);
+		} catch (RepositoryGetFailException e) {
+			System.err.println("OCURRIO UN ERROR AL OBTENER EL REPOSITORIO DE " + destinationName);
 			e.printStackTrace();
+		} finally {
+			try {
+				destination.closeContext();
+			} catch (Exception e) {
+			}
 		}
 	}
-
 }

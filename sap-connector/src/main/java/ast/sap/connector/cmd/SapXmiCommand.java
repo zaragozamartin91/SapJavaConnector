@@ -21,13 +21,13 @@ public abstract class SapXmiCommand extends AbstractSapCommand {
 	}
 
 	@Override
-	public JobCommandResult execute() throws RepositoryGetFailException {
+	public SapCommandResult execute() throws RepositoryGetFailException {
 		XmiSession xmiSession = new XmiSession(repository(), xmiLoginData);
-		JobCommandResult output = perform();
+		SapCommandResult output = perform();
 		xmiSession.logout();
 
 		return output;
 	}
 
-	protected abstract JobCommandResult perform();
+	protected abstract SapCommandResult perform();
 }

@@ -1,8 +1,11 @@
 package ast.sap.connector.main.args;
 
+import com.google.common.base.Optional;
+
 import ast.sap.connector.job.BaseJobData;
 import ast.sap.connector.job.FullJobData;
 import ast.sap.connector.main.CmdExeMode;
+import ast.sap.connector.xmi.XmiLoginData;
 
 public class InputArgumentsData {
 	/* PARAMETROS DE INICIO DE SESION CON SAP */
@@ -17,10 +20,10 @@ public class InputArgumentsData {
 	private String jobName;
 	private String jobId;
 	private String command;
-	private CmdExeMode mode = CmdExeMode.MONITOR;
 
-	/* COMANDO DE PRUEBA */
-	private String testCommand;
+	private String language = "EN";
+
+	private String execServer;
 
 	public String getUser() {
 		return user;
@@ -86,22 +89,6 @@ public class InputArgumentsData {
 		this.command = command;
 	}
 
-	public CmdExeMode getMode() {
-		return mode;
-	}
-
-	public void setMode(CmdExeMode mode) {
-		this.mode = mode;
-	}
-
-	public String getTestCommand() {
-		return testCommand;
-	}
-
-	public void setTestCommand(String testCommand) {
-		this.testCommand = testCommand;
-	}
-
 	public String getJobId() {
 		return jobId;
 	}
@@ -110,12 +97,44 @@ public class InputArgumentsData {
 		this.jobId = jobId;
 	}
 
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getExecServer() {
+		return execServer;
+	}
+
+	public void setExecServer(String execServer) {
+		this.execServer = execServer;
+	}
+
+	@Override
+	public String toString() {
+		return "InputArgumentsData [user=" + user + ", password=" + password + ", host=" + host + ", timeoutSecs=" + timeoutSecs + ", clientNumber="
+				+ clientNumber + ", systemNumber=" + systemNumber + ", jobName=" + jobName + ", jobId=" + jobId + ", command=" + command + ", language="
+				+ language + ", execServer=" + execServer + "]";
+	}
+
 	public BaseJobData newBaseJobData() {
 		return new BaseJobData(jobName, jobId, user);
 	}
-	
-	/* TODO : VERIFICAR SI EL PARAMETRO EXECSERVER ES IGUAL AL HOST O SI DEBE INGRESARSE UN NOMBRE DE SERVER PROPIO DE SAP  */
+
+	/* TODO : VERIFICAR SI EL PARAMETRO EXECSERVER ES IGUAL AL HOST O SI DEBE INGRESARSE UN NOMBRE DE SERVER PROPIO DE SAP */
 	public FullJobData newFullJobData() {
-		return new FullJobData(jobName, jobId, user, host);
+		String exSrv = Optional.fromNullable(execServer).or(host);
+		return new FullJobData(jobName, jobId, user, exSrv);
+	}
+
+	public XmiLoginData newXmiLoginData() {
+		return new XmiLoginData("AST", "CONNECTOR_SAP");
+	}
+
+	public boolean isHelp() {
+		return Optional.fromNullable(command).or("HELP").equalsIgnoreCase("HELP");
 	}
 }

@@ -11,7 +11,7 @@ public class ReadTableCommand extends AbstractSapCommand {
 	}
 
 	@Override
-	public JobCommandResult execute() throws RepositoryGetFailException {
+	public SapCommandResult execute() throws RepositoryGetFailException {
 		SapFunction function = repository().getFunction("RFC_READ_TABLE")
 				.setInParameter("QUERY_TABLE", "TBTCO");
 		return null;

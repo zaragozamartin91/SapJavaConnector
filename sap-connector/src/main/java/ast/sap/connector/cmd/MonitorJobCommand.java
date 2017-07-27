@@ -30,20 +30,20 @@ public class MonitorJobCommand extends SapXmiCommand {
 	}
 
 	@Override
-	public JobCommandResult perform() {
+	public SapCommandResult perform() {
 		SapRepository sapRepository = repository();
 		JobRunner jobRunner = new AsapJobRunner(sapRepository);
 		SapBapiret2 runRet = jobRunner.runJob(jobData);
 
 		if (errorArised(runRet)) {
 			System.out.println("Ocurrio un error al disparar la tarea");
-			return new JobCommandResult(runRet);
+			return new SapCommandResult(runRet);
 		} else {
 			return monitorJob(sapRepository);
 		}
 	}
 
-	private JobCommandResult monitorJob(SapRepository sapRepository) {
+	private SapCommandResult monitorJob(SapRepository sapRepository) {
 		boolean jobRunning = true;
 		JobTracker jobTracker = new JobTracker(sapRepository);
 
@@ -58,7 +58,7 @@ public class MonitorJobCommand extends SapXmiCommand {
 		JoblogReader joblogReader = new JoblogReader(sapRepository);
 		JobLog jobLog = joblogReader.readLog(new JoblogReadData(jobData.getJobName(), jobData.getJobId(), jobData.getExternalUsername()));
 
-		return new JobCommandResult(jobLog);
+		return new SapCommandResult(jobLog);
 	}
 
 	private void sleep() {
