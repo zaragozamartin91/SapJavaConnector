@@ -2,8 +2,9 @@ package ast.sap.connector.main.args;
 
 import com.google.common.base.Optional;
 
-import ast.sap.connector.job.BaseJobData;
-import ast.sap.connector.job.FullJobData;
+import ast.sap.connector.job.TrackJobData;
+import ast.sap.connector.job.CreateJobData;
+import ast.sap.connector.job.RunJobData;
 import ast.sap.connector.main.CmdExeMode;
 import ast.sap.connector.xmi.XmiLoginData;
 
@@ -120,14 +121,14 @@ public class InputArgumentsData {
 				+ language + ", execServer=" + execServer + "]";
 	}
 
-	public BaseJobData newBaseJobData() {
-		return new BaseJobData(jobName, jobId, user);
+	public CreateJobData newBaseJobData() {
+		return new TrackJobData(jobName, jobId, user);
 	}
 
 	/* TODO : VERIFICAR SI EL PARAMETRO EXECSERVER ES IGUAL AL HOST O SI DEBE INGRESARSE UN NOMBRE DE SERVER PROPIO DE SAP */
-	public FullJobData newFullJobData() {
+	public RunJobData newFullJobData() {
 		String exSrv = Optional.fromNullable(execServer).or(host);
-		return new FullJobData(jobName, jobId, user, exSrv);
+		return new RunJobData(jobName, jobId, user, exSrv);
 	}
 
 	public XmiLoginData newXmiLoginData() {

@@ -2,7 +2,7 @@ package ast.sap.connector.cmd;
 
 import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.func.SapBapiret2;
-import ast.sap.connector.job.FullJobData;
+import ast.sap.connector.job.RunJobData;
 import ast.sap.connector.job.run.AsapJobRunner;
 import ast.sap.connector.job.run.JobRunner;
 import ast.sap.connector.xmi.XmiLoginData;
@@ -14,9 +14,9 @@ import ast.sap.connector.xmi.XmiLoginData;
  *
  */
 public class RunJobCommand extends SapXmiCommand {
-	private FullJobData jobData;
+	private RunJobData jobData;
 
-	public RunJobCommand(SapRepository sapRepository, XmiLoginData xmiLoginData, FullJobData jobData) {
+	public RunJobCommand(SapRepository sapRepository, XmiLoginData xmiLoginData, RunJobData jobData) {
 		super(sapRepository, xmiLoginData);
 		this.jobData = jobData;
 	}

@@ -17,6 +17,7 @@ public enum StatusCode {
 	S("Released"),
 	Y("Ready"),
 	Z("Active"),
+	I("Intercepted"),
 	X("Unknown");
 
 	public final String label;

@@ -1,8 +1,8 @@
 package ast.sap.connector.job.log;
 
-import ast.sap.connector.job.BaseJobData;
+import ast.sap.connector.job.TrackJobData;
 
-public class JoblogReadData extends BaseJobData {
+public class JoblogReadData extends TrackJobData {
 	public static enum Direction {
 		BEGINNING("B"), END("E");
 

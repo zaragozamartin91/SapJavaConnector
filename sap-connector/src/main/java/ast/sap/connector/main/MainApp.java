@@ -1,5 +1,7 @@
 package ast.sap.connector.main;
 
+import com.sap.conn.jco.JCoException;
+
 import ast.sap.connector.cmd.HelpCommand;
 import ast.sap.connector.cmd.SapCommand;
 import ast.sap.connector.cmd.SapCommandResult;
@@ -97,13 +99,22 @@ public class MainApp {
 		new DestinationConfigBuilder().build(destinationName, connectionData);
 
 		SapDestination destination = SapDestinationFactory.INSTANCE.getDestination(destinationName);
+
 		try {
+			System.out.println("ATRIBUTOS DE CONEXION:");
+			destination.getAttributes();
+			
 			SapRepository sapRepository = destination.openContext();
+			
 			SapCommand command = CommandFactory.INSTANCE.getCommand(inputArgs, sapRepository);
 			SapCommandResult commandResult = command.execute();
 			System.out.println("RESULTADO DEL COMANDO: " + commandResult);
 		} catch (RepositoryGetFailException e) {
 			System.err.println("OCURRIO UN ERROR AL OBTENER EL REPOSITORIO DE " + destinationName);
+			e.printStackTrace();
+		} catch (JCoException e) {
+			System.err.println("OCURRIO UN ERROR AL OBTENER LOS ATRIBUTOS DE LA CONEXION:");
+			e.printStackTrace();
 			e.printStackTrace();
 		} finally {
 			try {

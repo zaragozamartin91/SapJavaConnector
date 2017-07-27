@@ -4,7 +4,7 @@ import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
-import ast.sap.connector.job.BaseJobData;
+import ast.sap.connector.job.TrackJobData;
 
 public final class JobStopper {
 	private final SapRepository sapRepository;
@@ -21,7 +21,7 @@ public final class JobStopper {
 	 * @param jobData - Informacion sobre el Job a detener.
 	 * @return 
 	 */
-	public SapBapiret2 stopJob(BaseJobData jobData) {
+	public SapBapiret2 stopJob(TrackJobData jobData) {
 		SapFunction function = sapRepository.getFunction("BAPI_XBP_JOB_ABORT")
 				.setInParameter("JOBNAME", jobData.getJobName())
 				.setInParameter("JOBCOUNT", jobData.getJobId())

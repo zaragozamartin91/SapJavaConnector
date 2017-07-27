@@ -11,7 +11,7 @@ public class HelpCommand implements SapCommand {
 		log("USO DE CONECTOR SAP:");
 		log("> sapCon -uUSUARIO -pPASSWORD -jNOMBRE_JOB -nCLIENT_NUMBER -cCOMANDO -hHOST -iJOB_ID -sSYS_NUMBER -xEXEC_SERVER");
 		log("COMANDOS DISPONIBLES:");
-		log("XMI_LOGIN|TRACK_JOB|HELP");
+		log("XMI_LOGIN|TRACK_JOB|HELP|CREATE_JOB");
 		return SapCommandResult.emptyResult();
 	}
 }

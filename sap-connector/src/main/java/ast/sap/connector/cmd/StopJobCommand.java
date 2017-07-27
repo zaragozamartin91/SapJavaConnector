@@ -2,14 +2,14 @@ package ast.sap.connector.cmd;
 
 import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.func.SapBapiret2;
-import ast.sap.connector.job.BaseJobData;
+import ast.sap.connector.job.TrackJobData;
 import ast.sap.connector.job.run.JobStopper;
 import ast.sap.connector.xmi.XmiLoginData;
 
 public class StopJobCommand extends SapXmiCommand {
-	private final BaseJobData jobData;
+	private final TrackJobData jobData;
 
-	public StopJobCommand(SapRepository sapRepository, XmiLoginData xmiLoginData, BaseJobData jobData) {
+	public StopJobCommand(SapRepository sapRepository, XmiLoginData xmiLoginData, TrackJobData jobData) {
 		super(sapRepository, xmiLoginData);
 		this.jobData = jobData;
 	}
