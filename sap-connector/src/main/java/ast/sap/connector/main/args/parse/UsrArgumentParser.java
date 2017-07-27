@@ -1,4 +1,6 @@
-package ast.sap.connector.main.args;
+package ast.sap.connector.main.args.parse;
+
+import ast.sap.connector.main.args.InputArgumentsData;
 
 public class UsrArgumentParser extends AbstractArgumentParser {
     public UsrArgumentParser() {
@@ -7,7 +9,7 @@ public class UsrArgumentParser extends AbstractArgumentParser {
 
     @Override
     public InputArgumentsData setArgValue(InputArgumentsData inputArgumentsData, String arg) {
-        inputArgumentsData.setUser(this.getArgValue(arg));
+        inputArgumentsData.setUser(getArgValue(arg));
         return inputArgumentsData;
     }
 }

@@ -1,7 +1,9 @@
-package ast.sap.connector.main.args;
+package ast.sap.connector.main.args.parse;
+
+import ast.sap.connector.main.args.InputArgumentsData;
 
 public class HostArgumentParser extends AbstractArgumentParser {
-    HostArgumentParser() {
+    public HostArgumentParser() {
         super("-h", ".+");
     }
 

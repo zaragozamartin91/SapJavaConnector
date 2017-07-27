@@ -1,4 +1,4 @@
-package ast.sap.connector.main.args;
+package ast.sap.connector.main.args.parse;
 
 import java.util.regex.Pattern;
 
