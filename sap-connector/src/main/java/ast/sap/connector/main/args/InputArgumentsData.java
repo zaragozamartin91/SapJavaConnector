@@ -2,10 +2,9 @@ package ast.sap.connector.main.args;
 
 import com.google.common.base.Optional;
 
-import ast.sap.connector.job.TrackJobData;
 import ast.sap.connector.job.CreateJobData;
 import ast.sap.connector.job.RunJobData;
-import ast.sap.connector.main.CmdExeMode;
+import ast.sap.connector.job.TrackJobData;
 import ast.sap.connector.xmi.XmiLoginData;
 
 public class InputArgumentsData {
