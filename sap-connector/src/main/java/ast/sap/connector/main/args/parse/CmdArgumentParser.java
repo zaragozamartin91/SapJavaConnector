@@ -8,9 +8,7 @@ public class CmdArgumentParser extends AbstractArgumentParser {
     }
 
     @Override
-    public InputArgumentsData setArgValue(InputArgumentsData inputArgumentsData, String arg) {
-        String argValue = this.getArgValue(arg);
-        inputArgumentsData.setCommand(argValue);
-        return inputArgumentsData;
+    protected InputArgumentsData setValue(InputArgumentsData inputArgumentsData, String value) {
+        return inputArgumentsData.setCommand(value);
     }
 }

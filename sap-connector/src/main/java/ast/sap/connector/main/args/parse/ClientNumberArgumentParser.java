@@ -8,8 +8,7 @@ public class ClientNumberArgumentParser extends AbstractArgumentParser {
 	}
 
 	@Override
-	public InputArgumentsData setArgValue(InputArgumentsData inputArgumentsData, String arg) {
-		inputArgumentsData.setClientNumber(getArgValue(arg));
-		return inputArgumentsData;
+	protected InputArgumentsData setValue(InputArgumentsData inputArgumentsData, String value) {
+		return inputArgumentsData.setClientNumber(value);
 	}
 }

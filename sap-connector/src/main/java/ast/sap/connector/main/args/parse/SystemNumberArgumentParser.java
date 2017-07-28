@@ -8,8 +8,7 @@ public class SystemNumberArgumentParser extends AbstractArgumentParser {
 	}
 
 	@Override
-	public InputArgumentsData setArgValue(InputArgumentsData inputArgumentsData, String arg) {
-		inputArgumentsData.setSystemNumber(getArgValue(arg));
-		return inputArgumentsData;
+	protected InputArgumentsData setValue(InputArgumentsData inputArgumentsData, String value) {
+		return inputArgumentsData.setSystemNumber(value);
 	}
 }

@@ -8,8 +8,7 @@ public class HostArgumentParser extends AbstractArgumentParser {
     }
 
     @Override
-    public InputArgumentsData setArgValue(InputArgumentsData inputArgumentsData, String arg) {
-        inputArgumentsData.setHost(getArgValue(arg));
-        return inputArgumentsData;
+    protected InputArgumentsData setValue(InputArgumentsData inputArgumentsData, String value) {
+        return inputArgumentsData.setHost(value);
     }
 }

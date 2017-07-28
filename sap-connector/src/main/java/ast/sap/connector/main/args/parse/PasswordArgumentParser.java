@@ -3,13 +3,12 @@ package ast.sap.connector.main.args.parse;
 import ast.sap.connector.main.args.InputArgumentsData;
 
 public class PasswordArgumentParser extends AbstractArgumentParser {
-    public PasswordArgumentParser() {
-        super("-p", ".+");
-    }
+	public PasswordArgumentParser() {
+		super("-p", ".+");
+	}
 
-    @Override
-    public InputArgumentsData setArgValue(InputArgumentsData inputArgumentsData, String arg) {
-        inputArgumentsData.setPassword( getArgValue(arg) );
-        return inputArgumentsData;
-    }
+	@Override
+	protected InputArgumentsData setValue(InputArgumentsData inputArgumentsData, String value) {
+		return inputArgumentsData.setPassword(value);
+	}
 }

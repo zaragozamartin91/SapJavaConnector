@@ -16,8 +16,11 @@ public class InputArgumentsParserTest {
 				"-s01",
 				"-umartin.zaragoza",
 				"-i14201001",
-				"-xSERVER" };
+				"-xSERVER",
+				"-lES" };
+		
 		InputArgumentsData inputArgs = InputArgumentsParser.INSTANCE.parse(args);
+		
 		assertEquals("500", inputArgs.getClientNumber());
 		assertEquals("RUN_JOB", inputArgs.getCommand());
 		assertEquals("127.0.0.1", inputArgs.getHost());
@@ -27,5 +30,6 @@ public class InputArgumentsParserTest {
 		assertEquals("martin.zaragoza", inputArgs.getUser());
 		assertEquals("14201001", inputArgs.getJobId());
 		assertEquals("SERVER", inputArgs.getExecServer());
+		assertEquals("ES", inputArgs.getLanguage());
 	}
 }

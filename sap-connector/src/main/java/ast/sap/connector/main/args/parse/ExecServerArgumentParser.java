@@ -8,8 +8,7 @@ public class ExecServerArgumentParser extends AbstractArgumentParser {
 	}
 
 	@Override
-	public InputArgumentsData setArgValue(InputArgumentsData inputArgumentsData, String arg) {
-		inputArgumentsData.setExecServer(getArgValue(arg));
-		return inputArgumentsData;
+	protected InputArgumentsData setValue(InputArgumentsData inputArgumentsData, String value) {
+		return inputArgumentsData.setExecServer(value);
 	}
 }

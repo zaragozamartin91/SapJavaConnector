@@ -11,6 +11,7 @@ public class XmiLoginCommand extends SapXmiCommand {
 
 	@Override
 	protected SapCommandResult perform() {
+		System.out.println("SESION XMI INICIADA EXITOSAMENTE");
 		return SapCommandResult.emptyResult();
 	}
 }

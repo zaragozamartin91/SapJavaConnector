@@ -9,9 +9,9 @@ public class HelpCommand implements SapCommand {
 	@Override
 	public SapCommandResult execute() {
 		log("USO DE CONECTOR SAP:");
-		log("> sapCon -uUSUARIO -pPASSWORD -jNOMBRE_JOB -nCLIENT_NUMBER -cCOMANDO -hHOST -iJOB_ID -sSYS_NUMBER -xEXEC_SERVER");
+		log("> sapConnector -uUSUARIO -pPASSWORD -jNOMBRE_JOB -nCLIENT_NUMBER -cCOMANDO -hHOST -iJOB_ID -sSYS_NUMBER -xEXEC_SERVER");
 		log("COMANDOS DISPONIBLES:");
-		log("XMI_LOGIN|TRACK_JOB|HELP|CREATE_JOB");
+		log("XMI_LOGIN|TRACK_JOB|HELP|CREATE_JOB|RUN_JOB");
 		return SapCommandResult.emptyResult();
 	}
 }

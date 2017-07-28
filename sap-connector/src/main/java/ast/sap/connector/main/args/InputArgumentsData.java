@@ -7,7 +7,7 @@ import ast.sap.connector.job.RunJobData;
 import ast.sap.connector.job.TrackJobData;
 import ast.sap.connector.xmi.XmiLoginData;
 
-public class InputArgumentsData {
+public final class InputArgumentsData {
 	/* PARAMETROS DE INICIO DE SESION CON SAP */
 	private String user;
 	private String password;
@@ -53,64 +53,75 @@ public class InputArgumentsData {
 		return systemNumber;
 	}
 
-	public void setUser(String user) {
+	public InputArgumentsData setUser(String user) {
 		this.user = user;
+		return this;
 	}
 
-	public void setPassword(String password) {
+	public InputArgumentsData setPassword(String password) {
 		this.password = password;
+		return this;
 	}
 
-	public void setHost(String host) {
+	public InputArgumentsData setHost(String host) {
 		this.host = host;
+		return this;
 	}
 
-	public void setTimeoutSecs(int timeoutSecs) {
+	public InputArgumentsData setTimeoutSecs(int timeoutSecs) {
 		this.timeoutSecs = timeoutSecs;
+		return this;
 	}
 
-	public void setJobName(String jobName) {
+	public InputArgumentsData setJobName(String jobName) {
 		this.jobName = jobName;
+		return this;
 	}
 
-	public void setClientNumber(String clientNumber) {
+	public InputArgumentsData setClientNumber(String clientNumber) {
 		this.clientNumber = clientNumber;
+		return this;
 	}
 
-	public void setSystemNumber(String systemNumber) {
+	public InputArgumentsData setSystemNumber(String systemNumber) {
 		this.systemNumber = systemNumber;
+		return this;
 	}
 
 	public String getCommand() {
 		return command;
 	}
 
-	public void setCommand(String command) {
+	public InputArgumentsData setCommand(String command) {
 		this.command = command;
+		return this;
 	}
 
 	public String getJobId() {
 		return jobId;
 	}
 
-	public void setJobId(String jobId) {
+	public InputArgumentsData setJobId(String jobId) {
 		this.jobId = jobId;
+		return this;
 	}
 
 	public String getLanguage() {
 		return language;
 	}
 
-	public void setLanguage(String language) {
+	public InputArgumentsData setLanguage(String language) {
 		this.language = language;
+		return this;
 	}
 
 	public String getExecServer() {
 		return execServer;
 	}
 
-	public void setExecServer(String execServer) {
+	public InputArgumentsData setExecServer(String execServer) {
 		this.execServer = execServer;
+		return this;
 	}
 
 	@Override
@@ -131,9 +142,14 @@ public class InputArgumentsData {
 	}
 
 	public XmiLoginData newXmiLoginData() {
-		return new XmiLoginData("AST", "CONNECTOR_SAP");
+		return new XmiLoginData("AST", "SAP_CONNECTOR");
 	}
 
+	/**
+	 * Verifica si el comando a ejecutar es de tipo HELP.
+	 * 
+	 * @return True si el comando solicitado a invocar es HELP.
+	 */
 	public boolean isHelp() {
 		return Optional.fromNullable(command).or("HELP").equalsIgnoreCase("HELP");
 	}

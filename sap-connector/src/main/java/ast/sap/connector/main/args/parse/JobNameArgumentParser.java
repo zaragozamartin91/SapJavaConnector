@@ -8,8 +8,7 @@ public class JobNameArgumentParser extends AbstractArgumentParser {
 	}
 
 	@Override
-	public InputArgumentsData setArgValue(InputArgumentsData inputArgumentsData, String arg) {
-		inputArgumentsData.setJobName(getArgValue(arg));
-		return inputArgumentsData;
+	protected InputArgumentsData setValue(InputArgumentsData inputArgumentsData, String value) {
+		return inputArgumentsData.setJobName(value);
 	}
 }
