@@ -5,7 +5,7 @@ import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
 import ast.sap.connector.func.SapStruct;
-import ast.sap.connector.job.TrackJobData;
+import ast.sap.connector.job.JobTrackData;
 
 /**
  * Monitor de status de jobs.
@@ -28,7 +28,7 @@ public class JobTracker {
 	 * @param jobData - Informacion del job a monitorear.
 	 * @return Estado del job.
 	 */
-	public JobStatus getStatus(TrackJobData jobData) {
+	public JobStatus getStatus(JobTrackData jobData) {
 		SapFunction function = sapRepository.getFunction("BAPI_XBP_JOB_STATUS_GET")
 				.setInParameter("JOBNAME", jobData.getJobName())
 				.setInParameter("JOBCOUNT", jobData.getJobId())

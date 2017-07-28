@@ -1,8 +1,11 @@
 package ast.sap.connector.job.log;
 
-import ast.sap.connector.job.TrackJobData;
+import ast.sap.connector.job.JobData;
+import ast.sap.connector.job.JobTrackData;
 
-public class JoblogReadData extends TrackJobData {
+public class JoblogReadData implements JobTrackData {
+	private JobData jobData;
+
 	public static enum Direction {
 		BEGINNING("B"), END("E");
 
@@ -17,23 +20,23 @@ public class JoblogReadData extends TrackJobData {
 	private Direction direction = Direction.END;
 
 	public JoblogReadData(String jobName, String jobId, String externalUsername, int lines, Direction direction) {
-		super(jobName, jobId, externalUsername);
+		jobData = JobData.newJobTrackData(jobName, externalUsername, jobId);
 		this.lines = lines;
 		this.direction = direction;
 	}
 
 	public JoblogReadData(String jobName, String jobId, String externalUsername, Direction direction) {
-		super(jobName, jobId, externalUsername);
+		jobData = JobData.newJobTrackData(jobName, externalUsername, jobId);
 		this.direction = direction;
 	}
 
 	public JoblogReadData(String jobName, String jobId, String externalUsername, int lines) {
-		super(jobName, jobId, externalUsername);
+		jobData = JobData.newJobTrackData(jobName, externalUsername, jobId);
 		this.lines = lines;
 	}
 
 	public JoblogReadData(String jobName, String jobId, String externalUsername) {
-		super(jobName, jobId, externalUsername);
+		jobData = JobData.newJobTrackData(jobName, externalUsername, jobId);
 	}
 
 	public int getLines() {
@@ -42,5 +45,17 @@ public class JoblogReadData extends TrackJobData {
 
 	public Direction getDirection() {
 		return direction;
+	}
+
+	public String getJobName() {
+		return jobData.getJobName();
+	}
+
+	public String getExternalUsername() {
+		return jobData.getExternalUsername();
+	}
+
+	public String getJobId() {
+		return jobData.getJobId();
 	}
 }

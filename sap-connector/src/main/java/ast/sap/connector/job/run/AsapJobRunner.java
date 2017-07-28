@@ -6,7 +6,7 @@ import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
-import ast.sap.connector.job.RunJobData;
+import ast.sap.connector.job.JobRunData;
 
 public class AsapJobRunner implements JobRunner {
 	private final SapRepository sapRepository;
@@ -17,7 +17,7 @@ public class AsapJobRunner implements JobRunner {
 	}
 
 	@Override
-	public SapBapiret2 runJob(RunJobData jobData) {
+	public SapBapiret2 runJob(JobRunData jobData) {
 		SapFunction function = sapRepository.getFunction("BAPI_XBP_JOB_START_ASAP")
 				.setInParameter("JOBNAME", jobData.getJobName())
 				.setInParameter("JOBCOUNT", jobData.getJobId())

@@ -7,9 +7,10 @@ import ast.sap.connector.cmd.HelpCommand;
 import ast.sap.connector.cmd.RunJobCommand;
 import ast.sap.connector.cmd.SapCommand;
 import ast.sap.connector.cmd.TrackJobCommand;
+import ast.sap.connector.cmd.UserGetDetailCommand;
 import ast.sap.connector.cmd.XmiLoginCommand;
 import ast.sap.connector.dst.SapRepository;
-import ast.sap.connector.job.RunJobData;
+import ast.sap.connector.job.JobRunData;
 import ast.sap.connector.main.args.InputArgumentsData;
 import ast.sap.connector.xmi.XmiLoginData;
 
@@ -19,7 +20,7 @@ public enum CommandFactory {
 	/* TODO TERMINAR */
 	public SapCommand getCommand(InputArgumentsData inputArguments, SapRepository sapRepository) {
 		XmiLoginData xmiLoginData = inputArguments.newXmiLoginData();
-		RunJobData jobData = inputArguments.newFullJobData();
+		JobRunData jobData = inputArguments.newFullJobData();
 
 		String strCmd = Optional.fromNullable(inputArguments.getCommand()).or("HELP");
 
@@ -32,6 +33,8 @@ public enum CommandFactory {
 				return new RunJobCommand(sapRepository, xmiLoginData, jobData);
 			case "CREATE_JOB":
 				return new CreateJobCommand(sapRepository, xmiLoginData, jobData);
+			case "USER_GET_DETAIL":
+				return new UserGetDetailCommand(sapRepository, jobData.getExternalUsername());
 
 			default:
 				return new HelpCommand();

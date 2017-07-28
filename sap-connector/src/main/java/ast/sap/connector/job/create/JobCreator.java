@@ -4,7 +4,7 @@ import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
-import ast.sap.connector.job.CreateJobData;
+import ast.sap.connector.job.JobCreateData;
 
 public class JobCreator {
 	private final SapRepository sapRepository;
@@ -13,7 +13,7 @@ public class JobCreator {
 		this.sapRepository = sapRepository;
 	}
 
-	public NewJobData createJob(CreateJobData jobData) {
+	public NewJobData createJob(JobCreateData jobData) {
 		SapFunction function = sapRepository.getFunction("BAPI_XBP_JOB_OPEN")
 				.setInParameter("JOBNAME", jobData.getJobName())
 				.setInParameter("EXTERNAL_USER_NAME", jobData.getExternalUsername());
