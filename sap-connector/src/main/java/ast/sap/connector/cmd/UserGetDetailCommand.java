@@ -1,7 +1,6 @@
 package ast.sap.connector.cmd;
 
 import ast.sap.connector.dst.SapRepository;
-import ast.sap.connector.dst.exception.RepositoryGetFailException;
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
@@ -15,7 +14,7 @@ public class UserGetDetailCommand extends AbstractSapCommand {
 	}
 
 	@Override
-	public SapCommandResult execute() throws RepositoryGetFailException {
+	public SapCommandResult execute() {
 		SapFunction function = repository().getFunction("BAPI_USER_GET_DETAIL")
 				.setInParameter("USERNAME", username);
 

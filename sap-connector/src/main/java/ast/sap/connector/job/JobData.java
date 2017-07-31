@@ -6,7 +6,7 @@ package ast.sap.connector.job;
  * @author martin.zaragoza
  *
  */
-public class JobData implements JobRunData {
+public final class JobData implements JobRunData {
 	private String jobName;
 	private String externalUsername;
 	private String jobId;

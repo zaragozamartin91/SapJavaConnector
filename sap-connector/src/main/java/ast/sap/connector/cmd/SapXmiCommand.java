@@ -1,7 +1,6 @@
 package ast.sap.connector.cmd;
 
 import ast.sap.connector.dst.SapRepository;
-import ast.sap.connector.dst.exception.RepositoryGetFailException;
 import ast.sap.connector.xmi.XmiLoginData;
 import ast.sap.connector.xmi.XmiSession;
 
@@ -21,7 +20,7 @@ public abstract class SapXmiCommand extends AbstractSapCommand {
 	}
 
 	@Override
-	public SapCommandResult execute() throws RepositoryGetFailException {
+	public SapCommandResult execute() {
 		XmiSession xmiSession = new XmiSession(repository(), xmiLoginData);
 		SapCommandResult output = perform();
 		xmiSession.logout();

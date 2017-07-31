@@ -62,15 +62,19 @@
 
 
 	<dependencies>
+		<!-- DEPENDENCIA DE JCO DE 32 BITS -->
 		<dependency>
 			<scope>system</scope>
-			<systemPath>${project.basedir}/lib/sapjco3.jar</systemPath>
+			<systemPath>${project.basedir}/lib/x86/sapjco3.jar</systemPath>
 			<groupId>com.sap.conn.jco</groupId>
 			<artifactId>sapjco3</artifactId>
 			<version>${jco.version}</version>
 		</dependency>
 
+		<!-- DEPENDENCIA DE JCO DE 64 BITS -->
 		<!-- <dependency> -->
+		<!-- <scope>system</scope> -->
+		<!-- <systemPath>${project.basedir}/lib/x64/sapjco3.jar</systemPath> -->
 		<!-- <groupId>com.sap.conn.jco</groupId> -->
 		<!-- <artifactId>sapjco3</artifactId> -->
 		<!-- <version>${jco.version}</version> -->

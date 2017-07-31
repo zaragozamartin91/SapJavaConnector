@@ -2,6 +2,7 @@ package ast.sap.connector.xmi;
 
 import ast.sap.connector.dst.SapDestination;
 import ast.sap.connector.dst.SapRepository;
+import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
 import ast.sap.connector.func.SapStruct;
@@ -46,15 +47,18 @@ public enum XmiSessionManager {
 	 * @see https://www.sapdatasheet.org/abap/func/bapi_xmi_logoff.html
 	 * 
 	 * @param sapRepository
+	 *            - Repositorio con acceso a funciones de sap.
 	 * @param xmiSessionData
-	 * @return
+	 *            - Datos de sesion abierta.
+	 * @return Datos de retorno.
 	 */
-	public SapStruct logout(SapRepository sapRepository, XmiSessionData xmiSessionData) {
+	public SapBapiret2 logout(SapRepository sapRepository, XmiSessionData xmiSessionData) {
 		SapFunction function = sapRepository.getFunction("BAPI_XMI_LOGOFF")
 				.setInParameter("INTERFACE", xmiSessionData.getXmiInterface());
 
 		SapFunctionResult result = function.execute();
 
-		return result.getStructure("RETURN");
+		SapStruct ret = result.getStructure("RETURN");
+		return new SapBapiret2(ret);
 	}
 }

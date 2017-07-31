@@ -8,7 +8,7 @@ package ast.sap.connector.func;
  * @author martin.zaragoza
  *
  */
-public class SapBapiret2 {
+public final class SapBapiret2 {
 	private final String type;
 	private final String id;
 	private final int number;

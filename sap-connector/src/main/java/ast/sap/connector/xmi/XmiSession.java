@@ -2,7 +2,7 @@ package ast.sap.connector.xmi;
 
 import ast.sap.connector.dst.SapDestination;
 import ast.sap.connector.dst.SapRepository;
-import ast.sap.connector.func.SapStruct;
+import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.xmi.exception.XmiLoginException;
 
 public class XmiSession {
@@ -25,7 +25,7 @@ public class XmiSession {
 		this.sessionData = XmiSessionManager.INSTANCE.login(sapRepository, loginData);
 	}
 
-	public SapStruct logout() {
+	public SapBapiret2 logout() {
 		return XmiSessionManager.INSTANCE.logout(sapRepository, sessionData);
 	}
 }

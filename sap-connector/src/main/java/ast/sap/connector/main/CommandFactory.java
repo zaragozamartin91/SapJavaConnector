@@ -6,6 +6,7 @@ import ast.sap.connector.cmd.CreateJobCommand;
 import ast.sap.connector.cmd.HelpCommand;
 import ast.sap.connector.cmd.RunJobCommand;
 import ast.sap.connector.cmd.SapCommand;
+import ast.sap.connector.cmd.StopJobCommand;
 import ast.sap.connector.cmd.TrackJobCommand;
 import ast.sap.connector.cmd.UserGetDetailCommand;
 import ast.sap.connector.cmd.XmiLoginCommand;
@@ -35,6 +36,8 @@ public enum CommandFactory {
 				return new CreateJobCommand(sapRepository, xmiLoginData, jobData);
 			case "USER_GET_DETAIL":
 				return new UserGetDetailCommand(sapRepository, jobData.getExternalUsername());
+			case "STOP_JOB":
+				return new StopJobCommand(sapRepository, xmiLoginData, jobData);
 
 			default:
 				return new HelpCommand();
