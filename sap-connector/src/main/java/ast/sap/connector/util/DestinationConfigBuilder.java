@@ -9,19 +9,10 @@ import java.util.Properties;
 
 import com.sap.conn.jco.ext.DestinationDataProvider;
 
-public class DestinationConfigBuilder {
-	private static final File CURRENT_DIR = new File("");
+public enum DestinationConfigBuilder {
+	INSTANCE;
+	
 	public static final String JCO_DESTINATION_FILE_EXTENSION = ".jcoDestination";
-
-	private final File parentDir;
-
-	public DestinationConfigBuilder(File parentDir) {
-		this.parentDir = parentDir;
-	}
-
-	public DestinationConfigBuilder() {
-		this(CURRENT_DIR);
-	}
 
 	public File build(String destinationName, ConnectionData connectionData) {
 		Properties connectProperties = buildProperties(connectionData);
@@ -50,8 +41,7 @@ public class DestinationConfigBuilder {
 	}
 
 	private File createDestinationDataFile(String destinationName, Properties connectProperties) {
-		File destCfg = parentDir.equals(CURRENT_DIR) ? getJcoDestinationFile(destinationName)
-				: new File(parentDir, destinationName + JCO_DESTINATION_FILE_EXTENSION);
+		File destCfg = getJcoDestinationFile(destinationName);
 
 		if (destCfg.isDirectory()) {
 			throw new IllegalStateException("El archivo " + destCfg.getAbsolutePath() + " es un directorio!");

@@ -39,8 +39,8 @@ public class SapFunction {
 	 *             Si el parametro no existe o si el valor asignado no es del tipo correcto.
 	 */
 	public SapFunction setInParameter(String key, Object value) throws ImportParameterSetErrorException {
-		Preconditions.checkNotNull(key, "La clave del parámetro no puede ser nula");
-		Preconditions.checkNotNull(value, "El valor del parámetro no puede ser nulo");
+		Preconditions.checkNotNull(key, "La clave del parametro no puede ser nula");
+		Preconditions.checkNotNull(value, "El valor del parametro %s no puede ser nulo", key);
 
 		try {
 			jCoFunction.getImportParameterList().setValue(key, value);
@@ -49,7 +49,7 @@ public class SapFunction {
 					String.format("El tipo del parametro de tipo IMPORT %s no es correcto en la funcion %s", key, jCoFunction.getName()), e);
 		} catch (JCoRuntimeException e) {
 			throw new ImportParameterSetErrorException(
-					String.format("Ocurrio un error al establecer el valor del parámetro de tipo IMPORT %s de la funcion %s", key, jCoFunction.getName()), e);
+					String.format("Ocurrio un error al establecer el valor del parametro de tipo IMPORT %s de la funcion %s", key, jCoFunction.getName()), e);
 		}
 		return this;
 	}
@@ -90,7 +90,7 @@ public class SapFunction {
 			return new SapFunctionResult(jCoFunction);
 		} catch (JCoException e) {
 			throw new FunctionExecuteException(
-					String.format("Ocurrió un error al ejecutar la función %s del destino %s", jCoFunction.getName(), jCoDestination.toString()), e);
+					String.format("Ocurrio un error al ejecutar la funcion %s del destino %s", jCoFunction.getName(), jCoDestination.toString()), e);
 		}
 	}
 }

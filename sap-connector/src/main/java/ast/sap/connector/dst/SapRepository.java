@@ -39,6 +39,9 @@ public class SapRepository {
 	public SapFunction getFunction(String functionName) throws FunctionGetFailException, NonexistentFunctionException {
 		try {
 			JCoFunctionTemplate jCoFunctionTemplate = jcoRepository.getFunctionTemplate(functionName);
+			if(jCoFunctionTemplate == null) {
+				throw new NonexistentFunctionException(String.format("La funcion %s no existe en el destino %s", functionName, jcoDestination.toString()));
+			}
 			JCoFunction jcoFunction = jCoFunctionTemplate.getFunction();
 			if (jcoFunction == null) {
 				throw new NonexistentFunctionException(String.format("La funcion %s no existe en el destino %s", functionName, jcoDestination.toString()));

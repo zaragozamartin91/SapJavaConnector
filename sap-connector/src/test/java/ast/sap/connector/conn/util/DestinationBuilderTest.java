@@ -18,42 +18,23 @@ import ast.sap.connector.util.ConnectionData;
 import ast.sap.connector.util.DestinationConfigBuilder;
 
 public class DestinationBuilderTest {
-	private static final File TEST_RESOURCES_DIR = new File("src/test/resources");
-
-	private static final String DESTINATION_NAME_1 = "testDestination_1";
-	private static final File DESTINATION_FILE_1 = new File(TEST_RESOURCES_DIR, DESTINATION_NAME_1 + DestinationConfigBuilder.JCO_DESTINATION_FILE_EXTENSION);
-	
 	private static final String DESTINATION_NAME_2 = "testDestination_2";
 	private static final File DESTINATION_FILE_2 = new File(DESTINATION_NAME_2 + DestinationConfigBuilder.JCO_DESTINATION_FILE_EXTENSION);
 
 	@Before
 	public void before() {
-		DESTINATION_FILE_1.delete();
 		DESTINATION_FILE_2.delete();
 	}
 
 	@Test
-	public void testBuildInDir() throws FileNotFoundException, IOException {
-		DestinationConfigBuilder destinationBuilder = new DestinationConfigBuilder(TEST_RESOURCES_DIR);
-		// DestinationBuilder destinationBuilder = new DestinationBuilder();
-		String destinationName = DESTINATION_NAME_1;
-		ConnectionData connectionData = new ConnectionData("01", "user", "****", "en", "127.0.0.1", "00");
-
-		File destinationFile = destinationBuilder.build(destinationName, connectionData);
-		assertTrue(DESTINATION_FILE_1.exists());
-		
-		checkDestinationFile(connectionData, destinationFile);
-	}
-	
-	@Test
 	public void testBuildCurrDir() throws FileNotFoundException, IOException {
-		DestinationConfigBuilder destinationBuilder = new DestinationConfigBuilder();
+		DestinationConfigBuilder destinationBuilder = DestinationConfigBuilder.INSTANCE;
 		String destinationName = DESTINATION_NAME_2;
 		ConnectionData connectionData = new ConnectionData("01", "user", "****", "en", "127.0.0.1", "00");
 
 		File destinationFile = destinationBuilder.build(destinationName, connectionData);
 		assertTrue(DESTINATION_FILE_2.exists());
-		
+
 		checkDestinationFile(connectionData, destinationFile);
 	}
 

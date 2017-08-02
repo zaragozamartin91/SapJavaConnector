@@ -19,7 +19,7 @@ public class MainApp {
 		System.out.println("java.library.path--------------------------------------------------------------------------------------------------------------");
 		System.out.println(System.getProperty("java.library.path"));
 		System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
-		
+
 		InputArgumentsData inputArgs = InputArgumentsParser.INSTANCE.parse(args);
 
 		System.out.println("DATOS DE ENTRADA:");
@@ -39,7 +39,7 @@ public class MainApp {
 				inputArgs.getLanguage(),
 				inputArgs.getHost(),
 				inputArgs.getSystemNumber());
-		new DestinationConfigBuilder().build(destinationName, connectionData);
+		DestinationConfigBuilder.INSTANCE.build(destinationName, connectionData);
 
 		SapDestination destination = SapDestinationFactory.INSTANCE.getDestination(destinationName);
 

@@ -20,7 +20,7 @@ public class Jco3Test {
 	public void before() {
 		DESTINATION_FILE.delete();
 	}
-	
+
 	@After
 	public void after() {
 		DESTINATION_FILE.delete();
@@ -28,7 +28,7 @@ public class Jco3Test {
 
 	@Test
 	public void testBuildDestination() throws JCoException {
-		DestinationConfigBuilder destinationBuilder = new DestinationConfigBuilder();
+		DestinationConfigBuilder destinationBuilder = DestinationConfigBuilder.INSTANCE;
 
 		ConnectionData connectionData = new ConnectionData("01", "user", "****", "en", "127.0.0.1", "00");
 		destinationBuilder.build(DESTINATION_NAME, connectionData);

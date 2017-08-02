@@ -3,6 +3,7 @@ package ast.sap.connector.main.args;
 import ast.sap.connector.main.args.parse.ArgumentParser;
 import ast.sap.connector.main.args.parse.ClientNumberArgumentParser;
 import ast.sap.connector.main.args.parse.CmdArgumentParser;
+import ast.sap.connector.main.args.parse.EventParser;
 import ast.sap.connector.main.args.parse.ExecServerArgumentParser;
 import ast.sap.connector.main.args.parse.HostArgumentParser;
 import ast.sap.connector.main.args.parse.JobIdArgumentParser;
@@ -25,7 +26,8 @@ public enum InputArgumentsParser {
 			new PasswordArgumentParser(),
 			new JobNameArgumentParser(),
 			new LanguageArgumentParser(),
-			new ExecServerArgumentParser()
+			new ExecServerArgumentParser(),
+			new EventParser()
 	};
 
 	public InputArgumentsData parse(String[] args) {

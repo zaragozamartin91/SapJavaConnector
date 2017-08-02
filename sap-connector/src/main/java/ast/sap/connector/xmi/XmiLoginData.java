@@ -1,15 +1,21 @@
 package ast.sap.connector.xmi;
 
-public class XmiLoginData {
-	private String company;
-	private String product;
+/**
+ * Datos de inicio de sesion con XMI.
+ * 
+ * @author martin.zaragoza
+ *
+ */
+public final class XmiLoginData {
+	private String company = "AST";
+	private String product = "sapConnector";
 	private String xmiInterface = "XBP";
-	private String version = "0.1";
+	private String version = "3.0";
 
 	/**
 	 * "XMI logging: company name of external management tool "
 	 * 
-	 * @return
+	 * @return "company name of external management tool"
 	 */
 	public String getCompany() {
 		return company;
@@ -18,7 +24,7 @@ public class XmiLoginData {
 	/**
 	 * "XMI logging: Program name of external management tool "
 	 * 
-	 * @return
+	 * @return "Program name of external management tool"
 	 */
 	public String getProduct() {
 		return product;
@@ -27,16 +33,16 @@ public class XmiLoginData {
 	/**
 	 * "Interface ID (for example, XBP)"
 	 * 
-	 * @return
+	 * @return Interface ID.
 	 */
 	public String getXmiInterface() {
 		return xmiInterface;
 	}
 
 	/**
-	 * "Version of XMI interface delivered for check purposes  "
+	 * "Version of XMI interface delivered for check purposes "
 	 * 
-	 * @return
+	 * @return Version of XMI interface.
 	 */
 	public String getVersion() {
 		return version;
@@ -58,5 +64,12 @@ public class XmiLoginData {
 	public XmiLoginData(String company, String product) {
 		this.company = company;
 		this.product = product;
+	}
+
+	public XmiLoginData(String company) {
+		this.company = company;
+	}
+
+	public XmiLoginData() {
 	}
 }

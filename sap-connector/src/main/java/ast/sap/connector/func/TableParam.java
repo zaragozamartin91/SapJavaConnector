@@ -38,6 +38,11 @@ class TableParam implements OutTableParam, InTableParam {
 	}
 
 	@Override
+	public boolean isEmpty() {
+		return jcoTable.isEmpty();
+	}
+
+	@Override
 	public String toString() {
 		return "TableParam [jcoTable=" + jcoTable + "]";
 	}

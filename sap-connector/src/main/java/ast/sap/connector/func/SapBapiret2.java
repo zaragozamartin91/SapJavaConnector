@@ -1,5 +1,7 @@
 package ast.sap.connector.func;
 
+import com.google.common.base.Optional;
+
 /**
  * Estructura de datos bastante comun en sap.
  * 
@@ -11,32 +13,32 @@ package ast.sap.connector.func;
 public final class SapBapiret2 {
 	private final String type;
 	private final String id;
-	private final int number;
+	private final Integer number;
 	private final String message;
 	private final String logNo;
-	private final int logMsgNo;
+	private final Integer logMsgNo;
 	private final String messagev1;
 	private final String messagev2;
 	private final String messagev3;
 	private final String messagev4;
 	private final String parameter;
-	private final int row;
+	private final Integer row;
 	private final String field;
 	private final String system;
 
 	public SapBapiret2(SapStruct sapStruct) {
 		type = (String) sapStruct.getValue("TYPE");
 		id = (String) sapStruct.getValue("ID");
-		number = (int) sapStruct.getValue("NUMBER");
+		number = Integer.valueOf(Optional.fromNullable(sapStruct.getValue("NUMBER")).or("-1").toString());
 		message = (String) sapStruct.getValue("MESSAGE");
 		logNo = (String) sapStruct.getValue("LOG_NO");
-		logMsgNo = (int) sapStruct.getValue("LOG_MSG_NO");
+		logMsgNo = Integer.valueOf(Optional.fromNullable(sapStruct.getValue("LOG_MSG_NO")).or("-1").toString());
 		messagev1 = (String) sapStruct.getValue("MESSAGE_V1");
 		messagev2 = (String) sapStruct.getValue("MESSAGE_V2");
 		messagev3 = (String) sapStruct.getValue("MESSAGE_V3");
 		messagev4 = (String) sapStruct.getValue("MESSAGE_V4");
 		parameter = (String) sapStruct.getValue("PARAMETER");
-		row = (int) sapStruct.getValue("ROW");
+		row = Integer.valueOf(Optional.fromNullable(sapStruct.getValue("ROW")).or("-1").toString());
 		field = (String) sapStruct.getValue("FIELD");
 		system = (String) sapStruct.getValue("SYSTEM");
 	}
@@ -99,8 +101,9 @@ public final class SapBapiret2 {
 
 	@Override
 	public String toString() {
-		return "SapBapiret2 [type=" + type + ", id=" + id + ", number=" + number + ", message=" + message + ", logNo=" + logNo + ", logMsgNo=" + logMsgNo
-				+ ", messagev1=" + messagev1 + ", messagev2=" + messagev2 + ", messagev3=" + messagev3 + ", messagev4=" + messagev4 + ", parameter=" + parameter
-				+ ", row=" + row + ", field=" + field + ", system=" + system + "]";
+		return "SapBapiret2 [type=" + type + ", id=" + id + ", number=" + number + ", message=" + message + ", logNo="
+				+ logNo + ", logMsgNo=" + logMsgNo + ", messagev1=" + messagev1 + ", messagev2=" + messagev2
+				+ ", messagev3=" + messagev3 + ", messagev4=" + messagev4 + ", parameter=" + parameter + ", row=" + row
+				+ ", field=" + field + ", system=" + system + "]";
 	}
 }

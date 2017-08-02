@@ -24,6 +24,8 @@ public final class InputArgumentsData {
 
 	private String execServer;
 
+	private String eventId;
+
 	public String getUser() {
 		return user;
 	}
@@ -123,17 +125,28 @@ public final class InputArgumentsData {
 		return this;
 	}
 
+	public String getEventId() {
+		return eventId;
+	}
+
+	public InputArgumentsData setEventId(String eventId) {
+		this.eventId = eventId;
+		return this;
+	}
+
 	@Override
 	public String toString() {
 		return "InputArgumentsData [user=" + user + ", password=" + password + ", host=" + host + ", timeoutSecs=" + timeoutSecs + ", clientNumber="
 				+ clientNumber + ", systemNumber=" + systemNumber + ", jobName=" + jobName + ", jobId=" + jobId + ", command=" + command + ", language="
-				+ language + ", execServer=" + execServer + "]";
+				+ language + ", execServer=" + execServer + ", eventId=" + eventId + "]";
 	}
 
-	/* TODO : VERIFICAR SI EL PARAMETRO EXECSERVER ES IGUAL AL HOST O SI DEBE INGRESARSE UN NOMBRE DE SERVER PROPIO DE SAP */
-	public JobRunData newFullJobData() {
-		String exSrv = Optional.fromNullable(execServer).or(host);
-		return JobData.newJobRunData(exSrv, user, exSrv, exSrv);
+	/*
+	 * TODO : VERIFICAR SI EL PARAMETRO EXECSERVER ES IGUAL AL HOST O SI DEBE INGRESARSE UN NOMBRE DE SERVER PROPIO DE SAP
+	 */
+	public JobRunData newJobRunData() {
+		Optional<String> exSrv = Optional.fromNullable(execServer);
+		return exSrv.isPresent() ? JobData.newJobRunData(jobName, user, jobId, exSrv.get()) : JobData.newJobTrackData(jobName, user, jobId);
 	}
 
 	public XmiLoginData newXmiLoginData() {

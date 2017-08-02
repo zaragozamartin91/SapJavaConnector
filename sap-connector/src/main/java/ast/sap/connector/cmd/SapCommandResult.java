@@ -13,6 +13,7 @@ public class SapCommandResult {
 	private Optional<JobStatus> jobStatus = Optional.absent();
 	private Optional<JobLog> jobLog = Optional.absent();
 	private Optional<NewJobData> newJobData = Optional.absent();
+	private Optional<String> message = Optional.absent();
 
 	public Optional<SapBapiret2> getRet() {
 		return ret;
@@ -30,6 +31,10 @@ public class SapCommandResult {
 		return newJobData;
 	}
 
+	public Optional<String> getMessage() {
+		return message;
+	}
+
 	public SapCommandResult(SapBapiret2 ret) {
 		this.ret = Optional.fromNullable(ret);
 	}
@@ -44,6 +49,10 @@ public class SapCommandResult {
 
 	public SapCommandResult(NewJobData newJobData) {
 		this.newJobData = Optional.fromNullable(newJobData);
+	}
+
+	public SapCommandResult(String message) {
+		this.message = Optional.fromNullable(message);
 	}
 
 	private SapCommandResult() {
