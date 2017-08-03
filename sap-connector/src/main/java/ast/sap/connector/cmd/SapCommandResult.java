@@ -4,6 +4,7 @@ import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.job.create.NewJobData;
 import ast.sap.connector.job.log.JobLog;
 import ast.sap.connector.job.track.JobStatus;
+
 import com.google.common.base.Optional;
 
 public class SapCommandResult {
@@ -14,6 +15,8 @@ public class SapCommandResult {
 	private Optional<JobLog> jobLog = Optional.absent();
 	private Optional<NewJobData> newJobData = Optional.absent();
 	private Optional<String> message = Optional.absent();
+
+	private Optional<Object> extraResult = Optional.absent();
 
 	public Optional<SapBapiret2> getRet() {
 		return ret;
@@ -55,6 +58,14 @@ public class SapCommandResult {
 		this.message = Optional.fromNullable(message);
 	}
 
+	public SapCommandResult(Object extraResult) {
+		this.extraResult = Optional.fromNullable(extraResult);
+	}
+
+	public Optional<Object> getExtraResult() {
+		return extraResult;
+	}
+
 	private SapCommandResult() {
 	}
 
@@ -68,6 +79,12 @@ public class SapCommandResult {
 
 	@Override
 	public String toString() {
-		return "SapCommandResult [ret=" + ret + ", jobStatus=" + jobStatus + ", jobLog=" + jobLog + ", newJobData=" + newJobData + "]";
+		return "SapCommandResult [\n ret=" + ret
+				+ ",\n jobStatus=" + jobStatus
+				+ ",\n jobLog=" + jobLog
+				+ ",\n newJobData=" + newJobData
+				+ ",\n message=" + message
+				+ ",\n extraResult= " + extraResult
+				+ "\n]";
 	}
 }

@@ -1,9 +1,8 @@
 package ast.sap.connector.main;
 
-import com.google.common.base.Optional;
-
-import ast.sap.connector.cmd.CompanycodeGetlistCommand;
 import ast.sap.connector.cmd.CreateJobCommand;
+import ast.sap.connector.cmd.CrystalGetuserlistCommand;
+import ast.sap.connector.cmd.GetJobOutputCommand;
 import ast.sap.connector.cmd.HelpCommand;
 import ast.sap.connector.cmd.RaiseEventCommand;
 import ast.sap.connector.cmd.RunJobCommand;
@@ -16,6 +15,8 @@ import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.job.JobRunData;
 import ast.sap.connector.main.args.InputArgumentsData;
 import ast.sap.connector.xmi.XmiLoginData;
+
+import com.google.common.base.Optional;
 
 public enum CommandFactory {
 	INSTANCE;
@@ -42,8 +43,10 @@ public enum CommandFactory {
 				return new StopJobCommand(sapRepository, xmiLoginData, jobData);
 			case "RAISE_EVENT":
 				return new RaiseEventCommand(sapRepository, xmiLoginData, inputArguments.getEventId(), inputArguments.getUser());
-			case "COMPANYCODE_GETLIST":
-				return new CompanycodeGetlistCommand(sapRepository);
+			case "CRYSTAL_GETUSERLIST":
+				return new CrystalGetuserlistCommand(sapRepository);
+			case "GET_JOB_OUTPUT":
+				return new GetJobOutputCommand(sapRepository, xmiLoginData, jobData);
 
 			default:
 				return new HelpCommand();

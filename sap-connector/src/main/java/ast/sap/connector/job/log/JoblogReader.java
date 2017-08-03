@@ -17,24 +17,26 @@ public class JoblogReader {
 	/**
 	 * @see http://www.sapdatasheet.org/abap/func/bapi_xbp_job_joblog_read.html
 	 * 
-	 * @param jobData
-	 * @return
+	 * @param jobData - Datos del job cuyo log obtener.
+	 * @return Log del job.
 	 */
 	public JobLog readLog(JoblogReadData jobData) {
-		SapFunction function = sapRepository.getFunction("BAPI_XBP_JOB_START_ASAP")
+		SapFunction function = sapRepository.getFunction("BAPI_XBP_JOB_JOBLOG_READ")
 				.setInParameter("JOBNAME", jobData.getJobName())
 				.setInParameter("JOBCOUNT", jobData.getJobId())
-				.setInParameter("EXTERNAL_USER_NAME", jobData.getExternalUsername())
-				.setInParameter("DIRECTION", jobData.getDirection());
+				.setInParameter("EXTERNAL_USER_NAME", jobData.getExternalUsername());
+//				.setInParameter("LINES", 10);
+//				.setInParameter("DIRECTION", jobData.getDirection());
 
 		if (jobData.getLines() > 0) {
-			function.setInParameter("JOBCOUNT", jobData.getLines());
+			function.setInParameter("LINES", jobData.getLines());
 		}
 
 		SapFunctionResult result = function.execute();
 		SapStruct ret = result.getStructure("RETURN");
 		SapBapiret2 bapiRet2 = new SapBapiret2(ret);
-		OutTableParam logEntries = result.getOutTableParameter("JOB_PROTOCOL_NEW");
+//		OutTableParam logEntries = result.getOutTableParameter("JOB_PROTOCOL_NEW");
+		OutTableParam logEntries = result.getOutTableParameter("JOB_PROTOCOL");
 		return new JobLog(bapiRet2, logEntries);
 	}
 }
