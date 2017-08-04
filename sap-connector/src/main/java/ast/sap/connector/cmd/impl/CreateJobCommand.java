@@ -1,5 +1,7 @@
-package ast.sap.connector.cmd;
+package ast.sap.connector.cmd.impl;
 
+import ast.sap.connector.cmd.SapCommandResult;
+import ast.sap.connector.cmd.SapXmiCommand;
 import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.job.JobCreateData;
 import ast.sap.connector.job.create.JobCreator;

@@ -1,7 +1,9 @@
-package ast.sap.connector.cmd;
+package ast.sap.connector.cmd.impl;
 
 import com.google.common.base.Optional;
 
+import ast.sap.connector.cmd.SapCommandResult;
+import ast.sap.connector.cmd.SapXmiCommand;
 import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.job.JobTrackData;
 import ast.sap.connector.job.track.JobStatus;

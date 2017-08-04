@@ -2,9 +2,10 @@ package ast.sap.connector.main;
 
 import com.sap.conn.jco.JCoException;
 
-import ast.sap.connector.cmd.HelpCommand;
+import ast.sap.connector.cmd.CommandFactory;
 import ast.sap.connector.cmd.SapCommand;
 import ast.sap.connector.cmd.SapCommandResult;
+import ast.sap.connector.cmd.impl.HelpCommand;
 import ast.sap.connector.dst.SapDestination;
 import ast.sap.connector.dst.SapDestinationFactory;
 import ast.sap.connector.dst.SapRepository;

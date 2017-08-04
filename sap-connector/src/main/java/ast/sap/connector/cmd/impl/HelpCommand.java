@@ -1,4 +1,7 @@
-package ast.sap.connector.cmd;
+package ast.sap.connector.cmd.impl;
+
+import ast.sap.connector.cmd.SapCommand;
+import ast.sap.connector.cmd.SapCommandResult;
 
 public class HelpCommand implements SapCommand {
 	private HelpCommand log(String msg) {

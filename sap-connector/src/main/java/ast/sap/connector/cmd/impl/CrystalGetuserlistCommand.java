@@ -1,7 +1,8 @@
-package ast.sap.connector.cmd;
+package ast.sap.connector.cmd.impl;
 
+import ast.sap.connector.cmd.AbstractSapCommand;
+import ast.sap.connector.cmd.SapCommandResult;
 import ast.sap.connector.dst.SapRepository;
-import ast.sap.connector.func.InTableParam;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
 
@@ -18,7 +19,6 @@ public class CrystalGetuserlistCommand extends AbstractSapCommand {
 
 	@Override
 	public SapCommandResult execute() {
-		// SapFunction function = repository().getFunction("/CRYSTAL/asdsad");
 		SapFunction function = repository().getFunction("/CRYSTAL/GET_USER_LIST");
 		
 		SapFunctionResult result = function.execute();

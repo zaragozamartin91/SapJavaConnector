@@ -1,16 +1,15 @@
-package ast.sap.connector.main;
+package ast.sap.connector.cmd;
 
-import ast.sap.connector.cmd.CreateJobCommand;
-import ast.sap.connector.cmd.CrystalGetuserlistCommand;
-import ast.sap.connector.cmd.GetJobOutputCommand;
-import ast.sap.connector.cmd.HelpCommand;
-import ast.sap.connector.cmd.RaiseEventCommand;
-import ast.sap.connector.cmd.RunJobCommand;
-import ast.sap.connector.cmd.SapCommand;
-import ast.sap.connector.cmd.StopJobCommand;
-import ast.sap.connector.cmd.TrackJobCommand;
-import ast.sap.connector.cmd.UserGetDetailCommand;
-import ast.sap.connector.cmd.XmiLoginCommand;
+import ast.sap.connector.cmd.impl.CreateJobCommand;
+import ast.sap.connector.cmd.impl.CrystalGetuserlistCommand;
+import ast.sap.connector.cmd.impl.GetJobOutputCommand;
+import ast.sap.connector.cmd.impl.HelpCommand;
+import ast.sap.connector.cmd.impl.RaiseEventCommand;
+import ast.sap.connector.cmd.impl.RunJobCommand;
+import ast.sap.connector.cmd.impl.StopJobCommand;
+import ast.sap.connector.cmd.impl.TrackJobCommand;
+import ast.sap.connector.cmd.impl.UserGetDetailCommand;
+import ast.sap.connector.cmd.impl.XmiLoginCommand;
 import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.job.JobRunData;
 import ast.sap.connector.main.args.InputArgumentsData;
@@ -18,10 +17,24 @@ import ast.sap.connector.xmi.XmiLoginData;
 
 import com.google.common.base.Optional;
 
+/**
+ * Generador de comandos de sap ejecutables.
+ * 
+ * @author martin.zaragoza
+ *
+ */
 public enum CommandFactory {
 	INSTANCE;
 
-	/* TODO TERMINAR */
+	/**
+	 * Obtiene un comando de sap a ejecutar a partir de los argumentos de entrada del programa y el repositorio de funciones de sap.
+	 * 
+	 * @param inputArguments
+	 *            - Argumentos de entrada del conector sap.
+	 * @param sapRepository
+	 *            - Repositorio de funciones de sap inicializado.
+	 * @return Comando de sap listo para ser ejecutado.
+	 */
 	public SapCommand getCommand(InputArgumentsData inputArguments, SapRepository sapRepository) {
 		XmiLoginData xmiLoginData = inputArguments.newXmiLoginData();
 		JobRunData jobData = inputArguments.newJobRunData();
