@@ -1,14 +1,12 @@
-package ast.sap.connector.main.args.parse;
+package ast.sap.connector.main.args;
 
 import java.util.regex.Pattern;
-
-import ast.sap.connector.main.args.InputArgumentsData;
 
 public abstract class AbstractArgumentParser implements ArgumentParser {
 	private final Pattern pattern;
 	private final String prefix;
 
-	AbstractArgumentParser(String prefix, String search) {
+	public AbstractArgumentParser(String prefix, String search) {
 		pattern = Pattern.compile(prefix + search);
 		this.prefix = prefix;
 	}

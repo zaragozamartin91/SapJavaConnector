@@ -1,6 +1,4 @@
-package ast.sap.connector.main.args.parse;
-
-import ast.sap.connector.main.args.InputArgumentsData;
+package ast.sap.connector.main.args;
 
 /**
  * Parsea un argumento de entrada.

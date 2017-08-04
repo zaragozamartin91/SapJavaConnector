@@ -1,5 +1,6 @@
 package ast.sap.connector.main.args.parse;
 
+import ast.sap.connector.main.args.AbstractArgumentParser;
 import ast.sap.connector.main.args.InputArgumentsData;
 
 public class JobIdArgumentParser extends AbstractArgumentParser {

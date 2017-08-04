@@ -1,6 +1,5 @@
 package ast.sap.connector.main.args;
 
-import ast.sap.connector.main.args.parse.ArgumentParser;
 import ast.sap.connector.main.args.parse.ClientNumberArgumentParser;
 import ast.sap.connector.main.args.parse.CmdArgumentParser;
 import ast.sap.connector.main.args.parse.EventParser;
