@@ -1,5 +1,8 @@
 package ast.sap.connector.main;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.sap.conn.jco.JCoException;
 
 import ast.sap.connector.cmd.CommandFactory;
@@ -16,7 +19,11 @@ import ast.sap.connector.util.ConnectionData;
 import ast.sap.connector.util.DestinationConfigBuilder;
 
 public class MainApp {
+	public static Logger logger = LoggerFactory.getLogger(MainApp.class);
+	
 	public static void main(String[] args) {
+		logger.debug("Hello world");
+		
 		System.out.println("java.library.path--------------------------------------------------------------------------------------------------------------");
 		System.out.println(System.getProperty("java.library.path"));
 		System.out.println("-------------------------------------------------------------------------------------------------------------------------------");

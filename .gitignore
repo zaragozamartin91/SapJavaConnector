@@ -33,3 +33,6 @@ RemoteSystemsTempFiles
 .settings/
 
 target/
+
+log/
+
