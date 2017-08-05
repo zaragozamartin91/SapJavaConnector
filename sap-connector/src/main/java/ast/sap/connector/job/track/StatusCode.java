@@ -25,4 +25,9 @@ public enum StatusCode {
 	private StatusCode(String lbl) {
 		this.label = lbl;
 	}
+	
+	@Override
+	public String toString() {
+		return this.label;
+	}
 }

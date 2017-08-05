@@ -9,6 +9,13 @@ import com.google.common.base.Optional;
 
 import ast.sap.connector.util.DestinationConfigBuilder;
 
+/**
+ * TODO: LA CONFIGURACION ACTUAL ES OBSOLETA. TODOS LOS DATOS NECESARIOS PARA CORRER PROVIENEN DE LOS ARGUMENTOS DE ENTRADA
+ * DEL COMPONENTE.
+ * 
+ * @author mzaragoz
+ *
+ */
 public class Configuration {
 	public static final Configuration INSTANCE = new Configuration();
 

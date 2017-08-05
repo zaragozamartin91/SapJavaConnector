@@ -6,23 +6,21 @@ package ast.sap.connector.func;
  * @author martin.zaragoza
  *
  */
-public interface OutTableParam {
+public interface OutTableParam extends OutTableRow {
 
 	/**
 	 * Navega a la siguiente fila del resultset de la funcion.
 	 * 
-	 * @return This.
+	 * @return La siguiente fila.
 	 */
-	OutTableParam nextRow();
+	OutTableRow nextRow();
 
 	/**
-	 * Obtiene el valor de una celda.
+	 * Obtiene la fila actual.
 	 * 
-	 * @param colName
-	 *            - Nombre de la columna del valor a obtener.
-	 * @return valor de la columna de la fila actual.
+	 * @return fila actual.
 	 */
-	Object getValue(String colName);
+	OutTableRow currentRow();
 
 	/**
 	 * Obtiene la cantidad de filas del resultset.
@@ -37,5 +35,4 @@ public interface OutTableParam {
 	 * @return True si el resultset esta vacio, false en caso contrario.
 	 */
 	boolean isEmpty();
-
 }

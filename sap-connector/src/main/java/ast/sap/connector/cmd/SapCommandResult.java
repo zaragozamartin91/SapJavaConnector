@@ -7,6 +7,15 @@ import ast.sap.connector.job.track.JobStatus;
 
 import com.google.common.base.Optional;
 
+/**
+ * Representa el resultado de la ejecucion de un comando.
+ * 
+ * TODO : algunos de los campos que posee son para la ejecucion de comandos debug. Se debe determinar que campos
+ * se quedan y cuales se van.
+ * 
+ * @author mzaragoz
+ *
+ */
 public class SapCommandResult {
 	private static final SapCommandResult EMPTY_RESULT = new SapCommandResult();
 

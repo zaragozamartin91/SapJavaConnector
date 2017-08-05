@@ -3,36 +3,35 @@ package ast.sap.connector.job.log;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import ast.sap.connector.func.OutTableParam;
+import ast.sap.connector.func.OutTableRow;
 
+/**
+ * Entrada de log.
+ * 
+ * @author mzaragoz
+ *
+ */
 public class LogEntry {
-	private static final SimpleDateFormat OUT_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy");
-	private static final SimpleDateFormat OUT_TIME_FORMAT = new SimpleDateFormat("HH:mm:ss");
+	private static final SimpleDateFormat OUT_DATE_FORMAT = new SimpleDateFormat("dd/MM/yyyy - HH:mm:ss");
 
-	private Date time;
-	private Date date;
-	private String text;
+	private final Date date;
+	private final String text;
 
-	private LogEntry() {
+	/**
+	 * Construye y parsea una entrada de log a partir de una fila de tabla de salida de una funcion de SAP.
+	 * 
+	 * @param entry - TABLA de salida de funcion de SAP.
+	 */
+	public LogEntry(OutTableRow entry) {
+		text = entry.getValue("TEXT").toString();
+
+		Date date = (Date) entry.getValue("ENTERDATE");
+		Date time = (Date) entry.getValue("ENTERTIME");
+		this.date = new Date(date.getTime() + time.getTime());
 	};
 
-	public static LogEntry fromTableParam(OutTableParam entry) {
-		LogEntry logEntry = new LogEntry();
-
-		logEntry.text = entry.getValue("TEXT").toString();
-
-		logEntry.date = (Date) entry.getValue("ENTERDATE");
-		logEntry.time = (Date) entry.getValue("ENTERTIME");
-
-		return logEntry;
-	}
-
-	public Date getTime() {
-		return time;
-	}
-
 	public Date getDate() {
-		return date;
+		return new Date(date.getTime());
 	}
 
 	public String getText() {
@@ -44,11 +43,15 @@ public class LogEntry {
 		return getPrettyString();
 	}
 
+	/**
+	 * Obtiene una entrada de log como un String formateado para facilitar su
+	 * lectura.
+	 * 
+	 * @return entrada de log como String formateado.
+	 */
 	public String getPrettyString() {
 		StringBuilder out = new StringBuilder();
 		out.append(OUT_DATE_FORMAT.format(date));
-		out.append(" - ");
-		out.append(OUT_TIME_FORMAT.format(time));
 		out.append(" - ");
 		out.append(text);
 		return out.toString();

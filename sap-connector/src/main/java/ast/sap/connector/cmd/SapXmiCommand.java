@@ -5,8 +5,16 @@ import ast.sap.connector.xmi.XmiLoginData;
 import ast.sap.connector.xmi.XmiSession;
 
 /**
- * Comando xmi de sap a ejecutar. Los comandos xmi realizan los siguientes pasos: > Inician sesion con XMI. > Ejecutan una accion. > Obtienen salida del
- * comando. > Cierran sesion con XMI.
+ * Comando xmi de sap a ejecutar. Los comandos xmi realizan los siguientes pasos: 
+ * <ul>
+ * <li>Inician sesion con XMI.      </li>
+ * <li>Ejecutan una accion.         </li>
+ * <li>Obtienen salida del comando. </li>
+ * <li>Cierran sesion con XMI.      </li>
+ * <li>Retorna la salida del comando.      </li>
+ * </ul>
+ * 
+ * @see XmiSession
  * 
  * @author martin.zaragoza
  *
@@ -28,5 +36,10 @@ public abstract class SapXmiCommand extends AbstractSapCommand {
 		return output;
 	}
 
+	/**
+	 * Accion puntual a realizar por el comando.
+	 * 
+	 * @return Resultado de la accion realizada.
+	 */
 	protected abstract SapCommandResult perform();
 }

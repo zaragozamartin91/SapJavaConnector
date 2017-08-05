@@ -1,9 +1,11 @@
 package ast.sap.connector.job.log;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ast.sap.connector.func.OutTableParam;
+import ast.sap.connector.func.OutTableRow;
 import ast.sap.connector.func.SapBapiret2;
 
 public class JobLog {
@@ -18,7 +20,8 @@ public class JobLog {
 	private void parseEntries(OutTableParam entries) {
 		for (int rowIndex = 0; rowIndex < entries.getRowCount(); rowIndex++) {
 			try {
-				LogEntry logEntry = LogEntry.fromTableParam(entries);
+				OutTableRow currentRow = entries.currentRow();
+				LogEntry logEntry = new LogEntry(currentRow);
 				logEntries.add(logEntry);
 			} catch (Exception e) {
 				throw new JobLogParseException("Ocurrio un error al parsear el log del job", e);
@@ -33,6 +36,20 @@ public class JobLog {
 
 	@Override
 	public String toString() {
-		return "JobLog [returnStruct=" + returnStruct + ", logEntries=" + logEntries + "]";
+		StringBuilder sb = new StringBuilder("JobLog [returnStruct=" + returnStruct + ", logEntries=");
+		for (LogEntry logEntry : logEntries) {
+			sb.append("\n  " + logEntry.getPrettyString());
+		}
+		sb.append("\n]");
+		return sb.toString();
+	}
+
+	/**
+	 * Obtiene las entradas de log parseadas.
+	 * 
+	 * @return entradas de log parseadas
+	 */
+	public List<LogEntry> getLogEntries() {
+		return Collections.unmodifiableList(this.logEntries);
 	}
 }

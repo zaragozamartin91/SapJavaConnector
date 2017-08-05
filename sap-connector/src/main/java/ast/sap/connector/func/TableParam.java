@@ -22,8 +22,13 @@ class TableParam implements OutTableParam, InTableParam {
 	}
 
 	@Override
-	public OutTableParam nextRow() {
+	public OutTableRow nextRow() {
 		jcoTable.nextRow();
+		return this;
+	}
+	
+	@Override
+	public OutTableRow currentRow() {
 		return this;
 	}
 

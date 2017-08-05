@@ -4,7 +4,9 @@ import ast.sap.connector.cmd.impl.CreateJobCommand;
 import ast.sap.connector.cmd.impl.CrystalGetuserlistCommand;
 import ast.sap.connector.cmd.impl.GetJobOutputCommand;
 import ast.sap.connector.cmd.impl.HelpCommand;
+import ast.sap.connector.cmd.impl.MonitorJobCommand;
 import ast.sap.connector.cmd.impl.RaiseEventCommand;
+import ast.sap.connector.cmd.impl.RunAndStopJobCommand;
 import ast.sap.connector.cmd.impl.RunJobCommand;
 import ast.sap.connector.cmd.impl.StopJobCommand;
 import ast.sap.connector.cmd.impl.TrackJobCommand;
@@ -60,6 +62,10 @@ public enum CommandFactory {
 				return new CrystalGetuserlistCommand(sapRepository);
 			case "GET_JOB_OUTPUT":
 				return new GetJobOutputCommand(sapRepository, xmiLoginData, jobData);
+			case "MONITOR_JOB":
+				return new MonitorJobCommand(sapRepository, xmiLoginData, jobData);
+			case "RUN_STOP_JOB":
+				return new RunAndStopJobCommand(sapRepository, xmiLoginData, jobData);
 
 			default:
 				return new HelpCommand();

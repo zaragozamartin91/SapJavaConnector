@@ -8,6 +8,15 @@ import ast.sap.connector.func.SapFunctionResult;
 import ast.sap.connector.func.SapStruct;
 import ast.sap.connector.xmi.exception.XmiLoginException;
 
+/**
+ * Manejador de sesiones XMI.
+ * Para poder realizar acciones de manipulacion de jobs (iniciar, obtener status, obtener log, etc.) es 
+ * necesario inciar sesion con XMI de forma tal que nuestras operaciones sobre los jobs queden registradas
+ * en logs de SAP.
+ * 
+ * @author mzaragoz
+ *
+ */
 public enum XmiSessionManager {
 	INSTANCE;
 

@@ -61,4 +61,10 @@ public final class JobData implements JobRunData {
 	public String getTargetServer() {
 		return targetServer;
 	}
+
+	@Override
+	public String toString() {
+		return "JobData [jobName=" + jobName + ", externalUsername=" + externalUsername + ", jobId=" + jobId
+				+ ", targetServer=" + targetServer + "]";
+	}
 }

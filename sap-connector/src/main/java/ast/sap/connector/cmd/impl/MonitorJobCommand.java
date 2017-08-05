@@ -35,10 +35,11 @@ public class MonitorJobCommand extends SapXmiCommand {
 	public SapCommandResult perform() {
 		SapRepository sapRepository = repository();
 		JobRunner jobRunner = new AsapJobRunner(sapRepository);
+		System.out.println("Corriendo job " + jobData);
 		SapBapiret2 runRet = jobRunner.runJob(jobData);
 
 		if (errorArised(runRet)) {
-			System.out.println("Ocurrio un error al disparar la tarea");
+			System.err.println("Ocurrio un error al disparar la tarea: " + runRet.getMessage());
 			return new SapCommandResult(runRet);
 		} else {
 			return monitorJob(sapRepository);
@@ -46,15 +47,17 @@ public class MonitorJobCommand extends SapXmiCommand {
 	}
 
 	private SapCommandResult monitorJob(SapRepository sapRepository) {
+		System.out.println("Monitoreando job");
 		boolean jobRunning = true;
 		JobTracker jobTracker = new JobTracker(sapRepository);
 
 		do {
 			JobStatus jobStatus = jobTracker.getStatus(jobData);
 			StatusCode statusCode = jobStatus.getStatusCode();
+			System.out.println("statusCode: " + statusCode.label);
 			jobRunning = statusCode.equals(StatusCode.R) || statusCode.equals(StatusCode.Z);
 
-			sleep();
+			if(jobRunning) sleep();
 		} while (jobRunning);
 
 		JoblogReader joblogReader = new JoblogReader(sapRepository);
@@ -65,14 +68,15 @@ public class MonitorJobCommand extends SapXmiCommand {
 
 	private void sleep() {
 		try {
+			System.out.println("Durmiendo...");
 			Thread.sleep(500);
 		} catch (InterruptedException e) {
+			System.err.println(e.getMessage());
 		}
 	}
 
 	private boolean errorArised(SapBapiret2 runRet) {
-		// TODO Auto-generated method stub
-		return false;
+		/* SI EL TYPE DEL BAPIRET2 ES 'E' ENTONCES OCURRIO UN ERROR. */
+		return "E".equals(runRet.getType());
 	}
-
 }

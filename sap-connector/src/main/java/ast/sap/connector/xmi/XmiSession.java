@@ -5,6 +5,15 @@ import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.xmi.exception.XmiLoginException;
 
+/**
+ * Sesion con subsistema XMI. 
+ * Para poder realizar acciones de manipulacion de jobs (iniciar, obtener status, obtener log, etc.) es 
+ * necesario inciar sesion con XMI de forma tal que nuestras operaciones sobre los jobs queden registradas
+ * en logs de SAP.
+ * 
+ * @author mzaragoz
+ *
+ */
 public class XmiSession {
 	private final SapRepository sapRepository;
 	private final XmiSessionData sessionData;
