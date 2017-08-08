@@ -1,10 +1,10 @@
 package ast.sap.connector.main.args;
 
-import com.google.common.base.Optional;
-
 import ast.sap.connector.job.JobData;
 import ast.sap.connector.job.JobRunData;
 import ast.sap.connector.xmi.XmiLoginData;
+
+import com.google.common.base.Optional;
 
 public final class InputArgumentsData {
 	/* PARAMETROS DE INICIO DE SESION CON SAP */
@@ -136,17 +136,20 @@ public final class InputArgumentsData {
 
 	@Override
 	public String toString() {
-		return "InputArgumentsData [user=" + user + ", password=" + password + ", host=" + host + ", timeoutSecs=" + timeoutSecs + ", clientNumber="
-				+ clientNumber + ", systemNumber=" + systemNumber + ", jobName=" + jobName + ", jobId=" + jobId + ", command=" + command + ", language="
-				+ language + ", execServer=" + execServer + ", eventId=" + eventId + "]";
+		return "InputArgumentsData [user=" + user + ", password=" + password + ", host=" + host + ", timeoutSecs="
+				+ timeoutSecs + ", clientNumber=" + clientNumber + ", systemNumber=" + systemNumber + ", jobName="
+				+ jobName + ", jobId=" + jobId + ", command=" + command + ", language=" + language + ", execServer="
+				+ execServer + ", eventId=" + eventId + "]";
 	}
 
 	/*
-	 * TODO : VERIFICAR SI EL PARAMETRO EXECSERVER ES IGUAL AL HOST O SI DEBE INGRESARSE UN NOMBRE DE SERVER PROPIO DE SAP
+	 * TODO : VERIFICAR SI EL PARAMETRO EXECSERVER ES IGUAL AL HOST O SI DEBE
+	 * INGRESARSE UN NOMBRE DE SERVER PROPIO DE SAP
 	 */
 	public JobRunData newJobRunData() {
 		Optional<String> exSrv = Optional.fromNullable(execServer);
-		return exSrv.isPresent() ? JobData.newJobRunData(jobName, user, jobId, exSrv.get()) : JobData.newJobTrackData(jobName, user, jobId);
+		return exSrv.isPresent() ? JobData.newJobRunData(jobName, user, jobId, exSrv.get()) : JobData.newJobTrackData(
+				jobName, user, jobId);
 	}
 
 	public XmiLoginData newXmiLoginData() {

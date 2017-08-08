@@ -1,5 +1,6 @@
 package ast.sap.connector.job.run;
 
+import com.google.common.base.Optional;
 import com.google.common.base.Preconditions;
 
 import ast.sap.connector.dst.SapRepository;
@@ -21,8 +22,12 @@ public class ImmediateJobRunner implements JobRunner {
 		SapFunction function = sapRepository.getFunction("BAPI_XBP_JOB_START_IMMEDIATELY")
 				.setInParameter("JOBNAME", jobData.getJobName())
 				.setInParameter("JOBCOUNT", jobData.getJobId())
-				.setInParameter("EXTERNAL_USER_NAME", jobData.getExternalUsername())
-				.setInParameter("TARGET_SERVER", jobData.getTargetServer());
+				.setInParameter("EXTERNAL_USER_NAME", jobData.getExternalUsername());
+		
+		Optional<String> targetServer = Optional.fromNullable(jobData.getTargetServer());
+		if(targetServer.isPresent()) {
+			function.setInParameter("TARGET_SERVER", targetServer.get());
+		}
 
 		SapFunctionResult result = function.execute();
 		return new SapBapiret2(result.getStructure("RETURN"));

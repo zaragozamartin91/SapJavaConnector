@@ -60,6 +60,8 @@ public class MainApp {
 			SapCommand command = CommandFactory.INSTANCE.getCommand(inputArgs, sapRepository);
 			SapCommandResult commandResult = command.execute();
 			System.out.println("RESULTADO DEL COMANDO: " + commandResult);
+			
+			OutputParser.INSTANCE.parseOutput(commandResult);
 		} catch (RepositoryGetFailException e) {
 			System.err.println("OCURRIO UN ERROR AL OBTENER EL REPOSITORIO DE " + destinationName);
 			e.printStackTrace();

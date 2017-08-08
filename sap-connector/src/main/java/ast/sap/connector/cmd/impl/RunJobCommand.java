@@ -27,6 +27,7 @@ public class RunJobCommand extends SapXmiCommand {
 	public SapCommandResult perform() {
 		SapRepository sapRepository = repository();
 		JobRunner jobRunner = new AsapJobRunner(sapRepository);
+//		JobRunner jobRunner = new ImmediateJobRunner(sapRepository);
 		SapBapiret2 ret = jobRunner.runJob(jobData);
 		return new SapCommandResult(ret);
 	}

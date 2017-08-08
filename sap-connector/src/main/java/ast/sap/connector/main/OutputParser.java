@@ -12,5 +12,8 @@ public enum OutputParser {
 	 * NUESTROS PROPIOS CODIGOS DE ERROR (ej: E es para error). */
 	public void parseOutput(SapCommandResult commandResult) {
 		// HACE COSAS CON EL OUTPUT DE UN COMANDO SAP.
+		if(commandResult.getJobLog().isPresent()) {
+			System.out.println(commandResult.getJobLog().get());
+		}
 	}
 }
