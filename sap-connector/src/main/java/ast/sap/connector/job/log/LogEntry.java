@@ -4,6 +4,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import ast.sap.connector.func.OutTableRow;
+import ast.sap.connector.util.DateUtils;
 
 /**
  * Entrada de log.
@@ -27,7 +28,7 @@ public class LogEntry {
 
 		Date date = (Date) entry.getValue("ENTERDATE");
 		Date time = (Date) entry.getValue("ENTERTIME");
-		this.date = new Date(date.getTime() + time.getTime());
+		this.date = DateUtils.INSTANCE.addDates(date, time);
 	};
 
 	public Date getDate() {

@@ -4,8 +4,12 @@ import ast.sap.connector.cmd.impl.CreateJobCommand;
 import ast.sap.connector.cmd.impl.CrystalGetuserlistCommand;
 import ast.sap.connector.cmd.impl.GetJobOutputCommand;
 import ast.sap.connector.cmd.impl.HelpCommand;
+import ast.sap.connector.cmd.impl.JobCountCommand;
+import ast.sap.connector.cmd.impl.JobReadCommand;
 import ast.sap.connector.cmd.impl.MonitorJobCommand;
 import ast.sap.connector.cmd.impl.RaiseEventCommand;
+import ast.sap.connector.cmd.impl.ReadJobDefinitionCommand;
+import ast.sap.connector.cmd.impl.ReadSpoolCommand;
 import ast.sap.connector.cmd.impl.RunAndStopJobCommand;
 import ast.sap.connector.cmd.impl.RunJobCommand;
 import ast.sap.connector.cmd.impl.StopJobCommand;
@@ -66,7 +70,14 @@ public enum CommandFactory {
 				return new MonitorJobCommand(sapRepository, xmiLoginData, jobData);
 			case "RUN_STOP_JOB":
 				return new RunAndStopJobCommand(sapRepository, xmiLoginData, jobData);
-
+			case "READ_SPOOL":
+				return new ReadSpoolCommand(sapRepository, xmiLoginData, jobData);
+			case "READ_JOB_DEFINITION":
+				return new ReadJobDefinitionCommand(sapRepository, xmiLoginData, jobData);
+			case "JOB_COUNT":
+				return new JobCountCommand(sapRepository, xmiLoginData, jobData);
+			case "READ_JOB":
+				return new JobReadCommand(sapRepository, xmiLoginData, jobData);
 			default:
 				return new HelpCommand();
 		}

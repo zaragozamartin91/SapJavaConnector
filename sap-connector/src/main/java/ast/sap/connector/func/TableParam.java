@@ -2,7 +2,7 @@ package ast.sap.connector.func;
 
 import com.sap.conn.jco.JCoTable;
 
-class TableParam implements OutTableParam, InTableParam {
+class TableParam implements OutTableParam, InTableParam, OutTableRow {
 	private final JCoTable jcoTable;
 
 	TableParam(JCoTable table) {

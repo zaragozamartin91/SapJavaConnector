@@ -13,8 +13,9 @@ public class SapStruct {
 		return new SapStruct(jCoStructure.getStructure(fieldName));
 	}
 
-	public Object getValue(String fieldName) {
-		return jCoStructure.getValue(fieldName);
+	@SuppressWarnings("unchecked")
+	public <E> E getValue(String fieldName) {
+		return (E) jCoStructure.getValue(fieldName);
 	}
 
 }

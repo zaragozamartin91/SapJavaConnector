@@ -6,7 +6,7 @@ package ast.sap.connector.func;
  * @author martin.zaragoza
  *
  */
-public interface OutTableParam extends OutTableRow {
+public interface OutTableParam {
 
 	/**
 	 * Navega a la siguiente fila del resultset de la funcion.

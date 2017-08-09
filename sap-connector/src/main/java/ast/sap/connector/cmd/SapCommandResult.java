@@ -2,6 +2,7 @@ package ast.sap.connector.cmd;
 
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.job.create.NewJobData;
+import ast.sap.connector.job.def.JobDefinition;
 import ast.sap.connector.job.log.JobLog;
 import ast.sap.connector.job.track.JobStatus;
 
@@ -24,6 +25,7 @@ public class SapCommandResult {
 	private Optional<JobLog> jobLog = Optional.absent();
 	private Optional<NewJobData> newJobData = Optional.absent();
 	private Optional<String> message = Optional.absent();
+	private Optional<JobDefinition> jobDefinition = Optional.absent();
 
 	private Optional<Object> extraResult = Optional.absent();
 
@@ -45,6 +47,10 @@ public class SapCommandResult {
 
 	public Optional<String> getMessage() {
 		return message;
+	}	
+
+	public Optional<JobDefinition> getJobDefinition() {
+		return jobDefinition;
 	}
 
 	public SapCommandResult(SapBapiret2 ret) {
@@ -70,6 +76,10 @@ public class SapCommandResult {
 	public SapCommandResult(Object extraResult) {
 		this.extraResult = Optional.fromNullable(extraResult);
 	}
+	
+	public SapCommandResult(JobDefinition jobDefinition) {
+		this.jobDefinition = Optional.fromNullable(jobDefinition);
+	}
 
 	public Optional<Object> getExtraResult() {
 		return extraResult;
@@ -94,6 +104,7 @@ public class SapCommandResult {
 				+ ",\n newJobData=" + newJobData
 				+ ",\n message=" + message
 				+ ",\n extraResult= " + extraResult
+				+ ",\n jobDefinition= " + jobDefinition
 				+ "\n]";
 	}
 }
