@@ -26,8 +26,28 @@ public enum StatusCode {
 		this.label = lbl;
 	}
 	
+	public boolean isRunning() {
+		return this.equals(R) || this.equals(Z);
+	}
+	
+	public boolean isReleased() {
+		return this.equals(S);
+	}
+	
+	public boolean hasFinished() {
+		return this.equals(F);
+	}
+	
+	public boolean notFinished() {
+		return !hasFinished();
+	}
+	
 	@Override
 	public String toString() {
-		return this.label;
+		return String.format("%s - %s", this.name(), this.label);
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(StatusCode.A);
 	}
 }

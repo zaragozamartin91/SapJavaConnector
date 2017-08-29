@@ -25,7 +25,6 @@ public class SapFunctionResult {
 
 	public OutTableParam getOutTableParameter(String tableName) throws NonexistentTableParameterException {
 		Preconditions.checkNotNull(tableName, "El nombre del campo tabla no puede ser nulo");
-
 		try {
 			JCoTable jcoTable = jCoFunction.getTableParameterList().getTable(tableName);
 			return new TableParam(jcoTable);
@@ -36,4 +35,5 @@ public class SapFunctionResult {
 			throw new NonexistentTableParameterException(String.format("No existe el parámetro %s en la funcion %s", tableName, jCoFunction.getName()), e);
 		}
 	}
+	
 }

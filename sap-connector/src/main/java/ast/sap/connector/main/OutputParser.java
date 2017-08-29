@@ -2,18 +2,35 @@ package ast.sap.connector.main;
 
 import ast.sap.connector.cmd.SapCommandResult;
 
-
+/**
+ * @author franco.milanese
+ *
+ *         Parsea la salida del comando ejecutado
+ */
 public enum OutputParser {
 	INSTANCE;
-	
-	/* TODO: SE DEBE ANALIZAR LA SALIDA DEL COMANDO Y DETERMINAR QUE HACER (QUE COSAS IMPRIMIR, QUE VARIABLES DE ENTORNO
-	 * SE DEBEN ESTABLECER, SI SE DEBE ACASO SETEAR EL %ERRORLEVEL%, ETC.)
-	 * SE DEBE ANALIZAR LOS CODIGOS DE ERROR DEL SapBapiRet (parametros type, id, number y message) PARA CONVERTIRLOS EN 
-	 * NUESTROS PROPIOS CODIGOS DE ERROR (ej: E es para error). */
-	public void parseOutput(SapCommandResult commandResult) {
-		// HACE COSAS CON EL OUTPUT DE UN COMANDO SAP.
-		if(commandResult.getJobLog().isPresent()) {
-			System.out.println(commandResult.getJobLog().get());
+
+	/**
+	 * @param commandResult
+	 * @return Codigo y mensaje de la estructura SapBapiRet2
+	 */
+	public OutputError parseOutput(SapCommandResult commandResult) {
+		Integer code = null;
+		String message = null;
+		
+		if (commandResult.getStatusCode().isPresent()) {
+			if (commandResult.getStatusCode().get().notFinished()) {
+				return new OutputError(ErrorCode.ERROR_JOB_STATUS);
+			}
+			
 		}
+		
+		if (commandResult.getRet().isPresent()) {
+			code = commandResult.getRet().get().getNumber();
+			message = commandResult.getRet().get().getMessage();
+			return new OutputError(code, message);
+		} 
+		return new OutputError(ErrorCode.UNKNOWN);
 	}
+
 }

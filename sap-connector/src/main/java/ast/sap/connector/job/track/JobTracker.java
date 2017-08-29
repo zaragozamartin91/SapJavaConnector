@@ -1,6 +1,7 @@
 package ast.sap.connector.job.track;
 
 import ast.sap.connector.dst.SapRepository;
+import ast.sap.connector.dst.exception.FunctionGetFailException;
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
@@ -25,10 +26,13 @@ public class JobTracker {
 	 * 
 	 * @see http://www.sapdatasheet.org/abap/func/bapi_xbp_job_status_get.html
 	 * 
-	 * @param jobData - Informacion del job a monitorear.
+	 * @param jobData
+	 *            - Informacion del job a monitorear.
 	 * @return Estado del job.
+	 * @throws FunctionGetFailException
+	 *             En caso que no sea posible obtener la funcion de sap necesaria para monitorear el estado del job.
 	 */
-	public JobStatus getStatus(JobTrackData jobData) {
+	public JobStatus getStatus(JobTrackData jobData) throws FunctionGetFailException {
 		SapFunction function = sapRepository.getFunction("BAPI_XBP_JOB_STATUS_GET")
 				.setInParameter("JOBNAME", jobData.getJobName())
 				.setInParameter("JOBCOUNT", jobData.getJobId())
@@ -37,7 +41,11 @@ public class JobTracker {
 		SapFunctionResult result = function.execute();
 		String status = result.getOutParameterValue("STATUS").toString();
 		SapStruct ret = result.getStructure("RETURN");
-		
+
 		return new JobStatus(status, new SapBapiret2(ret));
+	}
+	
+	public static JobTracker build(SapRepository sapRepository) {
+		return new JobTracker(sapRepository);
 	}
 }

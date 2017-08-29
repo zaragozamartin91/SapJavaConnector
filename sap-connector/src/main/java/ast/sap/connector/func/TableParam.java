@@ -2,7 +2,7 @@ package ast.sap.connector.func;
 
 import com.sap.conn.jco.JCoTable;
 
-class TableParam implements OutTableParam, InTableParam, OutTableRow {
+class TableParam implements OutTableParam, InTableParam, OutTableRow, InTableRow {
 	private final JCoTable jcoTable;
 
 	TableParam(JCoTable table) {
@@ -10,13 +10,13 @@ class TableParam implements OutTableParam, InTableParam, OutTableRow {
 	}
 
 	@Override
-	public InTableParam appendRow() {
+	public InTableRow appendRow() {
 		jcoTable.appendRow();
 		return this;
 	}
 
 	@Override
-	public InTableParam setValue(String column, Object value) {
+	public InTableRow setValue(String column, Object value) {
 		jcoTable.setValue(column, value);
 		return this;
 	}

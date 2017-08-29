@@ -29,4 +29,8 @@ public class NewJobData {
 	public String toString() {
 		return "NewJobData [jobCount=" + jobCount + ", ret=" + ret + "]";
 	}
+
+	public boolean hasError() {
+		return ret.hasError();
+	}
 }

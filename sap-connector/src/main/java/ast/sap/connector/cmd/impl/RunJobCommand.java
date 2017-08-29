@@ -5,8 +5,8 @@ import ast.sap.connector.cmd.SapXmiCommand;
 import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.job.JobRunData;
-import ast.sap.connector.job.run.AsapJobRunner;
 import ast.sap.connector.job.run.JobRunner;
+import ast.sap.connector.job.run.SmartJobRunner;
 import ast.sap.connector.xmi.XmiLoginData;
 
 /**
@@ -26,7 +26,7 @@ public class RunJobCommand extends SapXmiCommand {
 	@Override
 	public SapCommandResult perform() {
 		SapRepository sapRepository = repository();
-		JobRunner jobRunner = new AsapJobRunner(sapRepository);
+		JobRunner jobRunner = new SmartJobRunner(sapRepository);
 //		JobRunner jobRunner = new ImmediateJobRunner(sapRepository);
 		SapBapiret2 ret = jobRunner.runJob(jobData);
 		return new SapCommandResult(ret);

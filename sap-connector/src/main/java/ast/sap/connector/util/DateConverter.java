@@ -3,6 +3,12 @@ package ast.sap.connector.util;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @deprecated NO SE USA
+ * 
+ * @author martin.zaragoza
+ *
+ */
 public enum DateConverter {
 	INSTANCE;
 

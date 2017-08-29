@@ -1,23 +1,36 @@
 package ast.sap.connector.cmd;
 
+import java.util.Collections;
+import java.util.List;
+
+import ast.sap.connector.cmd.impl.ChangeVariantCommand;
 import ast.sap.connector.cmd.impl.CreateJobCommand;
+import ast.sap.connector.cmd.impl.CreateMonitorJobCommand;
+import ast.sap.connector.cmd.impl.CreateRunJobCommand;
 import ast.sap.connector.cmd.impl.CrystalGetuserlistCommand;
+import ast.sap.connector.cmd.impl.GetChainErrorsCommand;
+import ast.sap.connector.cmd.impl.GetChainLogCommand;
 import ast.sap.connector.cmd.impl.GetJobOutputCommand;
 import ast.sap.connector.cmd.impl.HelpCommand;
 import ast.sap.connector.cmd.impl.JobCountCommand;
-import ast.sap.connector.cmd.impl.JobReadCommand;
+import ast.sap.connector.cmd.impl.ModifyHeaderCommand;
 import ast.sap.connector.cmd.impl.MonitorJobCommand;
 import ast.sap.connector.cmd.impl.RaiseEventCommand;
+import ast.sap.connector.cmd.impl.ReadJobCommand;
 import ast.sap.connector.cmd.impl.ReadJobDefinitionCommand;
 import ast.sap.connector.cmd.impl.ReadSpoolCommand;
 import ast.sap.connector.cmd.impl.RunAndStopJobCommand;
 import ast.sap.connector.cmd.impl.RunJobCommand;
+import ast.sap.connector.cmd.impl.StartChainCommand;
 import ast.sap.connector.cmd.impl.StopJobCommand;
 import ast.sap.connector.cmd.impl.TrackJobCommand;
 import ast.sap.connector.cmd.impl.UserGetDetailCommand;
 import ast.sap.connector.cmd.impl.XmiLoginCommand;
 import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.job.JobRunData;
+import ast.sap.connector.job.create.StepVariantPair;
+import ast.sap.connector.job.create.StepVariantValuesTuple;
+import ast.sap.connector.job.variant.VariantKeyValuePair;
 import ast.sap.connector.main.args.InputArgumentsData;
 import ast.sap.connector.xmi.XmiLoginData;
 
@@ -45,6 +58,10 @@ public enum CommandFactory {
 		XmiLoginData xmiLoginData = inputArguments.newXmiLoginData();
 		JobRunData jobData = inputArguments.newJobRunData();
 
+		String program = inputArguments.getSingleStep();
+		String variant = inputArguments.getSingleVariant();
+		List<VariantKeyValuePair> variantValuePairs = inputArguments.getVariantKeyValuePairs();
+
 		String strCmd = Optional.fromNullable(inputArguments.getCommand()).or("HELP");
 
 		switch (strCmd) {
@@ -55,13 +72,14 @@ public enum CommandFactory {
 			case "RUN_JOB":
 				return new RunJobCommand(sapRepository, xmiLoginData, jobData);
 			case "CREATE_JOB":
-				return new CreateJobCommand(sapRepository, xmiLoginData, jobData);
+				StepVariantPair step = new StepVariantPair(program, variant);
+				return new CreateJobCommand(sapRepository, xmiLoginData, jobData, Collections.singletonList(step));
 			case "USER_GET_DETAIL":
 				return new UserGetDetailCommand(sapRepository, jobData.getExternalUsername());
 			case "STOP_JOB":
 				return new StopJobCommand(sapRepository, xmiLoginData, jobData);
 			case "RAISE_EVENT":
-				return new RaiseEventCommand(sapRepository, xmiLoginData, inputArguments.getEventId(), inputArguments.getUser());
+				return new RaiseEventCommand(sapRepository, xmiLoginData, jobData, inputArguments.getEventId());
 			case "CRYSTAL_GETUSERLIST":
 				return new CrystalGetuserlistCommand(sapRepository);
 			case "GET_JOB_OUTPUT":
@@ -77,7 +95,23 @@ public enum CommandFactory {
 			case "JOB_COUNT":
 				return new JobCountCommand(sapRepository, xmiLoginData, jobData);
 			case "READ_JOB":
-				return new JobReadCommand(sapRepository, xmiLoginData, jobData);
+				return new ReadJobCommand(sapRepository, xmiLoginData, jobData);
+			case "MODIFY_HEADER":
+				return new ModifyHeaderCommand(sapRepository, xmiLoginData, jobData);
+			case "CHANGE_VARIANT":
+				return new ChangeVariantCommand(sapRepository, xmiLoginData, jobData, inputArguments.getSingleStep());
+			case "CREATE_RUN_JOB":
+				StepVariantValuesTuple stepVariantValuesTuple = new StepVariantValuesTuple(program, variant, variantValuePairs);
+				return new CreateRunJobCommand(sapRepository, xmiLoginData, jobData, stepVariantValuesTuple);
+			case "CREATE_MONITOR_JOB":
+				StepVariantValuesTuple stepVariantValuesTuple2 = new StepVariantValuesTuple(program, variant, variantValuePairs);
+				return new CreateMonitorJobCommand(sapRepository, xmiLoginData, jobData, stepVariantValuesTuple2);
+			case "START_CHAIN":
+				return new StartChainCommand(sapRepository, xmiLoginData, inputArguments.getJobName());
+			case "GET_CHAIN_LOG":
+				return new GetChainLogCommand(sapRepository, xmiLoginData, inputArguments.getJobName(), "5AXYTHRJH6U17VCATZEL3BR3U");
+			case "GET_CHAIN_ERRORS":
+				return new GetChainErrorsCommand(sapRepository, xmiLoginData, inputArguments.getJobName(), "5AXYTHRJH6U17VCATZEL3BR3U");
 			default:
 				return new HelpCommand();
 		}

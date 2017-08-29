@@ -30,7 +30,7 @@ public class DestinationBuilderTest {
 	public void testBuildCurrDir() throws FileNotFoundException, IOException {
 		DestinationConfigBuilder destinationBuilder = DestinationConfigBuilder.INSTANCE;
 		String destinationName = DESTINATION_NAME_2;
-		ConnectionData connectionData = new ConnectionData("01", "user", "****", "en", "127.0.0.1", "00");
+		ConnectionData connectionData = new ConnectionData("500", "mzaragoz", "Macro2017MM", "EN", "saphanatest", "01");
 
 		File destinationFile = destinationBuilder.build(destinationName, connectionData);
 		assertTrue(DESTINATION_FILE_2.exists());

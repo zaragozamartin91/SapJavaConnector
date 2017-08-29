@@ -14,17 +14,5 @@ public interface InTableParam {
 	 * 
 	 * @return this.
 	 */
-	InTableParam appendRow();
-
-	/**
-	 * Establece el valor de un campo/celda de la fila actual.
-	 * 
-	 * @param column
-	 *            - Nombre de columna.
-	 * @param value
-	 *            - Valor del campo.
-	 * @return this.
-	 */
-	InTableParam setValue(String column, Object value);
-
+	InTableRow appendRow();
 }

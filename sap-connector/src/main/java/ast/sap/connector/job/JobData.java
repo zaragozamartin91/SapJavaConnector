@@ -7,9 +7,9 @@ package ast.sap.connector.job;
  *
  */
 public final class JobData implements JobRunData {
-	private String jobName;
-	private String externalUsername;
-	private String jobId;
+	private String jobName = "";
+	private String externalUsername = "";
+	private String jobId = "";
 	private String targetServer;
 
 	private JobData(String jobName, String externalUsername) {
@@ -38,6 +38,10 @@ public final class JobData implements JobRunData {
 		return new JobData(jobName, externalUsername, jobId);
 	}
 
+	public static JobData newJobRunData(String jobName, String externalUsername, String jobId) {
+		return new JobData(jobName, externalUsername, jobId);
+	}
+	
 	public static JobData newJobRunData(String jobName, String externalUsername, String jobId, String targetServer) {
 		return new JobData(jobName, externalUsername, jobId, targetServer);
 	}

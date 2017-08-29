@@ -12,6 +12,10 @@ public class JobLog {
 	private final SapBapiret2 returnStruct;
 	private List<LogEntry> logEntries = new ArrayList<LogEntry>();
 
+	public JobLog(SapBapiret2 returnStruct) {
+		this.returnStruct = returnStruct;
+	}
+
 	public JobLog(SapBapiret2 sapBapiret2, OutTableParam entries) {
 		this.returnStruct = sapBapiret2;
 		parseEntries(entries);

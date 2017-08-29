@@ -1,6 +1,7 @@
 package ast.sap.connector.func;
 
 import com.google.common.base.Preconditions;
+import com.sap.conn.jco.AbapException;
 import com.sap.conn.jco.ConversionException;
 import com.sap.conn.jco.JCoDestination;
 import com.sap.conn.jco.JCoException;
@@ -10,7 +11,9 @@ import com.sap.conn.jco.JCoTable;
 
 import ast.sap.connector.func.exception.FunctionExecuteException;
 import ast.sap.connector.func.exception.ImportParameterSetErrorException;
+import ast.sap.connector.func.exception.NonexistentStructParameterException;
 import ast.sap.connector.func.exception.NonexistentTableParameterException;
+import ast.sap.connector.func.exception.RspcExecuteException;
 
 /**
  * Funcion ejecutable de sap.
@@ -78,16 +81,45 @@ public class SapFunction {
 	}
 
 	/**
+	 * Establece un parametro de entrada de tipo estructura en la funcion a ejecutar.
+	 * 
+	 * @param structName
+	 *            - Nombre del parametro de tipo estructura.
+	 * @return Parametro de tipo estructura.
+	 * @throws NonexistentStructParameterException
+	 *             Si no existe un campo de tipo struct con el nombre asignado.
+	 */
+	public SapStruct getInStructParameter(String structName) {
+		Preconditions.checkNotNull(structName, "El nombre de la estructura no puede ser nulo");
+
+		try {
+			return new SapStruct(jCoFunction.getImportParameterList().getStructure(structName));
+		} catch (ConversionException e) {
+			throw new NonexistentStructParameterException(
+					String.format("El parametro %s no es de tipo struct en la funcion %s", structName, jCoFunction.getName()), e);
+		} catch (JCoRuntimeException e) {
+			throw new NonexistentStructParameterException(String.format("No existe el parametro %s en la funcion %s", structName, jCoFunction.getName()), e);
+		}
+	}
+
+	/**
 	 * Ejecuta la funcion contra el servidor sap.
 	 * 
 	 * @return Resultado de la ejecucion.
 	 * @throws FunctionExecuteException
 	 *             Si ocurrio un error al ejecutar la funcion.
+	 * @throws RspcExecuteException
+	 * 			   Si ocurrio un error al ejecutar una funcion de RSPC. 
 	 */
-	public SapFunctionResult execute() throws FunctionExecuteException {
+
+	public SapFunctionResult execute() {
 		try {
 			jCoFunction.execute(jCoDestination);
 			return new SapFunctionResult(jCoFunction);
+		} catch (AbapException e) {
+			e.printStackTrace();
+			throw new RspcExecuteException(
+					String.format("Ocurrio un error al ejecutar la funcion %s del destino", jCoFunction.getName()), e);
 		} catch (JCoException e) {
 			throw new FunctionExecuteException(
 					String.format("Ocurrio un error al ejecutar la funcion %s del destino %s", jCoFunction.getName(), jCoDestination.toString()), e);

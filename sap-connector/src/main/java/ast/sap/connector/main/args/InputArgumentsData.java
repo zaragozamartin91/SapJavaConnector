@@ -1,10 +1,15 @@
 package ast.sap.connector.main.args;
 
-import ast.sap.connector.job.JobData;
-import ast.sap.connector.job.JobRunData;
-import ast.sap.connector.xmi.XmiLoginData;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import com.google.common.base.Optional;
+
+import ast.sap.connector.job.JobData;
+import ast.sap.connector.job.JobRunData;
+import ast.sap.connector.job.variant.VariantKeyValuePair;
+import ast.sap.connector.xmi.XmiLoginData;
 
 public final class InputArgumentsData {
 	/* PARAMETROS DE INICIO DE SESION CON SAP */
@@ -16,8 +21,8 @@ public final class InputArgumentsData {
 	private String systemNumber;
 
 	/* PARAMETROS DE EJECUCION DE JOBS */
-	private String jobName;
-	private String jobId;
+	private String jobName = "";
+	private String jobId = "";
 	private String command;
 
 	private String language = "EN";
@@ -25,6 +30,10 @@ public final class InputArgumentsData {
 	private String execServer;
 
 	private String eventId;
+
+	private String singleStep;
+	private String singleVariant;
+	private List<VariantKeyValuePair> variantKeyValuePairs = new ArrayList<>();
 
 	public String getUser() {
 		return user;
@@ -134,22 +143,47 @@ public final class InputArgumentsData {
 		return this;
 	}
 
+	public String getSingleStep() {
+		return singleStep;
+	}
+
+	public InputArgumentsData setSingleStep(String singleStep) {
+		this.singleStep = singleStep;
+		return this;
+	}
+
+	public String getSingleVariant() {
+		return singleVariant;
+	}
+
+	public InputArgumentsData setSingleVariant(String singleVariant) {
+		this.singleVariant = singleVariant;
+		return this;
+	}
+
+	public List<VariantKeyValuePair> getVariantKeyValuePairs() {
+		return variantKeyValuePairs;
+	}
+
+	public InputArgumentsData setVariantKeyValuePairs(List<VariantKeyValuePair> variantKeyValuePairs) {
+		this.variantKeyValuePairs = Collections.unmodifiableList(variantKeyValuePairs);
+		return this;
+	}
+
 	@Override
 	public String toString() {
-		return "InputArgumentsData [user=" + user + ", password=" + password + ", host=" + host + ", timeoutSecs="
-				+ timeoutSecs + ", clientNumber=" + clientNumber + ", systemNumber=" + systemNumber + ", jobName="
-				+ jobName + ", jobId=" + jobId + ", command=" + command + ", language=" + language + ", execServer="
-				+ execServer + ", eventId=" + eventId + "]";
+		return "InputArgumentsData [user=" + user + ", password=" + "****" + ", host=" + host + ", timeoutSecs=" + timeoutSecs + ", clientNumber="
+				+ clientNumber + ", systemNumber=" + systemNumber + ", jobName=" + jobName + ", jobId=" + jobId + ", command=" + command + ", language="
+				+ language + ", execServer=" + execServer + ", eventId=" + eventId + ", singleStep=" + singleStep + ", singleVariant=" + singleVariant
+				+ ", variantKeyValuePairs=" + variantKeyValuePairs + "]";
 	}
 
 	/*
-	 * TODO : VERIFICAR SI EL PARAMETRO EXECSERVER ES IGUAL AL HOST O SI DEBE
-	 * INGRESARSE UN NOMBRE DE SERVER PROPIO DE SAP
+	 * TODO : VERIFICAR SI EL PARAMETRO EXECSERVER ES IGUAL AL HOST O SI DEBE INGRESARSE UN NOMBRE DE SERVER PROPIO DE SAP
 	 */
 	public JobRunData newJobRunData() {
 		Optional<String> exSrv = Optional.fromNullable(execServer);
-		return exSrv.isPresent() ? JobData.newJobRunData(jobName, user, jobId, exSrv.get()) : JobData.newJobTrackData(
-				jobName, user, jobId);
+		return exSrv.isPresent() ? JobData.newJobRunData(jobName, user, jobId, exSrv.get()) : JobData.newJobTrackData(jobName, user, jobId);
 	}
 
 	public XmiLoginData newXmiLoginData() {
@@ -163,5 +197,14 @@ public final class InputArgumentsData {
 	 */
 	public boolean isHelp() {
 		return Optional.fromNullable(command).or("HELP").equalsIgnoreCase("HELP");
+	}
+	
+	/**
+	 * Verifica si el comando a ejecutar es de tipo ENCRYPT_PASSWORD.
+	 * 
+	 * @return True si el comando a ejecutar es de tipo ENCRYPT_PASSWORD, false en caso contrario.
+	 */
+	public boolean isEncryptPassword() {
+		return Optional.fromNullable(command).or("HELP").equalsIgnoreCase("ENCRYPT_PASSWORD");
 	}
 }

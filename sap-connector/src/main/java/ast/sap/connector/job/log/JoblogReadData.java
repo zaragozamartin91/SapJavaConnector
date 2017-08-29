@@ -17,7 +17,7 @@ public class JoblogReadData implements JobTrackData {
 	}
 
 	private int lines = 0;
-	private Direction direction = Direction.END;
+	private Direction direction;
 
 	public JoblogReadData(String jobName, String jobId, String externalUsername, int lines, Direction direction) {
 		jobData = JobData.newJobTrackData(jobName, externalUsername, jobId);

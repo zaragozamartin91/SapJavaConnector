@@ -18,4 +18,8 @@ public class SapStruct {
 		return (E) jCoStructure.getValue(fieldName);
 	}
 
+	public SapStruct setValue(String fieldName, Object value) {
+		jCoStructure.setValue(fieldName, value);
+		return this;
+	}
 }

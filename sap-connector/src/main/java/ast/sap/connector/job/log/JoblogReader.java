@@ -1,11 +1,14 @@
 package ast.sap.connector.job.log;
 
+import com.google.common.base.Optional;
+
 import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.func.OutTableParam;
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
 import ast.sap.connector.func.SapStruct;
+import ast.sap.connector.job.log.JoblogReadData.Direction;
 
 public class JoblogReader {
 	private final SapRepository sapRepository;
@@ -25,11 +28,11 @@ public class JoblogReader {
 				.setInParameter("JOBNAME", jobData.getJobName())
 				.setInParameter("JOBCOUNT", jobData.getJobId())
 				.setInParameter("EXTERNAL_USER_NAME", jobData.getExternalUsername());
-//				.setInParameter("LINES", 10);
-//				.setInParameter("DIRECTION", jobData.getDirection());
 
-		if (jobData.getLines() > 0) {
+		Optional<Direction> direction = Optional.fromNullable(jobData.getDirection());
+		if (jobData.getLines() > 0 && direction.isPresent()) {
 			function.setInParameter("LINES", jobData.getLines());
+			function.setInParameter("DIRECTION", direction.get().code);
 		}
 
 		SapFunctionResult result = function.execute();
@@ -38,5 +41,9 @@ public class JoblogReader {
 //		OutTableParam logEntries = result.getOutTableParameter("JOB_PROTOCOL_NEW");
 		OutTableParam logEntries = result.getOutTableParameter("JOB_PROTOCOL");
 		return new JobLog(bapiRet2, logEntries);
+	}
+	
+	public static JoblogReader build(SapRepository repository) {
+		return new JoblogReader(repository);
 	}
 }
