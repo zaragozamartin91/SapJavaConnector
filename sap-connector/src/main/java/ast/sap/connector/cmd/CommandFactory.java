@@ -3,6 +3,8 @@ package ast.sap.connector.cmd;
 import java.util.Collections;
 import java.util.List;
 
+import com.google.common.base.Optional;
+
 import ast.sap.connector.cmd.impl.ChangeVariantCommand;
 import ast.sap.connector.cmd.impl.CreateJobCommand;
 import ast.sap.connector.cmd.impl.CreateMonitorJobCommand;
@@ -13,7 +15,6 @@ import ast.sap.connector.cmd.impl.GetChainLogCommand;
 import ast.sap.connector.cmd.impl.GetJobOutputCommand;
 import ast.sap.connector.cmd.impl.HelpCommand;
 import ast.sap.connector.cmd.impl.JobCountCommand;
-import ast.sap.connector.cmd.impl.ModifyHeaderCommand;
 import ast.sap.connector.cmd.impl.MonitorJobCommand;
 import ast.sap.connector.cmd.impl.RaiseEventCommand;
 import ast.sap.connector.cmd.impl.ReadJobCommand;
@@ -33,8 +34,6 @@ import ast.sap.connector.job.create.StepVariantValuesTuple;
 import ast.sap.connector.job.variant.VariantKeyValuePair;
 import ast.sap.connector.main.args.InputArgumentsData;
 import ast.sap.connector.xmi.XmiLoginData;
-
-import com.google.common.base.Optional;
 
 /**
  * Generador de comandos de sap ejecutables.
@@ -96,8 +95,8 @@ public enum CommandFactory {
 				return new JobCountCommand(sapRepository, xmiLoginData, jobData);
 			case "READ_JOB":
 				return new ReadJobCommand(sapRepository, xmiLoginData, jobData);
-			case "MODIFY_HEADER":
-				return new ModifyHeaderCommand(sapRepository, xmiLoginData, jobData);
+			// case "MODIFY_HEADER":
+			// return new ModifyHeaderCommand(sapRepository, xmiLoginData, jobData);
 			case "CHANGE_VARIANT":
 				return new ChangeVariantCommand(sapRepository, xmiLoginData, jobData, inputArguments.getSingleStep());
 			case "CREATE_RUN_JOB":

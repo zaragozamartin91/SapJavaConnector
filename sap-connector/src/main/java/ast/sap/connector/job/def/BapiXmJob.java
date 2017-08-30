@@ -48,7 +48,7 @@ public final class BapiXmJob {
 		Date plannedStartDate = sapStruct.getValue("SDLSTRTDT");
 		Date plannedStartTime = sapStruct.getValue("SDLSTRTTM");
 		if (plannedStartDate != null && plannedStartTime != null) {
-			this.plannedStartDate = DateUtils.INSTANCE.addDates(plannedStartDate, plannedStartTime);
+			this.plannedStartDate = DateUtils.INSTANCE.addHours(plannedStartDate, plannedStartTime);
 		}
 
 		targetSystem = sapStruct.getValue("BTCSYSTEM");
@@ -56,14 +56,14 @@ public final class BapiXmJob {
 		Date scheduleDate = sapStruct.getValue("SDLDATE");
 		Date scheduleTime = sapStruct.getValue("SDLTIME");
 		if (scheduleDate != null && scheduleTime != null) {
-			this.scheduleDate = DateUtils.INSTANCE.addDates(scheduleDate, scheduleTime);
+			this.scheduleDate = DateUtils.INSTANCE.addHours(scheduleDate, scheduleTime);
 		}
 		scheduleUsername = sapStruct.getValue("SDLUNAME");
 
 		Date lastChangeDate = sapStruct.getValue("LASTCHDATE");
 		Date lastChangeTime = sapStruct.getValue("LASTCHTIME");
 		if (lastChangeDate != null && lastChangeTime != null) {
-			this.lastChangeDate = DateUtils.INSTANCE.addDates(lastChangeDate, lastChangeTime);
+			this.lastChangeDate = DateUtils.INSTANCE.addHours(lastChangeDate, lastChangeTime);
 		}
 
 		lastChangeUsername = sapStruct.getValue("LASTCHNAME");
@@ -71,7 +71,7 @@ public final class BapiXmJob {
 		Date releaseDate = sapStruct.getValue("RELDATE");
 		Date releaseTime = sapStruct.getValue("RELTIME");
 		if (releaseDate != null && releaseTime != null) {
-			this.releaseDate = DateUtils.INSTANCE.addDates(releaseDate, releaseTime);
+			this.releaseDate = DateUtils.INSTANCE.addHours(releaseDate, releaseTime);
 		}
 
 		releaseUsername = sapStruct.getValue("RELUNAME");
@@ -79,13 +79,13 @@ public final class BapiXmJob {
 		Date startDate = sapStruct.getValue("STRTDATE");
 		Date startTime = sapStruct.getValue("STRTTIME");
 		if (startDate != null && startTime != null) {
-			this.startDate = DateUtils.INSTANCE.addDates(startDate, startTime);
+			this.startDate = DateUtils.INSTANCE.addHours(startDate, startTime);
 		}
 
 		Date endDate = sapStruct.getValue("ENDDATE");
 		Date endTime = sapStruct.getValue("ENDTIME");
 		if (endDate != null && endTime != null) {
-			this.endDate = DateUtils.INSTANCE.addDates(endDate, endTime);
+			this.endDate = DateUtils.INSTANCE.addHours(endDate, endTime);
 		}
 
 		periodic = sapStruct.getValue("PERIODIC");
@@ -98,7 +98,7 @@ public final class BapiXmJob {
 		Date lastExeDate = sapStruct.getValue("LASTSTRTDT");
 		Date lastExeTime = sapStruct.getValue("LASTSTRTTM");
 		if (lastExeDate != null && lastExeTime != null) {
-			this.lastExeDate = DateUtils.INSTANCE.addDates(lastExeDate, lastExeTime);
+			this.lastExeDate = DateUtils.INSTANCE.addHours(lastExeDate, lastExeTime);
 		}
 
 		processNumber = sapStruct.getValue("WPNUMBER");

@@ -13,19 +13,19 @@ public enum DateUtils {
 	INSTANCE;
 
 	/**
-	 * Suma dos fechas.
+	 * Suma las horas del segundo objeto Date al primer objeto Date.
 	 * 
-	 * @param date1
-	 *            - Primera fecha.
-	 * @param date2
-	 *            - Segunda fecha.
-	 * @return Fechas sumadas.
+	 * @param base
+	 *            - Fecha base (dia, mes, ano) a la cual se le sumaran horas.
+	 * @param hours
+	 *            - Fecha a usar para sumar las horas.
+	 * @return Primera fecha con horas sumadas de la segunda fecha.
 	 */
-	public Date addDates(Date date1, Date date2) {
+	public Date addHours(Date base, Date hours) {
 		Calendar cal1 = Calendar.getInstance();
-		cal1.setTime(date1);
+		cal1.setTime(base);
 		Calendar cal2 = Calendar.getInstance();
-		cal2.setTime(date2);
+		cal2.setTime(hours);
 
 		cal1.set(Calendar.HOUR_OF_DAY, cal2.get(Calendar.HOUR_OF_DAY));
 		cal1.set(Calendar.MINUTE, cal2.get(Calendar.MINUTE));

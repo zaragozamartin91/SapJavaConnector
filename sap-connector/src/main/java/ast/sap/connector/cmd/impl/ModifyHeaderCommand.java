@@ -8,6 +8,7 @@ import ast.sap.connector.job.JobRunData;
 import ast.sap.connector.job.mod.JobHeaderModifier;
 import ast.sap.connector.xmi.XmiLoginData;
 
+@Deprecated
 public class ModifyHeaderCommand extends SapXmiCommand {
 
 	private JobRunData jobRunData;

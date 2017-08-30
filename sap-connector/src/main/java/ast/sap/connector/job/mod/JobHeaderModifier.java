@@ -6,6 +6,7 @@ import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
 import ast.sap.connector.job.JobRunData;
 
+@Deprecated
 public class JobHeaderModifier {
 
 	private SapRepository sapRepository;

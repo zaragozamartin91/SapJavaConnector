@@ -20,8 +20,6 @@ import ast.sap.connector.job.track.StatusCode;
 /**
  * Representa el resultado de la ejecucion de un comando.
  * 
- * TODO : algunos de los campos que posee son para la ejecucion de comandos debug. Se debe determinar que campos se quedan y cuales se van.
- * 
  * @author mzaragoz
  *
  */

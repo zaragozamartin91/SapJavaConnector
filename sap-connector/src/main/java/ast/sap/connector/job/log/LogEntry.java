@@ -28,7 +28,7 @@ public class LogEntry {
 
 		Date date = (Date) entry.getValue("ENTERDATE");
 		Date time = (Date) entry.getValue("ENTERTIME");
-		this.date = DateUtils.INSTANCE.addDates(date, time);
+		this.date = DateUtils.INSTANCE.addHours(date, time);
 	};
 
 	public Date getDate() {

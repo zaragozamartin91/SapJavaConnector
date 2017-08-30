@@ -75,7 +75,7 @@ public final class Bp20job {
 		Date plannedStartDate = sapStruct.getValue("SDLSTRTDT");
 		Date plannedStartTime = sapStruct.getValue("SDLSTRTTM");
 		if (plannedStartDate != null && plannedStartTime != null) {
-			this.plannedStartDate = DateUtils.INSTANCE.addDates(plannedStartDate, plannedStartTime);
+			this.plannedStartDate = DateUtils.INSTANCE.addHours(plannedStartDate, plannedStartTime);
 		}
 
 		bgTgtSystem = sapStruct.getValue("BTCSYSTEM");
@@ -83,7 +83,7 @@ public final class Bp20job {
 		Date scheduleDate = sapStruct.getValue("SDLDATE");
 		Date scheduleTime = sapStruct.getValue("SDLTIME");
 		if (scheduleDate != null && scheduleTime != null) {
-			this.scheduleDate = DateUtils.INSTANCE.addDates(scheduleDate, scheduleTime);
+			this.scheduleDate = DateUtils.INSTANCE.addHours(scheduleDate, scheduleTime);
 		}
 
 		scheduleUsername = sapStruct.getValue("SDLUNAME");
@@ -91,7 +91,7 @@ public final class Bp20job {
 		Date lastChangeDate = sapStruct.getValue("LASTCHDATE");
 		Date lastChangeTime = sapStruct.getValue("LASTCHTIME");
 		if (lastChangeDate != null && plannedStartTime != null) {
-			this.lastChangeDate = DateUtils.INSTANCE.addDates(lastChangeDate, lastChangeTime);
+			this.lastChangeDate = DateUtils.INSTANCE.addHours(lastChangeDate, lastChangeTime);
 		}
 
 		lastChangeUsername = sapStruct.getValue("LASTCHNAME");
@@ -99,7 +99,7 @@ public final class Bp20job {
 		Date releaseDate = sapStruct.getValue("RELDATE");
 		Date releaseTime = sapStruct.getValue("RELTIME");
 		if (releaseDate != null && releaseTime != null) {
-			this.releaseDate = DateUtils.INSTANCE.addDates(releaseDate, releaseTime);
+			this.releaseDate = DateUtils.INSTANCE.addHours(releaseDate, releaseTime);
 		}
 
 		releaseUsername = sapStruct.getValue("RELUNAME");
@@ -108,13 +108,13 @@ public final class Bp20job {
 		Date startTime = sapStruct.getValue("STRTTIME");
 
 		if (startDate != null && startTime != null) {
-			this.startDate = DateUtils.INSTANCE.addDates(startDate, startTime);
+			this.startDate = DateUtils.INSTANCE.addHours(startDate, startTime);
 		}
 
 		Date endDate = sapStruct.getValue("ENDDATE");
 		Date endTime = sapStruct.getValue("ENDTIME");
 		if (endDate != null && endTime != null) {
-			this.endDate = DateUtils.INSTANCE.addDates(endDate, endTime);
+			this.endDate = DateUtils.INSTANCE.addHours(endDate, endTime);
 		}
 
 		periodMins = sapStruct.getValue("PRDMINS");
@@ -136,7 +136,7 @@ public final class Bp20job {
 		Date lastExecDate = sapStruct.getValue("LASTSTRTDT");
 		Date lastExecTime = sapStruct.getValue("LASTSTRTTM");
 		if (lastExecDate != null && lastExecTime != null) {
-			this.lastExecDate = DateUtils.INSTANCE.addDates(lastExecDate, lastExecTime);
+			this.lastExecDate = DateUtils.INSTANCE.addHours(lastExecDate, lastExecTime);
 		}
 
 		wpNumber = sapStruct.getValue("WPNUMBER");
