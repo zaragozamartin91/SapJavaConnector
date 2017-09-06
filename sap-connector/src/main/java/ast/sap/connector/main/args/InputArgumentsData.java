@@ -6,24 +6,30 @@ import java.util.List;
 
 import com.google.common.base.Optional;
 
+import ast.sap.connector.cmd.AvailableCommand;
 import ast.sap.connector.job.JobData;
 import ast.sap.connector.job.JobRunData;
 import ast.sap.connector.job.variant.VariantKeyValuePair;
 import ast.sap.connector.xmi.XmiLoginData;
 
+/**
+ * Datos de ejecucion del componente.
+ * 
+ * @author martin.zaragoza
+ *
+ */
 public final class InputArgumentsData {
 	/* PARAMETROS DE INICIO DE SESION CON SAP */
 	private String user;
 	private String password;
 	private String host;
-	private int timeoutSecs;
 	private String clientNumber;
 	private String systemNumber;
 
 	/* PARAMETROS DE EJECUCION DE JOBS */
 	private String jobName = "";
 	private String jobId = "";
-	private String command;
+	private AvailableCommand command = AvailableCommand.HELP;
 
 	private String language = "EN";
 
@@ -45,10 +51,6 @@ public final class InputArgumentsData {
 
 	public String getHost() {
 		return host;
-	}
-
-	public int getTimeoutSecs() {
-		return timeoutSecs;
 	}
 
 	public String getJobName() {
@@ -78,11 +80,6 @@ public final class InputArgumentsData {
 		return this;
 	}
 
-	public InputArgumentsData setTimeoutSecs(int timeoutSecs) {
-		this.timeoutSecs = timeoutSecs;
-		return this;
-	}
-
 	public InputArgumentsData setJobName(String jobName) {
 		this.jobName = jobName;
 		return this;
@@ -98,11 +95,11 @@ public final class InputArgumentsData {
 		return this;
 	}
 
-	public String getCommand() {
+	public AvailableCommand getCommand() {
 		return command;
 	}
 
-	public InputArgumentsData setCommand(String command) {
+	public InputArgumentsData setCommand(AvailableCommand command) {
 		this.command = command;
 		return this;
 	}
@@ -172,7 +169,7 @@ public final class InputArgumentsData {
 
 	@Override
 	public String toString() {
-		return "InputArgumentsData [user=" + user + ", password=" + "****" + ", host=" + host + ", timeoutSecs=" + timeoutSecs + ", clientNumber="
+		return "InputArgumentsData [user=" + user + ", password=" + "****" + ", host=" + host + ", clientNumber="
 				+ clientNumber + ", systemNumber=" + systemNumber + ", jobName=" + jobName + ", jobId=" + jobId + ", command=" + command + ", language="
 				+ language + ", execServer=" + execServer + ", eventId=" + eventId + ", singleStep=" + singleStep + ", singleVariant=" + singleVariant
 				+ ", variantKeyValuePairs=" + variantKeyValuePairs + "]";
@@ -196,15 +193,15 @@ public final class InputArgumentsData {
 	 * @return True si el comando solicitado a invocar es HELP.
 	 */
 	public boolean isHelp() {
-		return Optional.fromNullable(command).or("HELP").equalsIgnoreCase("HELP");
+		return AvailableCommand.HELP.equals(command);
 	}
-	
+
 	/**
 	 * Verifica si el comando a ejecutar es de tipo ENCRYPT_PASSWORD.
 	 * 
 	 * @return True si el comando a ejecutar es de tipo ENCRYPT_PASSWORD, false en caso contrario.
 	 */
 	public boolean isEncryptPassword() {
-		return Optional.fromNullable(command).or("HELP").equalsIgnoreCase("ENCRYPT_PASSWORD");
+		return AvailableCommand.ENCRYPT_PASSWORD.equals(command);
 	}
 }

@@ -1,5 +1,6 @@
 package ast.sap.connector.main.args;
 
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,9 +8,13 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 import org.kohsuke.args4j.ParserProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Preconditions;
+import com.google.common.base.Strings;
 
+import ast.sap.connector.cmd.AvailableCommand;
 import ast.sap.connector.job.variant.VariantKeyValuePair;
 
 /**
@@ -19,12 +24,14 @@ import ast.sap.connector.job.variant.VariantKeyValuePair;
  *
  */
 public class InputArgumentsParser {
+	public static final AvailableCommand DEFAULT_COMMAND = AvailableCommand.HELP;
+	private static final Logger LOGGER = LoggerFactory.getLogger(InputArgumentsParser.class);
 	public static final InputArgumentsParser INSTANCE = new InputArgumentsParser();
 
 	@Option(name = "-n", aliases = { "--client" }, required = false, usage = "numero de instancia de server sap")
 	private String clientNumber;
 
-	@Option(name = "-c", aliases = { "--command" }, required = true, usage = "comando a correr")
+	@Option(name = "-c", aliases = { "--command" }, required = false, usage = "comando a correr")
 	private String command;
 
 	@Option(name = "-e", aliases = { "--event" }, required = false, usage = "event id a disparar", hidden = true)
@@ -110,20 +117,43 @@ public class InputArgumentsParser {
 		}
 	}
 
+	public void printUsage(OutputStream... outputStream) {
+		OutputStream out = outputStream.length == 0 ? System.out : outputStream[0];
+		CmdLineParser parser = new CmdLineParser(this);
+		parser.printUsage(out);
+	}
+
 	private void validate() throws IllegalStateException {
-		Preconditions.checkState(clientNumber.matches("\\d+"), "El valor de numero de cliente no es numerico!");
-		Preconditions.checkState(systemNumber.matches("\\d+"), "El valor de numero de sistema no es numerico!");
+		AvailableCommand cmd = getCommand(true);
+		
+		if (clientNumber != null) Preconditions.checkState(clientNumber.matches("\\d+"), "El valor de numero de cliente no es numerico!");
+		if (systemNumber != null) Preconditions.checkState(systemNumber.matches("\\d+"), "El valor de numero de sistema no es numerico!");
+		
+		if (AvailableCommand.ENCRYPT_PASSWORD.equals(cmd))
+			Preconditions.checkState(!Strings.isNullOrEmpty(password), "Para encriptar un password es necesario ingresar un password con el parametro -p");
+		
+		if (AvailableCommand.RUN_JOB.equals(cmd)) Preconditions.checkState(!Strings.isNullOrEmpty(jobId) && !Strings.isNullOrEmpty(jobName),
+				"Para correr un job es necesario ingresar el id del mismo y el nombre mediante los parametros -i y -j respectivamente");
+		
+		if (AvailableCommand.MONITOR_JOB.equals(cmd)) Preconditions.checkState(!Strings.isNullOrEmpty(jobId) && !Strings.isNullOrEmpty(jobName),
+				"Para correr y monitorear un job es necesario ingresar el id del mismo y el nombre mediante los parametros -i y -j respectivamente");
+		
+		if(AvailableCommand.CREATE_RUN_JOB.equals(cmd)) Preconditions.checkState(!Strings.isNullOrEmpty(jobName) && !Strings.isNullOrEmpty(jobStep), 
+				"Para crear y correr un job es necesario indicar un nombre de job y un programa a correr mediante los parametros -j y -t respectivamente");
+		
+		if(AvailableCommand.CREATE_MONITOR_JOB.equals(cmd)) Preconditions.checkState(!Strings.isNullOrEmpty(jobName) && !Strings.isNullOrEmpty(jobStep), 
+				"Para crear, correr y monitorear un job es necesario indicar un nombre de job y un programa a correr mediante los parametros -j y -t respectivamente");
 	}
 
 	private void setDefaults() {
 		clientNumber = null;
-		command = null;
+		command = DEFAULT_COMMAND.toString();
 		eventId = null;
 		execServer = null;
 		language = "EN";
 		host = null;
 		jobId = null;
-		jobName = "CONN_JOB";
+		jobName = null;
 		password = null;
 		jobStep = null;
 		stepVariant = null;
@@ -140,8 +170,8 @@ public class InputArgumentsParser {
 
 	private InputArgumentsData buildArgsData() {
 		InputArgumentsData argsData = new InputArgumentsData()
+				.setCommand(getCommand())
 				.setClientNumber(clientNumber)
-				.setCommand(command)
 				.setEventId(eventId)
 				.setExecServer(execServer)
 				.setLanguage(language)
@@ -155,15 +185,22 @@ public class InputArgumentsParser {
 				.setUser(user);
 
 		List<VariantKeyValuePair> variantKeyValuePairs = new ArrayList<>();
-		if (variantFieldKey1 != null) {
-			variantKeyValuePairs.add(new VariantKeyValuePair(variantFieldKey1, variantFieldValue1));
-		}
-		if (variantFieldKey2 != null) {
-			variantKeyValuePairs.add(new VariantKeyValuePair(variantFieldKey2, variantFieldValue2));
-		}
-		if (variantFieldKey3 != null) {
-			variantKeyValuePairs.add(new VariantKeyValuePair(variantFieldKey3, variantFieldValue3));
-		}
+		if (variantFieldKey1 != null) variantKeyValuePairs.add(new VariantKeyValuePair(variantFieldKey1, variantFieldValue1));
+		if (variantFieldKey2 != null) variantKeyValuePairs.add(new VariantKeyValuePair(variantFieldKey2, variantFieldValue2));
+		if (variantFieldKey3 != null) variantKeyValuePairs.add(new VariantKeyValuePair(variantFieldKey3, variantFieldValue3));
+
 		return argsData.setVariantKeyValuePairs(variantKeyValuePairs);
+	}
+
+	private AvailableCommand getCommand(boolean... printOnError) {
+		// valor por defecto: false
+		boolean printerr = printOnError.length > 0 && printOnError[0];
+		try {
+			return AvailableCommand.valueOf(command);
+		} catch (Exception e) {
+			if (printerr) LOGGER.error("El comando {} no existe", command);
+			/* Si el comando pasado por argumento no existe, entonces seteo el comando HELP por defecto */
+			return DEFAULT_COMMAND;
+		}
 	}
 }

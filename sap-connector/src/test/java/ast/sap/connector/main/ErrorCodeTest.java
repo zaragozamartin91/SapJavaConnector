@@ -6,32 +6,26 @@ import org.junit.Test;
 public class ErrorCodeTest {
 
 	@Test 
-	public void testFromCodeWithNonFatalError() {
+	public void testFromCode() {
 		int code = 701;
-		ErrorCode error = ErrorCode.fromCode(code);
-		Assert.assertEquals(code, error.getCode());
+		ErrorCode error = ErrorCode.getError(code);
+		Assert.assertEquals(code, error.code);
 	}
 	
 	
 	@Test
-	public void testFromCodeWithUknownCode() {
+	public void testFromCodeWithUnknownCode() {
 		int code = 20000;
-		ErrorCode error = ErrorCode.fromCode(code);
-		Assert.assertNotEquals(code, error.getCode());
+		ErrorCode error = ErrorCode.getError(code);
+		Assert.assertNotEquals(code, error.code);
 	}
 	
-	@Test
-	public void testFromCodeWithFatalError() {
-		int code = 102;
-		ErrorCode error = ErrorCode.fromCode(code);
-		Assert.assertEquals(code+ErrorCode.JCO_ERROR_OFFSET, error.getCode());
-	}
 	
 	@Test
 	public void testFromName(){
 		String key = "JCO_ERROR_COMMUNICATION";
-		ErrorCode error = ErrorCode.fromName(key);
-		Assert.assertEquals(ErrorCode.JCO_ERROR_COMMUNICATION.getCode(), error.getCode());
+		ErrorCode error = ErrorCode.getError(key);
+		Assert.assertEquals(ErrorCode.JCO_ERROR_COMMUNICATION.code, error.code);
 	}
 
 }

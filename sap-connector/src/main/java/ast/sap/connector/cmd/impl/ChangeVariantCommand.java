@@ -13,6 +13,11 @@ import ast.sap.connector.job.variant.VariantChanger;
 import ast.sap.connector.job.variant.VariantKeyValuePair;
 import ast.sap.connector.xmi.XmiLoginData;
 
+/**
+ * @author franco.milanese
+ *
+ * Comando para la modificacione de una variante de un programa
+ */
 public class ChangeVariantCommand extends SapXmiCommand {
 
 	private JobRunData jobData;

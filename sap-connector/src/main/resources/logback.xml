@@ -25,6 +25,7 @@
 	</appender>
 	
 	<logger name="ast.sap.connector" level="DEBUG">
+		<!-- COMENTAR EL APPENDER STDOUT EN PRODUCCION -->
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</logger>

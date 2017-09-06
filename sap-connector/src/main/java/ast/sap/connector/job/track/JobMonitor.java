@@ -117,7 +117,7 @@ public class JobMonitor {
 		LOGGER.debug("entriesCount: " + entriesCount);
 
 		int entryReadCount = entriesCount - currLogLine;
-		System.out.println("entryReadCount: " + entryReadCount);
+		LOGGER.debug("entryReadCount: " + entryReadCount);
 		if (entryReadCount > 0) {
 			List<LogEntry> entriesToPrint = logEntries.subList(currLogLine, entriesCount);
 			for (LogEntry entry : entriesToPrint) {

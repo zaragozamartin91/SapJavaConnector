@@ -5,6 +5,7 @@ import ast.sap.connector.cmd.SapXmiCommand;
 import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
+import ast.sap.connector.func.exception.RspcExecuteException;
 import ast.sap.connector.xmi.XmiLoginData;
 
 public class GetChainLogCommand extends SapXmiCommand {
@@ -19,7 +20,7 @@ public class GetChainLogCommand extends SapXmiCommand {
 	}
 
 	@Override
-	protected SapCommandResult perform() {
+	protected SapCommandResult perform() throws RspcExecuteException{
 		SapFunction function = repository().getFunction("RSPC_API_CHAIN_GET_LOG")
 				.setInParameter("I_CHAIN", chainName)
 				.setInParameter("I_LOGID", logId);

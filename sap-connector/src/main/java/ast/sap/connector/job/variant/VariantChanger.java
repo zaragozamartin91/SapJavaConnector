@@ -1,6 +1,10 @@
 package ast.sap.connector.job.variant;
 
+import java.text.ParseException;
 import java.util.Collection;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
@@ -13,13 +17,22 @@ import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
 
 public class VariantChanger {
+	private static final Logger LOGGER = LoggerFactory.getLogger(VariantChanger.class);
+	
 	private final SapRepository repository;
 
 	public VariantChanger(SapRepository repository) {
 		this.repository = repository;
 	}
 
-	public SapBapiret2 changeVariant(ChangeVariantData changeVariantData) {
+	/**
+	 * Modifica los campos de una variante.
+	 * 
+	 * @param changeVariantData - Informacion de la variante y campos a modificar.
+	 * @return Resultado del cambio de variante.
+	 * @throws VariantFieldChangeException Si ocurrio un error al modificar alguno de los campos.
+	 */
+	public SapBapiret2 changeVariant(ChangeVariantData changeVariantData) throws VariantFieldChangeException {
 		Object programName = changeVariantData.getProgram();
 		Object externalUsername = changeVariantData.getExternalUsername();
 
@@ -41,7 +54,7 @@ public class VariantChanger {
 		}
 		Variant variant = new Variant(variantTable);
 
-		System.out.println(variant.toString());
+		LOGGER.debug(variant.toString());
 		// TODO: MODIFICAR LA TABLA RECIBIDA (variantData) DE LA FUNCION ANTERIOR Y ACTUALIZANDO LOS CAMPOS NECESARIOS (HAY QUE VER COMO VIENEN ESOS CAMPOS Y
 		// CUALES SON)
 		// for (VariantInfo variant : variantData.getVariantInfoList()) {
@@ -76,7 +89,13 @@ public class VariantChanger {
 
 			Optional<VariantKeyValuePair> matchingEntry = matchingEntry(variantEntry, variantValuePairs);
 			if (matchingEntry.isPresent()) {
-				newRow.setValue("PLOW", matchingEntry.get().value);
+				String value;
+				try {
+					value = variantEntry.getFieldType().transform(matchingEntry.get().value);
+				} catch (ParseException e) {
+					throw new VariantFieldChangeException("Error al modificar el campo " + matchingEntry.get().key + ":: Formato del dato invalido",e);
+				}
+				newRow.setValue("PLOW", value);
 			}
 		}
 		SapFunctionResult result2 = function.execute();

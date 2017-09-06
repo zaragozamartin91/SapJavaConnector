@@ -9,6 +9,7 @@ public class ChainData {
 
 	private String logId;
 	private String chain;
+	
 
 	public ChainData(String logId, String chain) {
 		this.chain = chain;

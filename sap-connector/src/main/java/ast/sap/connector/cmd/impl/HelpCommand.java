@@ -1,8 +1,19 @@
 package ast.sap.connector.cmd.impl;
 
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
+import ast.sap.connector.cmd.AvailableCommand;
 import ast.sap.connector.cmd.SapCommand;
 import ast.sap.connector.cmd.SapCommandResult;
+import ast.sap.connector.main.args.InputArgumentsParser;
 
+/**
+ * Comando que imprime el menu de ayuda en stdout.
+ * 
+ * @author martin.zaragoza
+ *
+ */
 public class HelpCommand implements SapCommand {
 	private HelpCommand log(String msg) {
 		System.out.println(msg);
@@ -11,48 +22,18 @@ public class HelpCommand implements SapCommand {
 
 	@Override
 	public SapCommandResult execute() {
-		log("\nCOMANDOS DISPONIBLES:");
-		log(""
-				+ "* XMI_LOGIN\n"
-				+ "* TRACK_JOB\n"
-				+ "* RUN_JOB\n"
-				+ "* CREATE_JOB\n"
-				+ "* USER_GET_DETAIL\n"
-				+ "* STOP_JOB\n"
-				+ "* RAISE_EVENT\n"
-				+ "* CRYSTAL_GETUSERLIST\n"
-				+ "* GET_JOB_OUTPUT\n"
-				+ "* MONITOR_JOB\n"
-				+ "* RUN_STOP_JOB\n"
-				+ "* READ_SPOOL\n"
-				+ "* READ_JOB_DEFINITION\n"
-				+ "* JOB_COUNT\n"
-				+ "* READ_JOB\n"
-				+ "* MODIFY_HEADER\n"
-				+ "* CHANGE_VARIANT\n"
-				+ "* CREATE_RUN_JOB: crea y corre un job con un unico step y variante. Parametros obligatorios[-j -t -v -m]\n"
-				+ "* ENCRYPT_PASSWORD: encripta un password. Parametros obligatorios[-p]\n"
-				+ "* CREATE_MONITOR_JOB: crea, corre y monitorea un job hasta su finalizacion imprimiendo el log del mismo por intervalos");
-
-		log("\nOPCIONES DISPONIBLES:");
-		log(""
-				+ "* -uUSUARIO\n"
-				+ "* -pPASSWORD\n"
-				+ "* -jJOB_NAME\n"
-				+ "* -nSAP_CLIENT_NUMBER\n"
-				+ "* -cCOMANDO\n"
-				+ "* -hHOST_SAP\n"
-				+ "* -iJOB_ID\n"
-				+ "* -sSAP_SYSTEM_NUMBER\n"
-				+ "* -xEXEC_SERVER\n"
-				+ "* -eEVENT_ID\n"
-				+ "* -mVALORES_DE_CAMPOS_DE_VARIANTE. EJ: -m[(fecha:21.03.1991),(valor:1234)]\n"
-				+ "* -sSTEP\n"
-				+ "* -vVARIANTE");
-
 		log("\nEJEMPLO DE USO:");
-		log("\tsapConnector -umzaragoz -p**** -jTEST_JOB -n500 -cCREATE_RUN_JOB -hsaphanatest -s01");
+		log("\tsapConnector -u mzaragoz -p **** -j TEST_JOB -n 500 -c CREATE_RUN_JOB -h saphanatest -s 01");
+
+		log("\nParametros disponibles:");
+		InputArgumentsParser.INSTANCE.printUsage(System.out);
 		
+		String availableCmdsStr = Arrays.toString(AvailableCommand.values())
+				.replaceAll(Pattern.quote(","), "\n\t,")
+				.replaceAll(Pattern.quote("["), "[\n\t")
+				.replaceAll(Pattern.quote("]"), "\n]");
+		log("\nComandos disponibles: " + availableCmdsStr);
+
 		log("\nALGUNOS PARAMETROS PUEDEN OMITIRSE DEPENDIENDO DEL COMANDO A EJECUTAR Y DE LA CONFIGURACION "
 				+ "DEL COMPONENTE (POR EJEMPLO: SI EN EL ARCHIVO DE CONFIGURACION FIGURAN LAS PROPIEDADES username "
 				+ "Y password, ENTONCES LOS PARAMETROS -u Y -p PUEDEN OMITIRSE).");

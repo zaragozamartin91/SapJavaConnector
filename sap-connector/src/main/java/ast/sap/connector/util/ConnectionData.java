@@ -1,5 +1,7 @@
 package ast.sap.connector.util;
 
+import com.google.common.base.Preconditions;
+
 /**
  * Datos de conexion para la creacion de archivos de destino de JCO3 con sap.
  * 
@@ -63,5 +65,23 @@ public final class ConnectionData {
 		this.language = language;
 		this.host = host;
 		this.systemNumber = systemNumber;
+	}
+
+	/**
+	 * Valida la informacion de conexion. Lanza una excepcion en caso que encontrar datos invalidos.
+	 * 
+	 * @throws InvalidConnectionDataException
+	 *             En caso que la informacion sea invalida o insuficiente.
+	 */
+	public void validate() throws InvalidConnectionDataException {
+		try {
+			Preconditions.checkNotNull(language, "No se indico un idioma");
+			Preconditions.checkNotNull(userId, "No se indico un username");
+			Preconditions.checkNotNull(sapClient, "No se indico un numero de cliente sap");
+			Preconditions.checkNotNull(host, "No se indico el host/ip del server");
+			Preconditions.checkNotNull(systemNumber, "No se indico el numero del sistema");
+		} catch (Exception e) {
+			throw new InvalidConnectionDataException("La informacion de conexion es incompleta", e);
+		}
 	}
 }

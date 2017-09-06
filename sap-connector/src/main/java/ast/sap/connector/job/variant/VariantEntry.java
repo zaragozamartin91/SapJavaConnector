@@ -15,7 +15,6 @@ import ast.sap.connector.func.OutTableRow;
  *         Estructura de la tabla BAPIVARINFO, utilizada en el manejo de variantes de programa
  */
 public class VariantEntry {
-
 	private String report;
 	private String variant;
 	private String pname;
@@ -26,6 +25,7 @@ public class VariantEntry {
 	private String poption;
 	private String plow;
 	private String phigh;
+	private VariantFieldType fieldType = VariantFieldType.TEXT;
 
 	public VariantEntry(OutTableRow outTableRow) {
 		this.report = outTableRow.getValue("REPORT").toString();
@@ -35,30 +35,42 @@ public class VariantEntry {
 		this.polen = (Integer) outTableRow.getValue("POLEN");
 		this.ptext = outTableRow.getValue("PTEXT").toString();
 		this.psign = outTableRow.getValue("PSIGN").toString();
-		this.poption = outTableRow.getValue("POPTION").toString();				
-		
+		this.poption = outTableRow.getValue("POPTION").toString();
+
 		this.plow = setPlow(outTableRow);
-		
+
 		this.phigh = outTableRow.getValue("PHIGH").toString();
 	}
 
 	/**
 	 * @param outTableRow
 	 * 
-	 * El formato de fecha recibida al consultar la variante en SAP es distinto al formato que se debe enviar para cambiarla, por lo tanto se realiza la conversion de dd.MM.yyyy a yyyyMMdd 
-	 * @return 
+	 *            El formato de fecha recibida al consultar la variante en SAP es distinto al formato que se debe enviar para cambiarla, por lo tanto se realiza
+	 *            la conversion de dd.MM.yyyy a yyyyMMdd
+	 * @return
 	 */
 	private String setPlow(OutTableRow outTableRow) {
 		String plow = outTableRow.getValue("PLOW").toString();
-		SimpleDateFormat dateFormat = Configuration.getDateFormat();
+		SimpleDateFormat dateFormat = Configuration.getSapInDateFormat();
 		try {
 			Date parsed = dateFormat.parse(plow);
-			return Configuration.getOutDateFormat().format(parsed);
+			String valueToSet = Configuration.getSapOutDateFormat().format(parsed);
+			fieldType = VariantFieldType.DATE;
+			return valueToSet;
 		} catch (ParseException e) {
 			try {
-				Number parsedNumber = NumberFormat.getInstance(Locale.GERMANY).parse(plow.trim());
-				return parsedNumber.toString();
+				/* TODO : ENCONTRAR UN PARSER NUMERICO ESTRICTO */
+				String regex = "\\d+(\\.|\\,|\\d)*";
+				if (plow.trim().matches(regex)) {
+					Number parsedNumber = NumberFormat.getInstance(Locale.GERMANY).parse(plow.trim());
+					fieldType = VariantFieldType.NUMBER;
+					return parsedNumber.toString();
+				} else {
+					fieldType = VariantFieldType.TEXT;
+					return plow;
+				}
 			} catch (ParseException e1) {
+				fieldType = VariantFieldType.TEXT;
 				return plow;
 			}
 		}
@@ -144,12 +156,13 @@ public class VariantEntry {
 		this.phigh = phigh;
 	}
 
+	public VariantFieldType getFieldType() {
+		return fieldType;
+	}
+
 	@Override
 	public String toString() {
-		return "VariantInfo [report=" + report + ", variant=" + variant + ", pname=" + pname + ", pkind=" + pkind + ", polen=" + polen + ", ptext=" + ptext
-				+ ", psign=" + psign + ", poption=" + poption + ", plow=" + plow + ", phigh=" + phigh + "]";
+		return "VariantEntry [report=" + report + ", variant=" + variant + ", pname=" + pname + ", pkind=" + pkind + ", polen=" + polen + ", ptext=" + ptext
+				+ ", psign=" + psign + ", poption=" + poption + ", plow=" + plow + ", phigh=" + phigh + ", fieldType=" + fieldType + "]";
 	}
-	
-	
-
 }

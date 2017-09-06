@@ -1,66 +1,51 @@
-package ast.sap.connector.main;
-
-import java.util.Collections;
-
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-
-import com.sap.conn.jco.JCoException;
-
-import ast.sap.connector.cmd.SapCommandResult;
-import ast.sap.connector.dst.SapDestination;
-import ast.sap.connector.dst.SapDestinationFactory;
-import ast.sap.connector.dst.SapRepository;
-import ast.sap.connector.dst.exception.RepositoryGetFailException;
-import ast.sap.connector.func.SapBapiret2;
-import ast.sap.connector.job.JobCreateData;
-import ast.sap.connector.job.JobData;
-import ast.sap.connector.job.JobRunData;
-import ast.sap.connector.job.create.JobCreator;
-import ast.sap.connector.job.create.NewJobData;
-import ast.sap.connector.job.create.StepVariantPair;
-import ast.sap.connector.job.run.AsapJobRunner;
-import ast.sap.connector.xmi.XmiLoginData;
-import ast.sap.connector.xmi.XmiSession;
-
-public class OutputParserTest {
-
-	private static SapRepository repository;
-	private static XmiSession xmiSession;
-	private SapCommandResult sapCommandResult;
-
-	@Before
-	public void before() throws JCoException, RepositoryGetFailException {
-		SapDestination destination = SapDestinationFactory.INSTANCE.getDestination("testDestination");
-		destination.getAttributes();
-		repository = destination.openContext();
-		XmiLoginData loginData = new XmiLoginData();
-		xmiSession = new XmiSession(repository, loginData);
-		JobCreator jobDummy = new JobCreator(repository);
-		String jobName = "TEST_JOB_RUNNER";
-		String externalUsername = "mzaragoz";
-		JobCreateData jobCreateData = JobData.newJobCreateData(jobName, externalUsername);
-		NewJobData newJob = jobDummy.createJob(jobCreateData, Collections.singletonList(new StepVariantPair("SHOWCOLO")));
-		String jobId = newJob.getJobCount();
-		JobRunData jobRunData = JobData.newJobRunData(jobName, externalUsername, jobId);
-		AsapJobRunner runner = new AsapJobRunner(repository);
-		SapBapiret2 bapiRet2 = runner.runJob(jobRunData);
-		this.sapCommandResult = new SapCommandResult(bapiRet2);
-	}
-
-	@Test
-	public void testParseOutput() {
-		OutputError parsedOutput = OutputParser.INSTANCE.parseOutput(sapCommandResult);
-		Integer expected = 0;
-		Integer code = parsedOutput.getCode();
-		Assert.assertEquals(expected, code);
-
-	}
-
-	@AfterClass
-	public static void after() {
-		xmiSession.logout();
-	}
-}
+//package ast.sap.connector.main;
+//
+//import org.junit.Assert;
+//import org.junit.BeforeClass;
+//import org.junit.Test;
+//import org.mockito.Mock;
+//import org.mockito.Mockito;
+//
+//import ast.sap.connector.cmd.SapCommandResult;
+//import ast.sap.connector.func.SapBapiret2;
+//import ast.sap.connector.job.log.JobLog;
+//import ast.sap.connector.job.track.JobFullStatus;
+//import ast.sap.connector.job.track.JobStatus;
+//
+//public class OutputParserTest {
+//
+//	@Mock
+//	static SapBapiret2 bapiret2 = Mockito.mock(SapBapiret2.class);
+//
+//	@BeforeClass
+//	public static void before() {
+//		bapiret2.setNumber(123);
+//		bapiret2.setMessage("PRUEBA OUTPUT PARSER");
+//	}
+//
+//	@Test
+//	public void testParseOutputBapiRet() {
+//		SapCommandResult sapCommandResult = new SapCommandResult(bapiret2);
+//		OutputError parsedOutput = OutputParser.INSTANCE.parseOutput(sapCommandResult);
+//		Integer expected = bapiret2.getNumber();
+//		Integer code = parsedOutput.getCode();
+//		Assert.assertEquals(expected, code);
+//		Assert.assertEquals(bapiret2.getMessage(), parsedOutput.getMessage());
+//
+//	}
+//
+//	@Test
+//	public void testParseOutputMonitor() {
+//		SapCommandResult sapCommandResult = new SapCommandResult(new JobFullStatus(Mockito.mock(JobLog.class), new JobStatus("Z", null)));
+//		OutputError parseOutput = OutputParser.INSTANCE.parseOutput(sapCommandResult);
+//		Assert.assertEquals(ErrorCode.ERROR_JOB_STATUS.getCode(), parseOutput.getCode());
+//	}
+//
+//	@Test
+//	public void testParseOutput() {
+//		SapCommandResult sapCommandResult = new SapCommandResult("PRUEBA");
+//		OutputError parseOutput = OutputParser.INSTANCE.parseOutput(sapCommandResult);
+//		Assert.assertEquals(ErrorCode.UNKNOWN.getCode(), parseOutput.getCode());
+//	}
+//
+//}

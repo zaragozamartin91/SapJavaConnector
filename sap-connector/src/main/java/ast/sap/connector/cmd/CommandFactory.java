@@ -3,16 +3,22 @@ package ast.sap.connector.cmd;
 import java.util.Collections;
 import java.util.List;
 
-import com.google.common.base.Optional;
+import com.google.common.base.Strings;
 
+import ast.sap.connector.chain.ChainData;
+import ast.sap.connector.cmd.impl.ChainScheduleCommand;
 import ast.sap.connector.cmd.impl.ChangeVariantCommand;
 import ast.sap.connector.cmd.impl.CreateJobCommand;
 import ast.sap.connector.cmd.impl.CreateMonitorJobCommand;
 import ast.sap.connector.cmd.impl.CreateRunJobCommand;
-import ast.sap.connector.cmd.impl.CrystalGetuserlistCommand;
 import ast.sap.connector.cmd.impl.GetChainErrorsCommand;
 import ast.sap.connector.cmd.impl.GetChainLogCommand;
+import ast.sap.connector.cmd.impl.GetChainProcessLogCommand;
+import ast.sap.connector.cmd.impl.GetChainProcessesCommand;
+import ast.sap.connector.cmd.impl.GetChainStartConditionCommand;
 import ast.sap.connector.cmd.impl.GetJobOutputCommand;
+import ast.sap.connector.cmd.impl.GetProcessJobsCommand;
+import ast.sap.connector.cmd.impl.GetProcessLogCommand;
 import ast.sap.connector.cmd.impl.HelpCommand;
 import ast.sap.connector.cmd.impl.JobCountCommand;
 import ast.sap.connector.cmd.impl.MonitorJobCommand;
@@ -22,6 +28,7 @@ import ast.sap.connector.cmd.impl.ReadJobDefinitionCommand;
 import ast.sap.connector.cmd.impl.ReadSpoolCommand;
 import ast.sap.connector.cmd.impl.RunAndStopJobCommand;
 import ast.sap.connector.cmd.impl.RunJobCommand;
+import ast.sap.connector.cmd.impl.SetChainStartConditionCommand;
 import ast.sap.connector.cmd.impl.StartChainCommand;
 import ast.sap.connector.cmd.impl.StopJobCommand;
 import ast.sap.connector.cmd.impl.TrackJobCommand;
@@ -57,60 +64,79 @@ public enum CommandFactory {
 		XmiLoginData xmiLoginData = inputArguments.newXmiLoginData();
 		JobRunData jobData = inputArguments.newJobRunData();
 
+		/* Campo programa a correr / programa cuya variante debe ser modificada */
 		String program = inputArguments.getSingleStep();
+		/* Campo variante a usar para correr un programa / variante a modificar antes de correr un programa */
 		String variant = inputArguments.getSingleVariant();
+		/* Valores de variante a establecer */
 		List<VariantKeyValuePair> variantValuePairs = inputArguments.getVariantKeyValuePairs();
 
-		String strCmd = Optional.fromNullable(inputArguments.getCommand()).or("HELP");
+		AvailableCommand command = inputArguments.getCommand();
 
-		switch (strCmd) {
-			case "XMI_LOGIN":
+		switch (command) {
+			case XMI_LOGIN:
 				return new XmiLoginCommand(sapRepository, xmiLoginData);
-			case "TRACK_JOB":
+			case TRACK_JOB:
 				return new TrackJobCommand(sapRepository, xmiLoginData, jobData);
-			case "RUN_JOB":
-				return new RunJobCommand(sapRepository, xmiLoginData, jobData);
-			case "CREATE_JOB":
+			case RUN_JOB:
+				return Strings.isNullOrEmpty(program) ? new RunJobCommand(sapRepository, xmiLoginData, jobData)
+						: new RunJobCommand(sapRepository, xmiLoginData, jobData, new StepVariantValuesTuple(program, variant, variantValuePairs));
+			case CREATE_JOB:
 				StepVariantPair step = new StepVariantPair(program, variant);
 				return new CreateJobCommand(sapRepository, xmiLoginData, jobData, Collections.singletonList(step));
-			case "USER_GET_DETAIL":
+			case USER_GET_DETAIL:
 				return new UserGetDetailCommand(sapRepository, jobData.getExternalUsername());
-			case "STOP_JOB":
+			case STOP_JOB:
 				return new StopJobCommand(sapRepository, xmiLoginData, jobData);
-			case "RAISE_EVENT":
+			case RAISE_EVENT:
 				return new RaiseEventCommand(sapRepository, xmiLoginData, jobData, inputArguments.getEventId());
-			case "CRYSTAL_GETUSERLIST":
-				return new CrystalGetuserlistCommand(sapRepository);
-			case "GET_JOB_OUTPUT":
+			case GET_JOB_OUTPUT:
 				return new GetJobOutputCommand(sapRepository, xmiLoginData, jobData);
-			case "MONITOR_JOB":
-				return new MonitorJobCommand(sapRepository, xmiLoginData, jobData);
-			case "RUN_STOP_JOB":
+			case MONITOR_JOB:
+				return Strings.isNullOrEmpty(program) ? new MonitorJobCommand(sapRepository, xmiLoginData, jobData)
+						: new MonitorJobCommand(sapRepository, xmiLoginData, jobData, new StepVariantValuesTuple(program, variant, variantValuePairs));
+			case RUN_STOP_JOB:
 				return new RunAndStopJobCommand(sapRepository, xmiLoginData, jobData);
-			case "READ_SPOOL":
+			case READ_SPOOL:
 				return new ReadSpoolCommand(sapRepository, xmiLoginData, jobData);
-			case "READ_JOB_DEFINITION":
+			case READ_JOB_DEFINITION:
 				return new ReadJobDefinitionCommand(sapRepository, xmiLoginData, jobData);
-			case "JOB_COUNT":
+			case JOB_COUNT:
 				return new JobCountCommand(sapRepository, xmiLoginData, jobData);
-			case "READ_JOB":
+			case READ_JOB:
 				return new ReadJobCommand(sapRepository, xmiLoginData, jobData);
-			// case "MODIFY_HEADER":
+			// case MODIFY_HEADER:
 			// return new ModifyHeaderCommand(sapRepository, xmiLoginData, jobData);
-			case "CHANGE_VARIANT":
+			case CHANGE_VARIANT:
 				return new ChangeVariantCommand(sapRepository, xmiLoginData, jobData, inputArguments.getSingleStep());
-			case "CREATE_RUN_JOB":
+			case CREATE_RUN_JOB:
 				StepVariantValuesTuple stepVariantValuesTuple = new StepVariantValuesTuple(program, variant, variantValuePairs);
 				return new CreateRunJobCommand(sapRepository, xmiLoginData, jobData, stepVariantValuesTuple);
-			case "CREATE_MONITOR_JOB":
+			case CREATE_MONITOR_JOB:
 				StepVariantValuesTuple stepVariantValuesTuple2 = new StepVariantValuesTuple(program, variant, variantValuePairs);
 				return new CreateMonitorJobCommand(sapRepository, xmiLoginData, jobData, stepVariantValuesTuple2);
-			case "START_CHAIN":
+			/* CHAINS */
+			case START_CHAIN:
 				return new StartChainCommand(sapRepository, xmiLoginData, inputArguments.getJobName());
-			case "GET_CHAIN_LOG":
-				return new GetChainLogCommand(sapRepository, xmiLoginData, inputArguments.getJobName(), "5AXYTHRJH6U17VCATZEL3BR3U");
-			case "GET_CHAIN_ERRORS":
-				return new GetChainErrorsCommand(sapRepository, xmiLoginData, inputArguments.getJobName(), "5AXYTHRJH6U17VCATZEL3BR3U");
+			case GET_CHAIN_LOG:
+				return new GetChainLogCommand(sapRepository, xmiLoginData, inputArguments.getJobName(), "5B343YBQY3RUZ0Q1E94CRIHOA");
+			case GET_CHAIN_ERRORS:
+				return new GetChainErrorsCommand(sapRepository, xmiLoginData, inputArguments.getJobName(), "5B343YBQY3RUZ0Q1E94CRIHOA");
+			case GET_PROCESS_LOG:
+				return new GetProcessLogCommand(sapRepository, xmiLoginData, "5B343YBQY3RUZ0Q1E94CRIHOA", "ABAP", "Z_SCHEDULED_DATE_VAR", jobData.getJobId());
+			case GET_PROCESS_JOBS:
+				return new GetProcessJobsCommand(sapRepository, xmiLoginData, inputArguments.getJobName(), "TRIGGER", "SCHEDULE_VARIANT", "RSPROCESS",
+						"5AYGVUPLZTDAHIQ88DZETQ8ZE");
+			case GET_CHAIN_START_CONDITION:
+				return new GetChainStartConditionCommand(sapRepository, xmiLoginData, inputArguments.getJobName());
+			case CHAIN_SCHEDULE:
+				return new ChainScheduleCommand(sapRepository, xmiLoginData, inputArguments.getJobName(), null);
+			case CHAIN_SET_STARTCOND:
+				return new SetChainStartConditionCommand(sapRepository, xmiLoginData, inputArguments.getJobName(),"");
+			case CHAIN_GET_PROCESSES:
+				return new GetChainProcessesCommand(sapRepository, xmiLoginData, new ChainData("5B343YBQY3RUZ0Q1E94CRIHOA", inputArguments.getJobName()));
+			case CHAIN_GET_PROCESS_LOG:
+				return new GetChainProcessLogCommand(sapRepository, xmiLoginData, "5B343YBQY3RUZ0Q1E94CRIHOA", "ABAP", "Z_SCHEDULED_DATE_PROG", "17082800");
 			default:
 				return new HelpCommand();
 		}

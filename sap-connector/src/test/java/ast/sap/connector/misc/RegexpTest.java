@@ -1,6 +1,6 @@
 package ast.sap.connector.misc;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,14 @@ import com.google.common.base.Optional;
 import ast.sap.connector.util.KeyValuePair;
 
 public class RegexpTest {
-
+	@Test
+	public void testNumber() {
+		String regex = "\\d+(\\.|\\,|\\d)*";
+		assertTrue( "12.4".matches(regex));
+		assertTrue( "12".matches(regex));
+		assertTrue( "12.23134".matches(regex));
+	}
+	
 	@Test
 	public void test() {
 		String s = "[ (martin:zaragoza),  (mateo:zaragoza)   ]";

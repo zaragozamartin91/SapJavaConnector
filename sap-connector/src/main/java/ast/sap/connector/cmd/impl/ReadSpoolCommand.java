@@ -11,6 +11,12 @@ import ast.sap.connector.func.SapFunctionResult;
 import ast.sap.connector.job.JobRunData;
 import ast.sap.connector.xmi.XmiLoginData;
 
+/**
+ * Lee el spool de un job. Se debe considerar que se intenta leer el spool del primer step del job unicamente.
+ * 
+ * @author mzaragoz
+ *
+ */
 public class ReadSpoolCommand extends SapXmiCommand {
 
 	private JobRunData jobData;
