@@ -1,6 +1,5 @@
-package ast.sap.connector.job.track;
+package ast.sap.connector.job.evt;
 
-import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -12,16 +11,17 @@ import static org.mockito.Mockito.when;
 import org.junit.Test;
 
 import ast.sap.connector.dst.SapRepository;
+import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
 import ast.sap.connector.func.SapStruct;
-import ast.sap.connector.job.JobData;
-import ast.sap.connector.job.JobRunData;
 
-public class JobTrackerTest {
+public class EventRaiserTest {
+
 	@Test
-	public void testGetStatus() throws InterruptedException {
-		String status = "F";
+	public void testRaiseEvent() {
+		String eventId = "TEST_BASIS";
+		String externalUsername = "mzaragoz";
 
 		/* INICIO DE MOCK -------------------------------------------------------------------- */
 
@@ -30,30 +30,24 @@ public class JobTrackerTest {
 
 		SapFunctionResult resultMock = mock(SapFunctionResult.class);
 		when(resultMock.getStructure("RETURN")).thenReturn(retMock);
-		when(resultMock.getOutParameterValue("STATUS")).thenReturn(status);
 
 		SapFunction functionMock = mock(SapFunction.class);
 		when(functionMock.execute()).thenReturn(resultMock);
 		when(functionMock.setInParameter(anyString(), any())).thenReturn(functionMock);
 
 		SapRepository repoMock = mock(SapRepository.class);
-		when(repoMock.getFunction("BAPI_XBP_JOB_STATUS_GET")).thenReturn(functionMock);
+		when(repoMock.getFunction("BAPI_XBP_EVENT_RAISE")).thenReturn(functionMock);
 
 		/* FIN DE MOCK -------------------------------------------------------------------- */
 
-		JobTracker jobTracker = new JobTracker(repoMock);
-		JobRunData jobData = JobData.newJobRunData("SOME_JOB", "mzaragoz", "123456");
-		JobStatus jobStatus = jobTracker.getStatus(jobData);
+		EventRaiser eventRaiser = new EventRaiser(repoMock);
+		SapBapiret2 ret = eventRaiser.raiseEvent(externalUsername, eventId);
+		assertFalse(ret.hasError());
 
-		assertEquals(StatusCode.F, jobStatus.getStatusCode());
-		assertFalse(jobStatus.getReturnStruct().hasError());
-
-		verify(repoMock, times(1)).getFunction("BAPI_XBP_JOB_STATUS_GET");
+		verify(repoMock, times(1)).getFunction("BAPI_XBP_EVENT_RAISE");
 		verify(functionMock, times(1)).execute();
-		verify(functionMock, times(1)).setInParameter("JOBNAME", jobData.getJobName());
-		verify(functionMock, times(1)).setInParameter("JOBCOUNT", jobData.getJobId());
-		verify(functionMock, times(1)).setInParameter("EXTERNAL_USER_NAME", jobData.getExternalUsername());
-		verify(resultMock, times(1)).getOutParameterValue("STATUS");
+		verify(functionMock, times(1)).setInParameter("EVENTID", eventId);
+		verify(functionMock, times(1)).setInParameter("EXTERNAL_USER_NAME", externalUsername);
 		verify(resultMock, times(1)).getStructure("RETURN");
 	}
 

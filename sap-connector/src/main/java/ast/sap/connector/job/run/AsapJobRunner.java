@@ -19,10 +19,10 @@ public class AsapJobRunner implements JobRunner {
 
 	@Override
 	public SapBapiret2 runJob(JobRunData jobData) {
-		SapFunction function = sapRepository.getFunction("BAPI_XBP_JOB_START_ASAP");
-		function.setInParameter("JOBNAME", jobData.getJobName());
-		function.setInParameter("JOBCOUNT", jobData.getJobId());
-		function.setInParameter("EXTERNAL_USER_NAME", jobData.getExternalUsername());
+		SapFunction function = sapRepository.getFunction("BAPI_XBP_JOB_START_ASAP")
+				.setInParameter("JOBNAME", jobData.getJobName())
+				.setInParameter("JOBCOUNT", jobData.getJobId())
+				.setInParameter("EXTERNAL_USER_NAME", jobData.getExternalUsername());
 
 		Optional<String> targetServer = Optional.fromNullable(jobData.getTargetServer());
 		if (targetServer.isPresent()) {

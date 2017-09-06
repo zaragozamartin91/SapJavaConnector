@@ -31,7 +31,7 @@ public class RaiseEventCommand extends SapXmiCommand {
 	protected SapCommandResult perform() {
 		SapRepository sapRepository = repository();
 		EventRaiser reader = new EventRaiser(sapRepository);
-		SapBapiret2 raiseEvent = reader.raiseEvent(jobData, eventId);
+		SapBapiret2 raiseEvent = reader.raiseEvent(jobData.getExternalUsername(), eventId);
 		return new SapCommandResult(raiseEvent);
 	}
 }
