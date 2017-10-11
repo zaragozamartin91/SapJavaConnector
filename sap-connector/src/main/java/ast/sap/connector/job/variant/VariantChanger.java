@@ -47,22 +47,6 @@ public class VariantChanger {
 		Object programName = changeVariantData.getProgram();
 		Object externalUsername = changeVariantData.getExternalUsername();
 
-		// /* OBTENGO LA VARIANTE DEL PROGRAMA RECIBIDO */
-		// SapFunction function = repository.getFunction("BAPI_XBP_VARINFO")
-		// .setInParameter("ABAP_PROGRAM_NAME", programName)
-		// .setInParameter("EXTERNAL_USER_NAME", externalUsername);
-		//
-		// if (changeVariantData.getVariant().isPresent()) {
-		// function.setInParameter("VARIANT", changeVariantData.getVariant().get());
-		// }
-		//
-		// SapFunctionResult result = function.execute();
-		// SapBapiret2 bapiret2 = new SapBapiret2(result.getStructure("RETURN"));
-		// OutTableParam variantTable = result.getOutTableParameter("VARIANT_INFO");
-		// if (bapiret2.hasError() || variantTable.isEmpty()) {
-		// // Retornar SapBapiRet2 en caso de error o en caso de que no tenga variante dado que no se modificaria nada
-		// return bapiret2;
-		// }
 
 		VariantReader variantReader = new VariantReader(repository);
 		Varinfo varinfo = variantReader.readVariant(changeVariantData);
