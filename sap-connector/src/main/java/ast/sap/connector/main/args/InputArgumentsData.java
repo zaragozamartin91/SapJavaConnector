@@ -108,6 +108,16 @@ public final class InputArgumentsData {
 		return jobId;
 	}
 
+	public String getChain() {
+		/* EL NOMBRE DE JOB Y NOMBRE/ID DE LA CADENA SE GUARDAN EN UN MISMO PARAMETRO */
+		return jobName;
+	}
+	
+	public String getChainLogId() {
+		/* EL ID DE JOB Y ID DEL LOG DE UNA CADENA SE GUARDAN EN UN MISMO PARAMETRO */
+		return jobId;
+	}
+
 	public InputArgumentsData setJobId(String jobId) {
 		this.jobId = jobId;
 		return this;

@@ -23,14 +23,14 @@ public class Variant {
 			OutTableRow outTableRow = outTableParameter.currentRow();
 			VariantEntry variantInfo = new VariantEntry(outTableRow);
 			variantEntries.add(variantInfo);
-			outTableParameter.nextRow();			
+			outTableParameter.nextRow();
 		}
 	}
 
 	public List<VariantEntry> getVariantEntries() {
 		return Collections.unmodifiableList(variantEntries);
 	}
-	
+
 	@Override
 	public String toString() {
 		StringBuilder sb = new StringBuilder("TABLE VARIANT_INFO");

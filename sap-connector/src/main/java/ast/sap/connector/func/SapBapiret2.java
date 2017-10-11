@@ -11,22 +11,21 @@ import com.google.common.base.Optional;
  *
  */
 public class SapBapiret2 {
-	private String type;
-	private String id;
-	private Integer number;
-	private String message;
-	private String logNo;
-	private Integer logMsgNo;
-	private String messagev1;
-	private String messagev2;
-	private String messagev3;
-	private String messagev4;
-	private String parameter;
-	private Integer row;
-	private String field;
-	private String system;
+	private final String type;
+	private final String id;
+	private final Integer number;
+	private final String message;
+	private final String logNo;
+	private final Integer logMsgNo;
+	private final String messagev1;
+	private final String messagev2;
+	private final String messagev3;
+	private final String messagev4;
+	private final String parameter;
+	private final Integer row;
+	private final String field;
+	private final String system;
 
-	
 	public SapBapiret2(SapStruct sapStruct) {
 		type = (String) sapStruct.getValue("TYPE");
 		id = (String) sapStruct.getValue("ID");
@@ -98,64 +97,6 @@ public class SapBapiret2 {
 
 	public String getSystem() {
 		return system;
-	}
-	
-	
-
-	public void setType(String type) {
-		this.type = type;
-	}
-
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	public void setNumber(Integer number) {
-		this.number = number;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public void setLogNo(String logNo) {
-		this.logNo = logNo;
-	}
-
-	public void setLogMsgNo(Integer logMsgNo) {
-		this.logMsgNo = logMsgNo;
-	}
-
-	public void setMessagev1(String messagev1) {
-		this.messagev1 = messagev1;
-	}
-
-	public void setMessagev2(String messagev2) {
-		this.messagev2 = messagev2;
-	}
-
-	public void setMessagev3(String messagev3) {
-		this.messagev3 = messagev3;
-	}
-
-	public void setMessagev4(String messagev4) {
-		this.messagev4 = messagev4;
-	}
-
-	public void setParameter(String parameter) {
-		this.parameter = parameter;
-	}
-
-	public void setRow(Integer row) {
-		this.row = row;
-	}
-
-	public void setField(String field) {
-		this.field = field;
-	}
-
-	public void setSystem(String system) {
-		this.system = system;
 	}
 
 	@Override

@@ -9,6 +9,7 @@ import com.sap.conn.jco.JCoFunction;
 import com.sap.conn.jco.JCoRuntimeException;
 import com.sap.conn.jco.JCoTable;
 
+import ast.sap.connector.dst.exception.FunctionNetworkErrorException;
 import ast.sap.connector.func.exception.FunctionExecuteException;
 import ast.sap.connector.func.exception.ImportParameterSetErrorException;
 import ast.sap.connector.func.exception.NonexistentStructParameterException;
@@ -109,19 +110,23 @@ public class SapFunction {
 	 * @throws FunctionExecuteException
 	 *             Si ocurrio un error al ejecutar la funcion.
 	 * @throws RspcExecuteException
-	 * 			   Si ocurrio un error al ejecutar una funcion de RSPC. 
+	 *             Si ocurrio un error al ejecutar una funcion de RSPC.
+	 * @throws FunctionNetworkErrorException
+	 *             Si ocurrio un error en la red al ejecutar la funcion.
 	 */
-
-	public SapFunctionResult execute() {
+	public SapFunctionResult execute() throws FunctionExecuteException, RspcExecuteException, FunctionNetworkErrorException {
 		try {
 			jCoFunction.execute(jCoDestination);
 			return new SapFunctionResult(jCoFunction);
 		} catch (AbapException e) {
-			e.printStackTrace();
 			throw new RspcExecuteException(
 					String.format("Ocurrio un error al ejecutar la funcion %s del destino", jCoFunction.getName()), e);
 		} catch (JCoException e) {
-			throw new FunctionExecuteException(
+			if (e.getGroup() == JCoException.JCO_ERROR_COMMUNICATION)
+				throw new FunctionNetworkErrorException(
+						String.format("Ocurrio un error en la red al ejecutar la funcion %s del destino %s", jCoFunction.getName(), jCoDestination.toString()),
+						e);
+			else throw new FunctionExecuteException(
 					String.format("Ocurrio un error al ejecutar la funcion %s del destino %s", jCoFunction.getName(), jCoDestination.toString()), e);
 		}
 	}

@@ -51,8 +51,9 @@ public class MonitorJobCommand extends SapXmiCommand {
 		if (stepVariantValues.isPresent()) {
 			StepVariantValuesTuple stepVariantTuple = stepVariantValues.get();
 			if (stepVariantTuple.getVariant().isPresent() && stepVariantTuple.getVariantValuePairs().isPresent()) {
-				SapBapiret2 changeVariantRet = VariantChangerHelper.INSTANCE.changeVariant(repository, jobData, stepVariantTuple);
-				if (changeVariantRet.hasError()) return new SapCommandResult(changeVariantRet);
+				SapBapiret2 changeVariantRet = VariantChangerHelper.INSTANCE.changeVariant(repository, jobData.getExternalUsername(), stepVariantTuple);
+				if (changeVariantRet.hasError())
+					return new SapCommandResult(changeVariantRet);
 			}
 		}
 

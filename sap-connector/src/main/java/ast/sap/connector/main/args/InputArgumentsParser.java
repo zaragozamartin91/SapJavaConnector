@@ -46,10 +46,10 @@ public class InputArgumentsParser {
 	@Option(name = "-h", aliases = { "--host" }, required = false, usage = "ip/host id del servidor sap")
 	private String host;
 
-	@Option(name = "-i", aliases = { "--jobid" }, required = false, usage = "id del job a correr/inspeccionar")
+	@Option(name = "-i", aliases = { "--jobid", "--logid" }, required = false, usage = "id del job o id de log de cadena")
 	private String jobId;
 
-	@Option(name = "-j", aliases = { "--jobname" }, required = false, usage = "nombre del job a crear/correr/inspeccionar o nombre de cadena a correr")
+	@Option(name = "-j", aliases = { "--jobname", "--chain" }, required = false, usage = "nombre del job o nombre/id de cadena")
 	private String jobName;
 
 	@Option(name = "-p", aliases = { "--pass" }, required = false, usage = "password de usuario sap a loguearse/encriptar")
@@ -117,6 +117,12 @@ public class InputArgumentsParser {
 		}
 	}
 
+	/**
+	 * Imprime el modo de uso del componente a traves de la terminal.
+	 * 
+	 * @param outputStream
+	 *            Stream donde imprimir el comando.
+	 */
 	public void printUsage(OutputStream... outputStream) {
 		OutputStream out = outputStream.length == 0 ? System.out : outputStream[0];
 		CmdLineParser parser = new CmdLineParser(this);
@@ -125,23 +131,23 @@ public class InputArgumentsParser {
 
 	private void validate() throws IllegalStateException {
 		AvailableCommand cmd = getCommand(true);
-		
+
 		if (clientNumber != null) Preconditions.checkState(clientNumber.matches("\\d+"), "El valor de numero de cliente no es numerico!");
 		if (systemNumber != null) Preconditions.checkState(systemNumber.matches("\\d+"), "El valor de numero de sistema no es numerico!");
-		
+
 		if (AvailableCommand.ENCRYPT_PASSWORD.equals(cmd))
 			Preconditions.checkState(!Strings.isNullOrEmpty(password), "Para encriptar un password es necesario ingresar un password con el parametro -p");
-		
+
 		if (AvailableCommand.RUN_JOB.equals(cmd)) Preconditions.checkState(!Strings.isNullOrEmpty(jobId) && !Strings.isNullOrEmpty(jobName),
 				"Para correr un job es necesario ingresar el id del mismo y el nombre mediante los parametros -i y -j respectivamente");
-		
+
 		if (AvailableCommand.MONITOR_JOB.equals(cmd)) Preconditions.checkState(!Strings.isNullOrEmpty(jobId) && !Strings.isNullOrEmpty(jobName),
 				"Para correr y monitorear un job es necesario ingresar el id del mismo y el nombre mediante los parametros -i y -j respectivamente");
-		
-		if(AvailableCommand.CREATE_RUN_JOB.equals(cmd)) Preconditions.checkState(!Strings.isNullOrEmpty(jobName) && !Strings.isNullOrEmpty(jobStep), 
+
+		if (AvailableCommand.CREATE_RUN_JOB.equals(cmd)) Preconditions.checkState(!Strings.isNullOrEmpty(jobName) && !Strings.isNullOrEmpty(jobStep),
 				"Para crear y correr un job es necesario indicar un nombre de job y un programa a correr mediante los parametros -j y -t respectivamente");
-		
-		if(AvailableCommand.CREATE_MONITOR_JOB.equals(cmd)) Preconditions.checkState(!Strings.isNullOrEmpty(jobName) && !Strings.isNullOrEmpty(jobStep), 
+
+		if (AvailableCommand.CREATE_MONITOR_JOB.equals(cmd)) Preconditions.checkState(!Strings.isNullOrEmpty(jobName) && !Strings.isNullOrEmpty(jobStep),
 				"Para crear, correr y monitorear un job es necesario indicar un nombre de job y un programa a correr mediante los parametros -j y -t respectivamente");
 	}
 

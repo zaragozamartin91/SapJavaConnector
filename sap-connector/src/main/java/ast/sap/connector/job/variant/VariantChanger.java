@@ -6,19 +6,21 @@ import java.util.Collection;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.google.common.base.Optional;
-
 import ast.sap.connector.dst.SapRepository;
+import ast.sap.connector.dst.exception.FunctionGetFailException;
+import ast.sap.connector.dst.exception.FunctionNetworkErrorException;
 import ast.sap.connector.func.InTableParam;
 import ast.sap.connector.func.InTableRow;
-import ast.sap.connector.func.OutTableParam;
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
+import ast.sap.connector.func.exception.FunctionExecuteException;
+
+import com.google.common.base.Optional;
 
 public class VariantChanger {
 	private static final Logger LOGGER = LoggerFactory.getLogger(VariantChanger.class);
-	
+
 	private final SapRepository repository;
 
 	public VariantChanger(SapRepository repository) {
@@ -28,31 +30,49 @@ public class VariantChanger {
 	/**
 	 * Modifica los campos de una variante.
 	 * 
-	 * @param changeVariantData - Informacion de la variante y campos a modificar.
+	 * @param changeVariantData
+	 *            - Informacion de la variante y campos a modificar.
 	 * @return Resultado del cambio de variante.
-	 * @throws VariantFieldChangeException Si ocurrio un error al modificar alguno de los campos.
+	 * @throws VariantFieldChangeException
+	 *             Si ocurrio un error al modificar alguno de los campos.
+	 * @throws FunctionGetFailException
+	 *             En caso que ocurra un error al obtener las funciones de sap.
+	 * @throws FunctionExecuteException
+	 *             En caso que ocurra un error al ejecutar las funciones de sap.
+	 * @throws FunctionNetworkErrorException
+	 *             Si ocurrio un error en la red al ejecutar la funcion.
 	 */
-	public SapBapiret2 changeVariant(ChangeVariantData changeVariantData) throws VariantFieldChangeException {
+	public SapBapiret2 changeVariant(ChangeVariantData changeVariantData)
+			throws VariantFieldChangeException, FunctionGetFailException, FunctionExecuteException, FunctionNetworkErrorException {
 		Object programName = changeVariantData.getProgram();
 		Object externalUsername = changeVariantData.getExternalUsername();
 
-		/* OBTENGO LA VARIANTE DEL PROGRAMA RECIBIDO */
-		SapFunction function = repository.getFunction("BAPI_XBP_VARINFO")
-				.setInParameter("ABAP_PROGRAM_NAME", programName)
-				.setInParameter("EXTERNAL_USER_NAME", externalUsername);
+		// /* OBTENGO LA VARIANTE DEL PROGRAMA RECIBIDO */
+		// SapFunction function = repository.getFunction("BAPI_XBP_VARINFO")
+		// .setInParameter("ABAP_PROGRAM_NAME", programName)
+		// .setInParameter("EXTERNAL_USER_NAME", externalUsername);
+		//
+		// if (changeVariantData.getVariant().isPresent()) {
+		// function.setInParameter("VARIANT", changeVariantData.getVariant().get());
+		// }
+		//
+		// SapFunctionResult result = function.execute();
+		// SapBapiret2 bapiret2 = new SapBapiret2(result.getStructure("RETURN"));
+		// OutTableParam variantTable = result.getOutTableParameter("VARIANT_INFO");
+		// if (bapiret2.hasError() || variantTable.isEmpty()) {
+		// // Retornar SapBapiRet2 en caso de error o en caso de que no tenga variante dado que no se modificaria nada
+		// return bapiret2;
+		// }
 
-		if (changeVariantData.getVariant().isPresent()) {
-			function.setInParameter("VARIANT", changeVariantData.getVariant().get());
-		}
-
-		SapFunctionResult result = function.execute();
-		SapBapiret2 bapiret2 = new SapBapiret2(result.getStructure("RETURN"));
-		OutTableParam variantTable = result.getOutTableParameter("VARIANT_INFO");
-		if (bapiret2.hasError() || variantTable.isEmpty()) {
+		VariantReader variantReader = new VariantReader(repository);
+		Varinfo varinfo = variantReader.readVariant(changeVariantData);
+		SapBapiret2 bapiret2 = varinfo.getRet();
+		if (bapiret2.hasError() || !varinfo.getVariant().isPresent()) {
 			// Retornar SapBapiRet2 en caso de error o en caso de que no tenga variante dado que no se modificaria nada
 			return bapiret2;
 		}
-		Variant variant = new Variant(variantTable);
+
+		Variant variant = varinfo.getVariant().get();
 
 		LOGGER.debug(variant.toString());
 		// TODO: MODIFICAR LA TABLA RECIBIDA (variantData) DE LA FUNCION ANTERIOR Y ACTUALIZANDO LOS CAMPOS NECESARIOS (HAY QUE VER COMO VIENEN ESOS CAMPOS Y
@@ -62,7 +82,7 @@ public class VariantChanger {
 		// }
 		// TODO: MODIFICO LA VARIANTE DEL PROGRAMA RECIBIDO
 		String variantName = variant.getVariantEntries().get(0).getVariant();
-		function = repository.getFunction("BAPI_XBP_VARIANT_CHANGE")
+		SapFunction function = repository.getFunction("BAPI_XBP_VARIANT_CHANGE")
 				.setInParameter("ABAP_PROGRAM_NAME", programName)
 				.setInParameter("ABAP_VARIANT_NAME", variantName)
 				.setInParameter("EXTERNAL_USER_NAME", externalUsername);
@@ -93,7 +113,7 @@ public class VariantChanger {
 				try {
 					value = variantEntry.getFieldType().transform(matchingEntry.get().value);
 				} catch (ParseException e) {
-					throw new VariantFieldChangeException("Error al modificar el campo " + matchingEntry.get().key + ":: Formato del dato invalido",e);
+					throw new VariantFieldChangeException("Error al modificar el campo " + matchingEntry.get().key + ":: Formato del dato invalido", e);
 				}
 				newRow.setValue("PLOW", value);
 			}
@@ -104,7 +124,7 @@ public class VariantChanger {
 
 	private Optional<VariantKeyValuePair> matchingEntry(VariantEntry variantEntry, Collection<VariantKeyValuePair> variantValuePairs) {
 		for (VariantKeyValuePair variantValuePair : variantValuePairs) {
-			if (variantEntry.getPname().equals(variantValuePair.key)) { return Optional.fromNullable(variantValuePair); }
+			if (variantEntry.getPname().equals(variantValuePair.key)) return Optional.fromNullable(variantValuePair);
 		}
 		return Optional.absent();
 	}

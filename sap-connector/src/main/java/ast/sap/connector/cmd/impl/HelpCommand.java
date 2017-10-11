@@ -6,6 +6,7 @@ import java.util.regex.Pattern;
 import ast.sap.connector.cmd.AvailableCommand;
 import ast.sap.connector.cmd.SapCommand;
 import ast.sap.connector.cmd.SapCommandResult;
+import ast.sap.connector.config.Configuration;
 import ast.sap.connector.main.args.InputArgumentsParser;
 
 /**
@@ -27,8 +28,17 @@ public class HelpCommand implements SapCommand {
 
 		log("\nParametros disponibles:");
 		InputArgumentsParser.INSTANCE.printUsage(System.out);
-		
-		String availableCmdsStr = Arrays.toString(AvailableCommand.values())
+
+		AvailableCommand[] availableCommands;
+		if (Configuration.devModeOn()) {
+			availableCommands = AvailableCommand.values();
+		} else {
+			availableCommands = new AvailableCommand[] { AvailableCommand.RUN_JOB, AvailableCommand.MONITOR_JOB, AvailableCommand.CREATE_RUN_JOB,
+					AvailableCommand.CREATE_MONITOR_JOB, AvailableCommand.ENCRYPT_PASSWORD, AvailableCommand.START_CHAIN, AvailableCommand.MONITOR_CHAIN,
+					AvailableCommand.HELP };
+		}
+
+		String availableCmdsStr = Arrays.toString(availableCommands)
 				.replaceAll(Pattern.quote(","), "\n\t,")
 				.replaceAll(Pattern.quote("["), "[\n\t")
 				.replaceAll(Pattern.quote("]"), "\n]");

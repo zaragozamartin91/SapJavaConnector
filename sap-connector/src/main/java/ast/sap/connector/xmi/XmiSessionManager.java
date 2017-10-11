@@ -9,16 +9,16 @@ import ast.sap.connector.func.SapStruct;
 import ast.sap.connector.xmi.exception.XmiLoginException;
 
 /**
- * Manejador de sesiones XMI.
- * Para poder realizar acciones de manipulacion de jobs (iniciar, obtener status, obtener log, etc.) es 
- * necesario inciar sesion con XMI de forma tal que nuestras operaciones sobre los jobs queden registradas
- * en logs de SAP.
+ * Manejador de sesiones XMI. Para poder realizar acciones de manipulacion de jobs (iniciar, obtener status, obtener log, etc.) es necesario inciar sesion con
+ * XMI de forma tal que nuestras operaciones sobre los jobs queden registradas en logs de SAP.
  * 
  * @author mzaragoz
  *
  */
 public enum XmiSessionManager {
 	INSTANCE;
+
+	XmiLoginData lastLoginData = new XmiLoginData();
 
 	/**
 	 * Inicia sesion con el subsistema XMI.
@@ -43,11 +43,24 @@ public enum XmiSessionManager {
 		try {
 			SapFunctionResult result = function.execute();
 			Object sessionId = result.getOutParameterValue("SESSIONID");
-
+			this.lastLoginData = xmiLoginData;
 			return new XmiSessionData(sessionId, xmiLoginData.getXmiInterface());
 		} catch (Exception e) {
 			throw new XmiLoginException("Ocurrio un error al iniciar sesion XMI", e);
 		}
+	}
+
+	/**
+	 * Vuelve a iniciar sesion con los datos de xmi de la ultima sesion establecida.
+	 * 
+	 * @param sapRepository
+	 *            - Repositorio de funciones de sap iniciado para operar con contexto mediante {@link SapDestination#openContext()}.
+	 * @return Datos de sesion de XMI.
+	 * @throws XmiLoginException
+	 *             Si no se pudo inciar sesion con xmi.
+	 */
+	public XmiSessionData reLogin(SapRepository sapRepository) throws XmiLoginException {
+		return this.login(sapRepository, lastLoginData);
 	}
 
 	/**

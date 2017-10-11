@@ -6,4 +6,8 @@ public final class ReconnectFailException extends RuntimeException {
 	public ReconnectFailException(String message, Throwable cause) {
 		super(message, cause);
 	}
+
+	public ReconnectFailException(String message) {
+		super(message);
+	}
 }

@@ -6,15 +6,15 @@ import ast.sap.connector.func.SapBapiret2;
  * Estado del job
  */
 public class JobStatus {
-	private final StatusCode statusCode;
+	private final JobStatusCode statusCode;
 	private final SapBapiret2 returnStruct;
 
 	public JobStatus(String status, SapBapiret2 sapBapiret2) {
-		this.statusCode = StatusCode.valueOf(status);
+		this.statusCode = JobStatusCode.valueOf(status);
 		this.returnStruct = sapBapiret2;
 	}
 
-	public StatusCode getStatusCode() {
+	public JobStatusCode getStatusCode() {
 		return statusCode;
 	}
 

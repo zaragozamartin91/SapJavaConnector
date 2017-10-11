@@ -31,11 +31,16 @@ public abstract class SapXmiCommand extends AbstractSapCommand {
 
 	@Override
 	public SapCommandResult execute() throws XmiLoginException, RspcExecuteException {
-		XmiSession xmiSession = new XmiSession(repository(), xmiLoginData);
-		SapCommandResult output = perform();
-		xmiSession.logout();
-
-		return output;
+		XmiSession xmiSession = null;
+		try {
+			xmiSession = new XmiSession(repository(), xmiLoginData);
+			SapCommandResult output = perform();
+			return output;
+		} finally {
+			try {
+				if (xmiSession != null) xmiSession.logout();
+			} catch (Exception e) {}
+		}
 	}
 
 	/**

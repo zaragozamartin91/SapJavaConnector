@@ -7,8 +7,7 @@ import com.sap.conn.jco.AbapException;
  *
  * Captura las Excepciones devueltas por las funciones RSPC
  */
-public class RspcExecuteException extends RuntimeException {
-
+public final class RspcExecuteException extends RuntimeException {
 	private static final long serialVersionUID = 6149034274642672142L;
 
 	private AbapException abapException;
@@ -26,7 +25,4 @@ public class RspcExecuteException extends RuntimeException {
 	public String toString() {
 		return "RspcExecuteException [abapException=" + abapException + "]";
 	}
-
-	
-	
 }

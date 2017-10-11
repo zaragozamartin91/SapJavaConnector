@@ -39,7 +39,7 @@ public class CreateMonitorJobCommand extends SapXmiCommand {
 
 		/* modifico los valores de la variante a asociar al programa */
 		if (stepVariantValues.getVariant().isPresent() && stepVariantValues.getVariantValuePairs().isPresent()) {
-			SapBapiret2 changeVariantRet = VariantChangerHelper.INSTANCE.changeVariant(repository, jobData, stepVariantValues);
+			SapBapiret2 changeVariantRet = VariantChangerHelper.INSTANCE.changeVariant(repository, jobData.getExternalUsername(), stepVariantValues);
 			if (changeVariantRet.hasError()) return new SapCommandResult(changeVariantRet);
 		}
 

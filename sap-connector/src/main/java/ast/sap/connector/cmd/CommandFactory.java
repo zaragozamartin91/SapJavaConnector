@@ -6,6 +6,8 @@ import java.util.List;
 import com.google.common.base.Strings;
 
 import ast.sap.connector.chain.ChainData;
+import ast.sap.connector.chain.logs.ChainLogReaderInput;
+import ast.sap.connector.chain.status.ChainStatusReaderInput;
 import ast.sap.connector.cmd.impl.ChainScheduleCommand;
 import ast.sap.connector.cmd.impl.ChangeVariantCommand;
 import ast.sap.connector.cmd.impl.CreateJobCommand;
@@ -16,11 +18,13 @@ import ast.sap.connector.cmd.impl.GetChainLogCommand;
 import ast.sap.connector.cmd.impl.GetChainProcessLogCommand;
 import ast.sap.connector.cmd.impl.GetChainProcessesCommand;
 import ast.sap.connector.cmd.impl.GetChainStartConditionCommand;
+import ast.sap.connector.cmd.impl.GetChainStatusCommand;
 import ast.sap.connector.cmd.impl.GetJobOutputCommand;
 import ast.sap.connector.cmd.impl.GetProcessJobsCommand;
 import ast.sap.connector.cmd.impl.GetProcessLogCommand;
 import ast.sap.connector.cmd.impl.HelpCommand;
 import ast.sap.connector.cmd.impl.JobCountCommand;
+import ast.sap.connector.cmd.impl.MonitorChainCommand;
 import ast.sap.connector.cmd.impl.MonitorJobCommand;
 import ast.sap.connector.cmd.impl.RaiseEventCommand;
 import ast.sap.connector.cmd.impl.ReadJobCommand;
@@ -73,6 +77,10 @@ public enum CommandFactory {
 
 		AvailableCommand command = inputArguments.getCommand();
 
+		/* Temporalmente el id y el log_id de una cadena se ingresaran mediante los parametros jobname y jobid respectivamente */
+		String chainId = inputArguments.getChain();
+		String chainLogId = inputArguments.getChainLogId();
+
 		switch (command) {
 			case XMI_LOGIN:
 				return new XmiLoginCommand(sapRepository, xmiLoginData);
@@ -105,8 +113,8 @@ public enum CommandFactory {
 				return new JobCountCommand(sapRepository, xmiLoginData, jobData);
 			case READ_JOB:
 				return new ReadJobCommand(sapRepository, xmiLoginData, jobData);
-			// case MODIFY_HEADER:
-			// return new ModifyHeaderCommand(sapRepository, xmiLoginData, jobData);
+				// case MODIFY_HEADER:
+				// return new ModifyHeaderCommand(sapRepository, xmiLoginData, jobData);
 			case CHANGE_VARIANT:
 				return new ChangeVariantCommand(sapRepository, xmiLoginData, jobData, inputArguments.getSingleStep());
 			case CREATE_RUN_JOB:
@@ -115,11 +123,11 @@ public enum CommandFactory {
 			case CREATE_MONITOR_JOB:
 				StepVariantValuesTuple stepVariantValuesTuple2 = new StepVariantValuesTuple(program, variant, variantValuePairs);
 				return new CreateMonitorJobCommand(sapRepository, xmiLoginData, jobData, stepVariantValuesTuple2);
-			/* CHAINS */
+				/* CHAINS */
 			case START_CHAIN:
 				return new StartChainCommand(sapRepository, xmiLoginData, inputArguments.getJobName());
 			case GET_CHAIN_LOG:
-				return new GetChainLogCommand(sapRepository, xmiLoginData, inputArguments.getJobName(), "5B343YBQY3RUZ0Q1E94CRIHOA");
+				return new GetChainLogCommand(sapRepository, new ChainLogReaderInput(chainId, chainLogId));
 			case GET_CHAIN_ERRORS:
 				return new GetChainErrorsCommand(sapRepository, xmiLoginData, inputArguments.getJobName(), "5B343YBQY3RUZ0Q1E94CRIHOA");
 			case GET_PROCESS_LOG:
@@ -132,11 +140,15 @@ public enum CommandFactory {
 			case CHAIN_SCHEDULE:
 				return new ChainScheduleCommand(sapRepository, xmiLoginData, inputArguments.getJobName(), null);
 			case CHAIN_SET_STARTCOND:
-				return new SetChainStartConditionCommand(sapRepository, xmiLoginData, inputArguments.getJobName(),"");
+				return new SetChainStartConditionCommand(sapRepository, xmiLoginData, inputArguments.getJobName(), "");
 			case CHAIN_GET_PROCESSES:
 				return new GetChainProcessesCommand(sapRepository, xmiLoginData, new ChainData("5B343YBQY3RUZ0Q1E94CRIHOA", inputArguments.getJobName()));
 			case CHAIN_GET_PROCESS_LOG:
 				return new GetChainProcessLogCommand(sapRepository, xmiLoginData, "5B343YBQY3RUZ0Q1E94CRIHOA", "ABAP", "Z_SCHEDULED_DATE_PROG", "17082800");
+			case CHAIN_GET_STATUS:
+				return new GetChainStatusCommand(sapRepository, new ChainStatusReaderInput(chainId, chainLogId));
+			case MONITOR_CHAIN:
+				return new MonitorChainCommand(sapRepository, xmiLoginData, chainId, inputArguments.getUser());
 			default:
 				return new HelpCommand();
 		}

@@ -10,14 +10,18 @@ import com.sap.conn.jco.JCoException;
 import ast.sap.connector.config.Configuration;
 import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.dst.exception.FunctionGetFailException;
+import ast.sap.connector.dst.exception.FunctionNetworkErrorException;
 import ast.sap.connector.dst.exception.RepositoryGetFailException;
+import ast.sap.connector.func.exception.FunctionExecuteException;
 import ast.sap.connector.job.JobTrackData;
 import ast.sap.connector.job.log.JobLog;
 import ast.sap.connector.job.log.JoblogReadData;
 import ast.sap.connector.job.log.JoblogReadData.Direction;
-import ast.sap.connector.util.Connector;
 import ast.sap.connector.job.log.JoblogReader;
 import ast.sap.connector.job.log.LogEntry;
+import ast.sap.connector.util.Connector;
+import ast.sap.connector.xmi.XmiSessionManager;
+import ast.sap.connector.xmi.exception.XmiLoginException;
 
 /**
  * Monitor de jobs en ejecucion.
@@ -29,11 +33,21 @@ public class JobMonitor {
 	private static final Logger LOGGER = LoggerFactory.getLogger(JobMonitor.class);
 
 	static interface SapAction<E> {
-		public E act() throws FunctionGetFailException;
+		public E act() throws FunctionGetFailException, FunctionExecuteException;
 	}
 
 	private SapRepository sapRepository;
 	private final int maxStatusChangeTries = 3;
+
+	/**
+	 * Bandera utilizada para testing. Indica si el monitor al dormir debe llamar a Thread.sleep.
+	 */
+	boolean doSleep = true;
+
+	/**
+	 * Bandera utilizada para testing. Indica si el monitor al reconectarse debe llamar a {@link Connector} o no.
+	 */
+	boolean doReconnect = true;
 
 	public JobMonitor(SapRepository sapRepository) {
 		this.sapRepository = sapRepository;
@@ -57,10 +71,11 @@ public class JobMonitor {
 		boolean jobRunning = true;
 		int statusChangeTries = 0;
 		JobStatus jobStatus = null;
+
 		while (jobRunning) {
 			jobStatus = getJobStatus(jobData);
 
-			StatusCode statusCode = jobStatus.getStatusCode();
+			JobStatusCode statusCode = jobStatus.getStatusCode();
 			LOGGER.debug("statusCode: " + statusCode.label);
 
 			while (statusCode.isReleased() && (statusChangeTries++) < maxStatusChangeTries) {
@@ -68,7 +83,7 @@ public class JobMonitor {
 				sleep();
 				statusCode = getJobStatus(jobData).getStatusCode();
 			}
-			
+
 			/* Si se habilito impresion continua -> el log del job se imprime en a medida que se monitorea */
 			if (pContinuously) currLogLine = printLog(jobData, currLogLine);
 
@@ -79,7 +94,7 @@ public class JobMonitor {
 		final JoblogReadData jobLogReadData = new JoblogReadData(jobData.getJobName(), jobData.getJobId(), jobData.getExternalUsername());
 		JobLog jobLog = getJobLog(jobLogReadData);
 		/* Si NO se habilito impresion continua -> el log del job se imprime todo junto cuando la ejecucion finaliza */
-		if (!pContinuously) printLog(jobLog);
+		if (!pContinuously) jobLog.printLogStdout();
 
 		printStatus(jobStatus);
 
@@ -88,13 +103,6 @@ public class JobMonitor {
 
 	private void printStatus(JobStatus jobStatus) {
 		System.out.println(jobStatus.getStatusCode());
-	}
-
-	private void printLog(JobLog jobLog) {
-		List<LogEntry> logEntries = jobLog.getLogEntries();
-		for (LogEntry logEntry : logEntries) {
-			System.out.println(logEntry);
-		}
 	}
 
 	/**
@@ -131,7 +139,7 @@ public class JobMonitor {
 	private void sleep(long... time) {
 		long ttime = time.length == 0 ? 500 : time[0];
 		try {
-			Thread.sleep(ttime);
+			if (this.doSleep) Thread.sleep(ttime);
 		} catch (InterruptedException e) {
 			LOGGER.error(e.getMessage());
 		}
@@ -163,35 +171,58 @@ public class JobMonitor {
 	 * @param errMsg
 	 *            Mensaje de error a mostrar en caso de falla de conexion.
 	 * @return Resultado de la accion.
+	 * @throws ReconnectFailException
+	 *             En caso que se haya superado la cantidad de intentos de reconexion.
+	 * 
 	 */
-	private <E> E doAndReconnect(SapAction<E> action, String errMsg) {
+	// TODO : LOS TIPOS DE EXCEPCION CATCHEADOS SON INCORRECTOS. VERIFICAR CUAL ES EL TIPO DE EXCEPCION ANTE ERRORES DE CONEXION
+	private <E> E doAndReconnect(SapAction<E> action, String errMsg) throws ReconnectFailException {
 		try {
 			return action.act();
-		} catch (FunctionGetFailException e) {
+		} catch (FunctionNetworkErrorException e) {
 			LOGGER.error(errMsg);
 			LOGGER.info("Intentando recuperar conexion con sap");
+
+			// Intento reestablecer la conexion con sap
 			reconnect();
+			// luego de haber reestablecido la conexion, ejecuto recursivamente este mismo metodo
+			return doAndReconnect(action, errMsg);
 		}
-		return null;
 	}
 
-	private void reconnect() throws ReconnectFailException {
-		int maxTries = Configuration.getReconnectMaxTries();
-		int tries = 0;
+	/**
+	 * Intenta reestablecer la sesion con sap. El numero de intentos esta determinado por {@link Configuration#getReconnectMaxTries()}.
+	 * 
+	 * @throws ReconnectFailException
+	 *             En caso que se haya superado la cantidad de intentos de reconexion.
+	 */
+	void reconnect() throws ReconnectFailException {
+		reconnect(0, Configuration.getReconnectMaxTries());
+	}
 
-		Exception lastEx = null;
-		while (tries < maxTries) {
-			try {
+	/**
+	 * Intenta reestablecer la sesion con sap. El numero de intentos esta determinado por {@link Configuration#getReconnectMaxTries()}.
+	 * 
+	 * @throws ReconnectFailException
+	 *             En caso que se haya superado la cantidad de intentos de reconexion.
+	 */
+	void reconnect(int tryCount, int maxTries, Exception... lastEx) throws ReconnectFailException {
+		if (tryCount >= maxTries) {
+			if(lastEx.length == 0) throw new ReconnectFailException("Imposible reestablecer conexion con server SAP");
+			else throw new ReconnectFailException("Imposible reestablecer conexion con server SAP", lastEx[0]);
+		};
+
+		try {
+			if (doReconnect) {
 				this.sapRepository = Connector.INSTANCE.loadDestination().openContext();
-				LOGGER.info("Conexion con server sap reestablecida!");
-				return;
-			} catch (RepositoryGetFailException | JCoException e) {
-				LOGGER.error("Intento de reconeccion %d fallo...", (++tries));
-				lastEx = e;
-				sleep(1000);
+				XmiSessionManager.INSTANCE.reLogin(sapRepository);
 			}
+			LOGGER.info("Conexion con server sap reestablecida!");
+			return;
+		} catch (RepositoryGetFailException | JCoException | XmiLoginException e) {
+			LOGGER.error("Intento de reconeccion {} fallo...", tryCount);
+			sleep(1000);
+			reconnect(tryCount + 1, maxTries, e);
 		}
-
-		throw new ReconnectFailException("Imposible reestablecer conexion con server SAP", lastEx);
 	}
 }

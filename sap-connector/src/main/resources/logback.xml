@@ -1,4 +1,7 @@
 <configuration>
+	<!-- Cargo propiedades del archivo de configuracion del conector -->
+	<property file="connectorsap.properties" />
+
 	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
 		<encoder>
 			<charset>UTF-8</charset>
@@ -10,10 +13,12 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>log/sap_connector.log</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<!-- daily rollover -->
-			<fileNamePattern>sap_connector.%d{yyyy-MM-dd}.log</fileNamePattern>
 
-			<!-- keep 30 days' worth of history capped at 3GB total size -->
+			<!-- rotacion diaria de logs -->
+			<fileNamePattern>log/sap_connector.%d{yyyy-MM-dd}.log
+			</fileNamePattern>
+
+			<!-- Se guardaran 30 dias de log como tamano maximo 30GB -->
 			<maxHistory>30</maxHistory>
 			<totalSizeCap>3GB</totalSizeCap>
 		</rollingPolicy>
@@ -23,12 +28,23 @@
 			<pattern>%d{HH:mm:ss} %level %logger[%line]: %msg %n</pattern>
 		</encoder>
 	</appender>
-	
-	<logger name="ast.sap.connector" level="DEBUG">
-		<!-- COMENTAR EL APPENDER STDOUT EN PRODUCCION -->
-		<appender-ref ref="STDOUT" />
-		<appender-ref ref="FILE" />
-	</logger>
+
+	<!-- Si la propiedad dev_mode_on tiene asignado el valor 'true' entonces 
+		se establecera el nivel de log DEBUG para el componente y se agregara el 
+		appender de consola. -->
+	<if condition='property("dev_mode_on").contains("true")'>
+		<then>
+			<logger name="ast.sap.connector" level="DEBUG">
+				<appender-ref ref="STDOUT" />
+				<appender-ref ref="FILE" />
+			</logger>
+		</then>
+		<else>
+			<logger name="ast.sap.connector" level="INFO">
+				<appender-ref ref="FILE" />
+			</logger>
+		</else>
+	</if>
 
 	<root level="OFF">
 	</root>

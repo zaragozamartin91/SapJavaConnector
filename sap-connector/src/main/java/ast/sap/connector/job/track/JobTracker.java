@@ -2,11 +2,16 @@ package ast.sap.connector.job.track;
 
 import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.dst.exception.FunctionGetFailException;
+import ast.sap.connector.dst.exception.FunctionNetworkErrorException;
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
 import ast.sap.connector.func.SapStruct;
+import ast.sap.connector.func.exception.FunctionExecuteException;
 import ast.sap.connector.job.JobTrackData;
+import ast.sap.connector.job.log.JobLog;
+import ast.sap.connector.job.log.JoblogReadData;
+import ast.sap.connector.job.log.JoblogReader;
 
 /**
  * Monitor de status de jobs.
@@ -30,9 +35,13 @@ public class JobTracker {
 	 *            - Informacion del job a monitorear.
 	 * @return Estado del job.
 	 * @throws FunctionGetFailException
-	 *             En caso que no sea posible obtener la funcion de sap necesaria para monitorear el estado del job.
+	 *             En caso que ocurra un error al obtener las funciones de sap.
+	 * @throws FunctionExecuteException
+	 *             En caso que ocurra un error al ejecutar las funciones de sap.
+	 * @throws FunctionNetworkErrorException
+	 *             Si ocurrio un error en la red al ejecutar la funcion.
 	 */
-	public JobStatus getStatus(JobTrackData jobData) throws FunctionGetFailException {
+	public JobStatus getStatus(JobTrackData jobData) throws FunctionGetFailException, FunctionExecuteException, FunctionNetworkErrorException {
 		SapFunction function = sapRepository.getFunction("BAPI_XBP_JOB_STATUS_GET")
 				.setInParameter("JOBNAME", jobData.getJobName())
 				.setInParameter("JOBCOUNT", jobData.getJobId())
@@ -44,7 +53,32 @@ public class JobTracker {
 
 		return new JobStatus(status, new SapBapiret2(ret));
 	}
-	
+
+	/**
+	 * Obtiene el estado completo de un job. Se entiende por estado completo a su codigo de estado final y a su log.
+	 * 
+	 * @param jobData
+	 *            Datos del job a obtener el estado.
+	 * @return Estado completo del job.
+	 * @throws FunctionGetFailException
+	 *             En caso que no sea posible obtener la funcion de sap necesaria para monitorear el estado del job.
+	 * @throws FunctionExecuteException
+	 *             En caso que la ejecucion de la funcion falle.
+	 * @throws FunctionNetworkErrorException
+	 *             Si ocurrio un error en la red al ejecutar la funcion.
+	 */
+	public JobFullStatus getFullStatus(JobTrackData jobData) throws FunctionGetFailException, FunctionExecuteException, FunctionNetworkErrorException {
+		JobStatus jobStatus = getStatus(jobData);
+
+		JoblogReader joblogReader = new JoblogReader(sapRepository);
+		String jobName = jobData.getJobName();
+		String jobId = jobData.getJobId();
+		String externalUsername = jobData.getExternalUsername();
+		JobLog jobLog = joblogReader.readLog(new JoblogReadData(jobName, jobId, externalUsername));
+
+		return new JobFullStatus(jobLog, jobStatus);
+	}
+
 	public static JobTracker build(SapRepository sapRepository) {
 		return new JobTracker(sapRepository);
 	}

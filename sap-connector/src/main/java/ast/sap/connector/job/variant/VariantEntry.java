@@ -1,13 +1,12 @@
 package ast.sap.connector.job.variant;
 
-import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.Locale;
 
 import ast.sap.connector.config.Configuration;
 import ast.sap.connector.func.OutTableRow;
+import ast.sap.connector.util.NumberParser;
 
 /**
  * @author franco.milanese
@@ -28,18 +27,18 @@ public class VariantEntry {
 	private VariantFieldType fieldType = VariantFieldType.TEXT;
 
 	public VariantEntry(OutTableRow outTableRow) {
-		this.report = outTableRow.getValue("REPORT").toString();
-		this.variant = outTableRow.getValue("VARIANT").toString();
-		this.pname = outTableRow.getValue("PNAME").toString();
-		this.pkind = outTableRow.getValue("PKIND").toString();
+		this.report = (String) outTableRow.getValue("REPORT");
+		this.variant = (String) outTableRow.getValue("VARIANT");
+		this.pname = (String) outTableRow.getValue("PNAME");
+		this.pkind = (String) outTableRow.getValue("PKIND");
 		this.polen = (Integer) outTableRow.getValue("POLEN");
-		this.ptext = outTableRow.getValue("PTEXT").toString();
-		this.psign = outTableRow.getValue("PSIGN").toString();
-		this.poption = outTableRow.getValue("POPTION").toString();
+		this.ptext = (String) outTableRow.getValue("PTEXT");
+		this.psign = (String) outTableRow.getValue("PSIGN");
+		this.poption = (String) outTableRow.getValue("POPTION");
 
-		this.plow = setPlow(outTableRow);
+		this.plow = parseField((String) outTableRow.getValue("PLOW"));
 
-		this.phigh = outTableRow.getValue("PHIGH").toString();
+		this.phigh = (String) outTableRow.getValue("PHIGH");
 	}
 
 	/**
@@ -49,8 +48,7 @@ public class VariantEntry {
 	 *            la conversion de dd.MM.yyyy a yyyyMMdd
 	 * @return
 	 */
-	private String setPlow(OutTableRow outTableRow) {
-		String plow = outTableRow.getValue("PLOW").toString();
+	String parseField(String plow) {
 		SimpleDateFormat dateFormat = Configuration.getSapInDateFormat();
 		try {
 			Date parsed = dateFormat.parse(plow);
@@ -59,16 +57,10 @@ public class VariantEntry {
 			return valueToSet;
 		} catch (ParseException e) {
 			try {
-				/* TODO : ENCONTRAR UN PARSER NUMERICO ESTRICTO */
-				String regex = "\\d+(\\.|\\,|\\d)*";
-				if (plow.trim().matches(regex)) {
-					Number parsedNumber = NumberFormat.getInstance(Locale.GERMANY).parse(plow.trim());
-					fieldType = VariantFieldType.NUMBER;
-					return parsedNumber.toString();
-				} else {
-					fieldType = VariantFieldType.TEXT;
-					return plow;
-				}
+				NumberParser numberParser = Configuration.getSapInNumberParser();
+				Number number = numberParser.parse(plow.trim());
+				fieldType = VariantFieldType.NUMBER;
+				return number.toString();
 			} catch (ParseException e1) {
 				fieldType = VariantFieldType.TEXT;
 				return plow;
@@ -80,80 +72,40 @@ public class VariantEntry {
 		return report;
 	}
 
-	public void setReport(String report) {
-		this.report = report;
-	}
-
 	public String getVariant() {
 		return variant;
-	}
-
-	public void setVariant(String variant) {
-		this.variant = variant;
 	}
 
 	public String getPname() {
 		return pname;
 	}
 
-	public void setPname(String pname) {
-		this.pname = pname;
-	}
-
 	public String getPkind() {
 		return pkind;
-	}
-
-	public void setPkind(String pkind) {
-		this.pkind = pkind;
 	}
 
 	public Integer getPolen() {
 		return polen;
 	}
 
-	public void setPolen(Integer polen) {
-		this.polen = polen;
-	}
-
 	public String getPtext() {
 		return ptext;
-	}
-
-	public void setPtext(String ptext) {
-		this.ptext = ptext;
 	}
 
 	public String getPsign() {
 		return psign;
 	}
 
-	public void setPsign(String psign) {
-		this.psign = psign;
-	}
-
 	public String getPoption() {
 		return poption;
-	}
-
-	public void setPoption(String poption) {
-		this.poption = poption;
 	}
 
 	public String getPlow() {
 		return plow;
 	}
 
-	public void setPlow(String plow) {
-		this.plow = plow;
-	}
-
 	public String getPhigh() {
 		return phigh;
-	}
-
-	public void setPhigh(String phigh) {
-		this.phigh = phigh;
 	}
 
 	public VariantFieldType getFieldType() {

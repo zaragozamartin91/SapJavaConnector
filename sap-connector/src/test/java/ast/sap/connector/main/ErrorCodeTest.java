@@ -7,7 +7,7 @@ public class ErrorCodeTest {
 
 	@Test 
 	public void testFromCode() {
-		int code = 701;
+		int code = 50;
 		ErrorCode error = ErrorCode.getError(code);
 		Assert.assertEquals(code, error.code);
 	}
@@ -23,9 +23,9 @@ public class ErrorCodeTest {
 	
 	@Test
 	public void testFromName(){
-		String key = "JCO_ERROR_COMMUNICATION";
+		String key = "INSUFFICIENT_CREDENTIALS";
 		ErrorCode error = ErrorCode.getError(key);
-		Assert.assertEquals(ErrorCode.JCO_ERROR_COMMUNICATION.code, error.code);
+		Assert.assertEquals(ErrorCode.INSUFFICIENT_CREDENTIALS.code, error.code);
 	}
 
 }

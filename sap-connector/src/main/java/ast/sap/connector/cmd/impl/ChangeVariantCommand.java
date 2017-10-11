@@ -8,7 +8,7 @@ import ast.sap.connector.cmd.SapXmiCommand;
 import ast.sap.connector.dst.SapRepository;
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.job.JobRunData;
-import ast.sap.connector.job.variant.ChangeVariantData;
+import ast.sap.connector.job.variant.VariantData;
 import ast.sap.connector.job.variant.VariantChanger;
 import ast.sap.connector.job.variant.VariantKeyValuePair;
 import ast.sap.connector.xmi.XmiLoginData;
@@ -38,7 +38,7 @@ public class ChangeVariantCommand extends SapXmiCommand {
 		List<VariantKeyValuePair> variantValuePairs = new ArrayList<VariantKeyValuePair>();
 //		variantValuePairs.add(new VariantKeyValuePair("P_FECHA", "20170321"));
 //		variantValuePairs.add(new KeyValuePair<String, Object>("P_NUMER", "34567"));
-		ChangeVariantData changeVariantData = new ChangeVariantData(programName, jobData.getExternalUsername(),	variantValuePairs);
+		VariantData changeVariantData = new VariantData(programName, jobData.getExternalUsername(),	variantValuePairs);
 		SapBapiret2 bapiret2 = variantChanger.changeVariant(changeVariantData);
 
 		return new SapCommandResult(bapiret2);

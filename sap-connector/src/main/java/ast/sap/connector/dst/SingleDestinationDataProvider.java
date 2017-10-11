@@ -23,7 +23,16 @@ public class SingleDestinationDataProvider implements DestinationDataProvider {
 		this.destination = destination;
 		this.connectionData = connectionData;
 	}
-	
+
+	/**
+	 * Crea un nuevo proveedor de destinos de sap.
+	 * 
+	 * @param destination
+	 *            Nombre del destino de sap.
+	 * @param connectionData
+	 *            Datos de conexion con el destino sap.
+	 * @return nuevo proveedor de destinos de sap.
+	 */
 	public static SingleDestinationDataProvider buildNew(String destination, ConnectionData connectionData) {
 		return new SingleDestinationDataProvider(destination, connectionData);
 	}

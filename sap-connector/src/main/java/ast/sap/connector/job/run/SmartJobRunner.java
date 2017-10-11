@@ -1,7 +1,10 @@
 package ast.sap.connector.job.run;
 
 import ast.sap.connector.dst.SapRepository;
+import ast.sap.connector.dst.exception.FunctionGetFailException;
+import ast.sap.connector.dst.exception.FunctionNetworkErrorException;
 import ast.sap.connector.func.SapBapiret2;
+import ast.sap.connector.func.exception.FunctionExecuteException;
 import ast.sap.connector.job.JobRunData;
 import ast.sap.connector.job.evt.EventRaiser;
 import ast.sap.connector.job.read.Bp20job;
@@ -26,7 +29,7 @@ public class SmartJobRunner implements JobRunner {
 	}
 
 	@Override
-	public SapBapiret2 runJob(JobRunData jobData) {
+	public SapBapiret2 runJob(JobRunData jobData) throws FunctionGetFailException, FunctionExecuteException, FunctionNetworkErrorException {
 		JobHeadReader jobHeadReader = new JobHeadReader(sapRepository);
 		Bp20job jobHead = jobHeadReader.readJob(jobData).getBp20job();
 		String eventId = jobHead.getEventId();

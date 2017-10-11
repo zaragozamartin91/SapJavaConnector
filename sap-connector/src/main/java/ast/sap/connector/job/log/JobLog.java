@@ -22,7 +22,8 @@ public class JobLog {
 	}
 
 	private void parseEntries(OutTableParam entries) {
-		for (int rowIndex = 0; rowIndex < entries.getRowCount(); rowIndex++) {
+		int rowCount = entries.getRowCount();
+		for (int rowIndex = 0; rowIndex < rowCount; rowIndex++) {
 			try {
 				OutTableRow currentRow = entries.currentRow();
 				LogEntry logEntry = new LogEntry(currentRow);
@@ -55,5 +56,14 @@ public class JobLog {
 	 */
 	public List<LogEntry> getLogEntries() {
 		return Collections.unmodifiableList(this.logEntries);
+	}
+
+	/**
+	 * Imprime el log en la terminal.
+	 */
+	public void printLogStdout() {
+		for (LogEntry logEntry : logEntries) {
+			System.out.println(logEntry);
+		}
 	}
 }

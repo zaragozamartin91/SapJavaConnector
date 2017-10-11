@@ -11,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import com.google.common.base.Optional;
 
+import ast.sap.connector.util.NumberParser;
+
 /**
  * 
  * Configuraciones del componente.
@@ -20,7 +22,7 @@ import com.google.common.base.Optional;
  */
 public class Configuration {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Configuration.class);
-	private static Properties configProperties;
+	private static Properties configProperties = new Properties();
 
 	/**
 	 * Carga las configuraciones del componente a partir de un archivo. El archivo debe existir en la ruta raiz del componente.
@@ -29,14 +31,15 @@ public class Configuration {
 	 *            Nombre del archivo.
 	 */
 	public static void loadConnectorConfig(String fileName) {
+		configProperties = new Properties();
 		FileInputStream fileInputStream = null;
 		try {
 			LOGGER.info("Cargando configuraciones desde {}", new File(fileName).getAbsolutePath());
-			configProperties = new Properties();
 			fileInputStream = new FileInputStream(fileName);
 			configProperties.load(fileInputStream);
 		} catch (Exception e) {
 			LOGGER.warn("No se pudo cargar el archivo {}. Se utilizarán las configuraciones por defecto.", new File(fileName).getAbsolutePath());
+			configProperties = new Properties();
 		} finally {
 			if (Optional.fromNullable(fileInputStream).isPresent()) {
 				try {
@@ -76,7 +79,7 @@ public class Configuration {
 	 * @return formato de fechas que llegaran desde el servidor SAP al hacer una solicitud.
 	 */
 	public static SimpleDateFormat getSapInDateFormat() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Configuration.getProperty("sap_in_date_format"));
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Configuration.getProperty("sap_in_date_format", "dd.MM.yyyy"));
 		simpleDateFormat.setLenient(false);
 		return simpleDateFormat;
 	}
@@ -92,12 +95,23 @@ public class Configuration {
 	}
 
 	/**
+	 * Obtiene la expresion regular que valida los valores numericos a setear en los campos de una variante.
+	 * 
+	 * @return expresion regular que valida los valores numericos a setear en los campos de una variante.
+	 */
+	public static String getSapOutNumberRegex() {
+		// String regex = "\\d+(\\.|\\d)*";
+		String regex = NumberParser.JAVA.regex;
+		return regex;
+	}
+
+	/**
 	 * Obtiene el formato de fecha utilizado para ingresar los valores de campos de variantes a modificar en la linea de comandos al invocar el componente.
 	 * 
 	 * @return formato de fecha utilizado para ingresar los valores de campos de variantes a modificar en la linea de comandos al invocar el componente.
 	 */
 	public static SimpleDateFormat getArgsInDateFormat() {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Configuration.getProperty("args_in_date_format"));
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat(Configuration.getProperty("args_in_date_format", "dd/MM/yyyy"));
 		simpleDateFormat.setLenient(false);
 		return simpleDateFormat;
 	}
@@ -127,5 +141,19 @@ public class Configuration {
 	 */
 	public static boolean printContinuously() {
 		return configProperties.getProperty("print_cont", "false").equalsIgnoreCase("true");
+	}
+
+	public static boolean devModeOn() {
+		return configProperties.getProperty("dev_mode_on", "false").equalsIgnoreCase("true");
+	}
+
+	/**
+	 * Obtiene el parser de valores numericos para el parseo de campos de tipo numero provenientes de sap (por ejemplo para leer una variante).
+	 * 
+	 * @return parser de valores numericos para el parseo de campos de tipo numero provenientes de sap.
+	 */
+	public static NumberParser getSapInNumberParser() {
+		String sapInNumberFormat = configProperties.getProperty("sap_in_number_format", "SPANISH");
+		return NumberParser.valueOf(sapInNumberFormat.toUpperCase());
 	}
 }

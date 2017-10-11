@@ -6,11 +6,20 @@ import java.util.List;
 import com.google.common.base.Optional;
 
 import ast.sap.connector.dst.SapRepository;
+import ast.sap.connector.dst.exception.FunctionGetFailException;
+import ast.sap.connector.dst.exception.FunctionNetworkErrorException;
 import ast.sap.connector.func.SapBapiret2;
 import ast.sap.connector.func.SapFunction;
 import ast.sap.connector.func.SapFunctionResult;
+import ast.sap.connector.func.exception.FunctionExecuteException;
 import ast.sap.connector.job.JobCreateData;
 
+/**
+ * Creador de jobs de sap.
+ * 
+ * @author martin.zaragoza
+ *
+ */
 public class JobCreator {
 	private final SapRepository sapRepository;
 
@@ -18,11 +27,39 @@ public class JobCreator {
 		this.sapRepository = sapRepository;
 	}
 
-	public NewJobData createJob(JobCreateData jobData, StepVariantPair singleStep) {
+	/**
+	 * Crea un job de un solo step.
+	 * 
+	 * @param jobData
+	 *            Informacion del job a crear.
+	 * @param singleStep
+	 *            Step del job.
+	 * @return Datos del nuevo job creado.
+	 * @throws FunctionGetFailException
+	 *             En caso que ocurra un error al obtener las funciones de sap.
+	 * @throws FunctionExecuteException
+	 *             En caso que ocurra un error al ejecutar las funciones de sap.
+	 * @throws FunctionNetworkErrorException
+	 *             Si ocurrio un error en la red al ejecutar la funcion.
+	 */
+	public NewJobData createJob(JobCreateData jobData, StepVariantPair singleStep) throws FunctionGetFailException, FunctionExecuteException, FunctionNetworkErrorException {
 		return this.createJob(jobData, Collections.singletonList(singleStep));
 	}
-	
-	public NewJobData createJob(JobCreateData jobData, List<StepVariantPair> steps) {
+
+	/**
+	 * Crea un job.
+	 * 
+	 * @param jobData
+	 *            Informacion del job a crear.
+	 * @param steps
+	 *            Steps del job.
+	 * @return Datos del nuevo job creado.
+	 * @throws FunctionGetFailException
+	 *             En caso que ocurra un error al obtener las funciones de sap.
+	 * @throws FunctionExecuteException
+	 *             En caso que ocurra un error al ejecutar las funciones de sap.
+	 */
+	public NewJobData createJob(JobCreateData jobData, List<StepVariantPair> steps) throws FunctionGetFailException, FunctionExecuteException {
 		String jobName = jobData.getJobName();
 		String externalUsername = jobData.getExternalUsername();
 
